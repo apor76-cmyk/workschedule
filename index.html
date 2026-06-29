@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>통합 앱</title>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+
+  :root {
+    --bg: #F0F7EE;
+    --surface: #F5F1E8;
+    --card: #F7FAF5;
+    --border: #D8D2C4;
+    --text: #2C2418;
+    --text2: #7A7060;
+    --sub: #ADA89E;
+    --accent: #52A869;
+    --accent2: #5A6E50;
+    --ok: #4D8A68;
+    --no: #B05858;
+    --no-light: #EFE6E6;
+    --shadow: 0 4px 24px rgba(80,70,50,0.12);
+    --shadow-3d: 0 6px 16px rgba(80,70,50,0.14), inset 0 1px 0 rgba(255,255,255,0.55);
+    --shadow-3d-lg: 0 10px 26px rgba(80,70,50,0.20), inset 0 1px 0 rgba(255,255,255,0.60);
+    --shadow-3d-pressed: inset 0 3px 8px rgba(0,0,0,0.13);
+    --radius: 16px;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Pretendard', 'Segoe UI', system-ui, sans-serif;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── 인증 바 ── */
+  #authBox {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--text);
+    border-bottom: none;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.30);
+    flex-shrink: 0;
+  }
+
+  #authBox input {
+    padding: 9px 12px;
+    border: none;
+    border-radius: 8px;
+    background: #2A2520;
+    color: #F0ECE4;
+    font-size: 14px;
+    outline: none;
+    flex: 1;
+    min-width: 100px;
+    transition: box-shadow .2s;
+    font-family: inherit;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+
+  #authBox input:focus { box-shadow: 0 6px 18px rgba(0,0,0,0.40), 0 0 0 2px var(--accent); }
+  #authBox input::placeholder { color: #6A6660; }
+
+  .auth-btns {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .auth-btn {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .15s;
+    white-space: nowrap;
+    font-family: inherit;
+  }
+
+  .auth-btn { box-shadow: 0 5px 14px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.15); }
+  .auth-btn:hover { opacity: .88; transform: translateY(-1px); box-shadow: 0 8px 20px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.15); }
+  .auth-btn:active { transform: translateY(1px); box-shadow: inset 0 3px 8px rgba(0,0,0,0.30); }
+
+  #btnSignup  { background: var(--accent); color: #1A1614; font-weight: 700; }
+  #btnLogin   { background: var(--ok); color: #fff; }
+  #btnLogout  { background: #3A3028; color: #B3ADA9; }
+  #btnWithdraw { background: #2A1212; color: #F87171; display: none; }
+  #btnWithdraw.visible { display: inline-block; }
+
+  .auth-footer {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .text-link {
+    font-size: 12px;
+    color: #6A6660;
+    cursor: pointer;
+    user-select: none;
+    transition: color .15s;
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+  }
+
+  .text-link:hover { color: var(--accent2); }
+  .text-link.danger:hover { color: #F87171; }
+
+  #userInfo {
+    width: 100%;
+    font-size: 12px;
+    color: #9E9A94;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  #userInfo.visible { display: flex; }
+
+  /* ── 상태 메시지 ── */
+  #statusMsg {
+    display: none;
+    margin: 12px 16px 0;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    text-align: center;
+    font-family: inherit;
+  }
+
+  #statusMsg.pending  {
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    background: #FFFADF; color: #C89A00; border: none; box-shadow: 0 4px 14px rgba(245,197,24,0.25), inset 0 1px 0 rgba(255,255,255,0.50);
+  }
+  #statusMsg.rejected {
+    display: block;
+    background: #FEF2F2; color: #EF4444; border: none; box-shadow: 0 4px 14px rgba(239,68,68,0.20), inset 0 1px 0 rgba(255,255,255,0.50);
+  }
+
+  .cancel-reg-btn {
+    padding: 5px 12px;
+    background: #FEF2F2;
+    color: #EF4444;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(239,68,68,0.22), inset 0 1px 0 rgba(255,255,255,0.40);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    flex-shrink: 0;
+    white-space: nowrap;
+    font-family: inherit;
+  }
+
+  .cancel-reg-btn:hover { opacity: .8; }
+
+  /* ── 앱 런처 ── */
+  #launcher {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+    padding: 32px 20px 40px;
+  }
+
+  .launcher-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .launcher-title::before {
+    content: '';
+    display: inline-block;
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .app-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .app-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 20px;
+    background: var(--card);
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    transition: all .18s cubic-bezier(0.34,1.2,0.64,1);
+    box-shadow: var(--shadow-3d);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .app-card:hover { box-shadow: var(--shadow-3d-lg); transform: translateY(-3px) scale(1.01); }
+  .app-card:active { transform: scale(0.97) translateY(1px); box-shadow: var(--shadow-3d-pressed); }
+
+  .app-card-icon { font-size: 30px; flex-shrink: 0; width: 44px; text-align: center; }
+  .app-card-info { flex: 1; }
+
+  .app-card-name { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+  .app-card-desc { font-size: 12px; color: var(--sub); }
+  .app-card-arrow { font-size: 18px; color: var(--border); flex-shrink: 0; transition: color .15s; }
+  .app-card:hover .app-card-arrow { color: var(--accent); }
+
+  .app-card.disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  #launcher.locked::before {
+    content: "로그인 후 앱을 이용할 수 있습니다";
+    display: block;
+    font-size: 13px;
+    color: var(--sub);
+    text-align: center;
+    padding: 8px 0;
+  }
+
+  /* ── 마스터 패널 ── */
+  #masterPanel {
+    display: none;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 20px 40px;
+  }
+
+  #masterPanel.visible { display: block; }
+
+  .panel-section {
+    background: var(--card);
+    border: none;
+    border-radius: var(--radius);
+    padding: 18px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow-3d);
+  }
+
+  .panel-section-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent2);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .user-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .user-row:last-child { border-bottom: none; }
+
+  .user-email { flex: 1; font-size: 13px; color: var(--text); word-break: break-all; }
+  .user-date  { font-size: 11px; color: var(--sub); flex-shrink: 0; }
+
+  .badge { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; flex-shrink: 0; }
+  .badge-pending  { background: #FFFADF; color: #C89A00; border: none; box-shadow: 0 2px 6px rgba(245,197,24,0.25), inset 0 1px 0 rgba(255,255,255,0.50); }
+  .badge-approved { background: #F0FDF4; color: #22C55E; border: none; box-shadow: 0 2px 6px rgba(34,197,94,0.22), inset 0 1px 0 rgba(255,255,255,0.50); }
+  .badge-rejected { background: #FEF2F2; color: #EF4444; border: none; box-shadow: 0 2px 6px rgba(239,68,68,0.22), inset 0 1px 0 rgba(255,255,255,0.50); }
+
+  .action-btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity .15s;
+    flex-shrink: 0;
+    font-family: inherit;
+  }
+
+  .action-btn:hover { opacity: .8; }
+  .btn-approve { background: #F0FDF4; color: #16A34A; border: none; box-shadow: 0 3px 10px rgba(22,163,74,0.22), inset 0 1px 0 rgba(255,255,255,0.45); }
+  .btn-reject  { background: #FEF2F2; color: #EF4444; border: none; box-shadow: 0 3px 10px rgba(239,68,68,0.22), inset 0 1px 0 rgba(255,255,255,0.45); }
+  .btn-revoke  { background: var(--card2, #F4F1E8); color: var(--sub, #B3ADA9); border: none; box-shadow: 0 3px 8px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.40); }
+  .btn-del     { background: #FEF2F2; color: #EF4444; border: none; box-shadow: 0 3px 10px rgba(239,68,68,0.22), inset 0 1px 0 rgba(255,255,255,0.45); }
+
+  .empty-msg { font-size: 13px; color: var(--sub); text-align: center; padding: 16px 0; }
+</style>
+</head>
+
+<body>
+
+<!-- 로그인 UI -->
+<div id="authBox">
+  <input id="email" placeholder="이메일" type="email">
+  <input id="password" type="password" placeholder="비밀번호">
+  <input id="password2" type="password" placeholder="비밀번호 확인" style="display:none">
+  <div class="auth-btns">
+    <button id="btnSignup"   class="auth-btn" onclick="toggleSignupMode()">회원가입</button>
+    <button id="btnSignupConfirm" class="auth-btn" onclick="signup()" style="display:none;background:#6366f1;color:#fff">가입 확인</button>
+    <button id="btnSignupCancel" class="auth-btn" onclick="cancelSignupMode()" style="display:none;background:#3a3a50;color:#ccc">취소</button>
+    <button id="btnLogin"    class="auth-btn" onclick="login()">로그인</button>
+    <button id="btnLogout"   class="auth-btn" onclick="logout()">로그아웃</button>
+    <button id="btnWithdraw" class="auth-btn" onclick="withdrawMember()">회원탈퇴</button>
+  </div>
+
+  <div class="auth-footer">
+  </div>
+
+  <!-- 로그인 상태 표시 -->
+  <span id="userInfo">
+    <span id="userEmail"></span>
+  </span>
+</div>
+
+<!-- 상태 메시지: 승인 대기 or 거절 -->
+<div id="statusMsg"></div>
+
+<!-- 마스터 패널 -->
+<div id="masterPanel">
+  <div class="panel-section">
+    <div class="panel-section-title">⏳ 승인 대기 중</div>
+    <div id="pendingList"><div class="empty-msg">대기 중인 회원이 없습니다</div></div>
+  </div>
+  <div class="panel-section">
+    <div class="panel-section-title">👥 가입된 회원</div>
+    <div id="memberList"><div class="empty-msg">가입된 회원이 없습니다</div></div>
+  </div>
+  <div style="text-align:center;margin-top:4px">
+    <a href="https://console.firebase.google.com/project/studyapp-58a1c/authentication/users"
+       target="_blank"
+       style="font-size:13px;color:#6366f1;text-decoration:none;">
+      🔗 Firebase 콘솔에서 계정 삭제
+    </a>
+  </div>
+</div>
+
+<!-- 앱 선택 화면 -->
+<div id="launcher">
+  <div class="launcher-title">앱 선택</div>
+  <div class="app-cards">
+    <a class="app-card disabled" href="studyapp.html">
+      <div class="app-card-icon">📚</div>
+      <div class="app-card-info">
+        <div class="app-card-name">스터디</div>
+        <div class="app-card-desc">학습카드 · 루틴 · 체크 · 포모도로</div>
+      </div>
+      <div class="app-card-arrow">›</div>
+    </a>
+    <a class="app-card disabled" href="linkmanage.html">
+      <div class="app-card-icon">🔗</div>
+      <div class="app-card-info">
+        <div class="app-card-name">링크관리</div>
+        <div class="app-card-desc">북마크 · 카테고리 · 그룹 관리</div>
+      </div>
+      <div class="app-card-arrow">›</div>
+    </a>
+  </div>
+</div>
+
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getAuth, createUserWithEmailAndPassword,
+  signInWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  getFirestore, doc, setDoc, getDoc, updateDoc, deleteDoc,
+  collection, getDocs, query, orderBy, where, limit
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// 마스터 GitHub 계정 (이 계정의 토큰만 마스터 등록 허용)
+// 계정 삭제 중 onAuthStateChanged 방해 방지 플래그
+let _deletingAccount = false;
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA7ots3eKmIasUH4GW7nw797cdvEVP-Dk8",
+  authDomain: "studyapp-58a1c.firebaseapp.com",
+  projectId: "studyapp-58a1c",
+  storageBucket: "studyapp-58a1c.firebasestorage.app",
+  messagingSenderId: "481582276002",
+  appId: "1:481582276002:web:4bebfca49c51cb8607e6fb"
+};
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+// ── 회원가입 모드 토글 ──
+window.toggleSignupMode = () => {
+  document.getElementById('password2').style.display = '';
+  document.getElementById('btnSignup').style.display = 'none';
+  document.getElementById('btnSignupConfirm').style.display = '';
+  document.getElementById('btnSignupCancel').style.display = '';
+  document.getElementById('btnLogin').style.display = 'none';
+};
+
+window.cancelSignupMode = () => {
+  document.getElementById('password2').style.display = 'none';
+  document.getElementById('password2').value = '';
+  document.getElementById('btnSignup').style.display = '';
+  document.getElementById('btnSignupConfirm').style.display = 'none';
+  document.getElementById('btnSignupCancel').style.display = 'none';
+  document.getElementById('btnLogin').style.display = '';
+};
+
+// ── 회원가입 ──
+window.signup = async () => {
+  const emailVal = document.getElementById('email').value.trim();
+  const pwVal    = document.getElementById('password').value;
+  const pw2Val   = document.getElementById('password2').value;
+
+  if (!emailVal || !pwVal) return alert("이메일과 비밀번호를 입력하세요.");
+  if (pwVal !== pw2Val) return alert("비밀번호가 일치하지 않습니다.");
+  if (pwVal.length < 6) return alert("비밀번호는 6자 이상이어야 합니다.");
+
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, emailVal, pwVal);
+    await setDoc(doc(db, "users", cred.user.uid), {
+      email: emailVal, status: "pending", role: "user",
+      createdAt: new Date().toISOString()
+    });
+    alert("회원가입 완료!\n마스터 승인 후 이용 가능합니다.");
+    cancelSignupMode();
+    await signOut(auth);
+  } catch(e) { alert("오류: " + e.message); }
+};
+
+// ── 로그인 ──
+window.login = async () => {
+  const emailVal = document.getElementById('email').value.trim();
+  const pwVal    = document.getElementById('password').value;
+  if (!emailVal || !pwVal) return alert("이메일과 비밀번호를 입력하세요.");
+  try {
+    await signInWithEmailAndPassword(auth, emailVal, pwVal);
+    // 상태 처리는 onAuthStateChanged가 담당
+  } catch(e) { alert("오류: " + e.message); }
+};
+
+// ── 로그아웃 ──
+window.logout = () => {
+  document.getElementById('email').value = '';
+  document.getElementById('password').value = '';
+  signOut(auth);
+};
+
+// ── 회원탈퇴 (승인된 로그인 상태에서) ──
+window.withdrawMember = async () => {
+  const user = auth.currentUser;
+  if (!user) return;
+  if (!confirm(`"${user.email}" 계정을 탈퇴하시겠습니까?\n모든 데이터가 삭제됩니다.`)) return;
+  _deletingAccount = true;
+  try {
+    await deleteDoc(doc(db, "users", user.uid));
+    await deleteUser(user);
+    localStorage.removeItem("uid");
+    resetUI();
+    alert("탈퇴가 완료되었습니다.");
+  } catch(e) {
+    if (e.code === 'auth/requires-recent-login') {
+      alert("보안을 위해 재로그인이 필요합니다.\n로그아웃 후 다시 로그인해 주세요.");
+      await signOut(auth);
+    } else {
+      alert("탈퇴 실패: " + e.message);
+    }
+  } finally { _deletingAccount = false; }
+};
+
+// ── 회원등록 취소 (승인 대기 상태에서) ──
+window.cancelRegistration = async () => {
+  const user = auth.currentUser;
+  if (!user) return alert("로그인이 필요합니다.");
+  if (!confirm("가입 신청을 취소하시겠습니까?")) return;
+  _deletingAccount = true;
+  try {
+    await deleteDoc(doc(db, "users", user.uid));
+    await deleteUser(user);
+    localStorage.removeItem("uid");
+    hideStatusMsg();
+    resetUI();
+    alert("가입 신청이 취소되었습니다.");
+  } catch(e) { alert("취소 실패: " + e.message); }
+  finally { _deletingAccount = false; }
+};
+
+// ── UI 유틸 ──
+function showStatusMsg(type, text, showCancelBtn = false) {
+  const el = document.getElementById('statusMsg');
+  el.className = type;
+  if (showCancelBtn) {
+    el.innerHTML = `<span>${text}</span>
+      <button class="cancel-reg-btn" onclick="cancelRegistration()">가입 취소</button>`;
+  } else {
+    el.textContent = text;
+  }
+}
+
+function hideStatusMsg() {
+  const el = document.getElementById('statusMsg');
+  el.className = '';
+  el.innerHTML = '';
+}
+
+function resetUI() {
+  document.getElementById('userInfo').classList.remove('visible');
+  document.getElementById('userEmail').textContent = '';
+  document.getElementById('btnWithdraw').classList.remove('visible');
+  document.getElementById('masterPanel').classList.remove('visible');
+  setCardsEnabled(false);
+  hideStatusMsg();
+}
+
+function setCardsEnabled(enabled) {
+  const launcher = document.getElementById('launcher');
+  document.querySelectorAll('.app-card').forEach(c => c.classList.toggle('disabled', !enabled));
+  launcher.classList.toggle('locked', !enabled);
+}
+
+// ── 마스터 패널 ──
+async function loadMasterPanel() {
+  document.getElementById('masterPanel').classList.add('visible');
+  const pendingEl = document.getElementById('pendingList');
+  const memberEl  = document.getElementById('memberList');
+  pendingEl.innerHTML = memberEl.innerHTML = '<div class="empty-msg">불러오는 중...</div>';
+
+  let snap;
+  try {
+    snap = await getDocs(query(collection(db, "users"), orderBy("createdAt", "desc")));
+  } catch(e) {
+    pendingEl.innerHTML = memberEl.innerHTML =
+      `<div class="empty-msg" style="color:#f87171">불러오기 실패: ${e.message}</div>`;
+    return;
+  }
+
+  const pending = [], members = [];
+  snap.forEach(d => {
+    const u = { uid: d.id, ...d.data() };
+    if (u.role === 'master') return;
+    (u.status === 'pending' ? pending : members).push(u);
+  });
+
+  pendingEl.innerHTML = pending.length === 0
+    ? '<div class="empty-msg">대기 중인 회원이 없습니다</div>'
+    : pending.map(u => `
+        <div class="user-row">
+          <div class="user-email">${u.email}</div>
+          <div class="user-date">${(u.createdAt||'').slice(0,10)}</div>
+          <button class="action-btn btn-approve" onclick="approveUser('${u.uid}','${u.email}')">승인</button>
+          <button class="action-btn btn-reject"  onclick="rejectUser('${u.uid}','${u.email}')">거절</button>
+          <button class="action-btn btn-del"     onclick="masterDeleteUser('${u.uid}','${u.email}')">삭제</button>
+        </div>`).join('');
+
+  memberEl.innerHTML = members.length === 0
+    ? '<div class="empty-msg">가입된 회원이 없습니다</div>'
+    : members.map(u => `
+        <div class="user-row">
+          <div class="user-email">${u.email}</div>
+          <div class="user-date">${(u.createdAt||'').slice(0,10)}</div>
+          <span class="badge badge-${u.status}">${u.status === 'approved' ? '승인됨' : '거절됨'}</span>
+          ${u.status === 'approved'
+            ? `<button class="action-btn btn-revoke" onclick="revokeUser('${u.uid}','${u.email}')">정지</button>`
+            : `<button class="action-btn btn-approve" onclick="approveUser('${u.uid}','${u.email}')">재승인</button>`}
+          <button class="action-btn btn-del" onclick="masterDeleteUser('${u.uid}','${u.email}')">삭제</button>
+        </div>`).join('');
+}
+
+window.approveUser = async (uid, email) => {
+  await updateDoc(doc(db, "users", uid), { status: "approved" });
+  alert(`${email} 승인 완료`);
+  loadMasterPanel();
+};
+window.rejectUser = async (uid, email) => {
+  if (!confirm(`${email} 을 거절하시겠습니까?`)) return;
+  await updateDoc(doc(db, "users", uid), { status: "rejected" });
+  loadMasterPanel();
+};
+window.revokeUser = async (uid, email) => {
+  if (!confirm(`${email} 의 접근을 정지하시겠습니까?`)) return;
+  await updateDoc(doc(db, "users", uid), { status: "rejected" });
+  loadMasterPanel();
+};
+// 마스터가 Firestore 기록만 삭제 (Firebase Auth 계정은 유지 — Admin SDK 없이는 타계정 삭제 불가)
+window.masterDeleteUser = async (uid, email) => {
+  if (!confirm(`${email} 의 가입 기록을 삭제하시겠습니까?\n(해당 이메일로 재가입 가능해집니다)`)) return;
+  await deleteDoc(doc(db, "users", uid));
+  loadMasterPanel();
+};
+
+// ── Auth 상태 감지 ──
+onAuthStateChanged(auth, async user => {
+  if (_deletingAccount) return;
+  hideStatusMsg();
+
+  if (!user) {
+    resetUI();
+    localStorage.removeItem('userEmail');
+    return;
+  }
+
+  // 다른 유저로 전환 시 앱 데이터 초기화
+  const prevUid = localStorage.getItem('uid');
+  if (prevUid && prevUid !== user.uid) {
+    localStorage.clear();
+  }
+
+  // 사용자 이메일 저장
+  localStorage.setItem('userEmail', user.email || '');
+  localStorage.setItem('uid', user.uid);
+
+  const snap = await getDoc(doc(db, "users", user.uid));
+  const data = snap.exists() ? snap.data() : {};
+
+  // 승인 대기 → 로그아웃 안 함, 가입 취소 버튼 제공
+  if (data.status === 'pending') {
+    setCardsEnabled(false);
+    document.getElementById('masterPanel').classList.remove('visible');
+    showStatusMsg('pending', '⏳ 승인 대기 중입니다. 마스터의 승인을 기다려 주세요.', true);
+    return;
+  }
+
+  // 거절됨
+  if (data.status === 'rejected') {
+    await signOut(auth);
+    showStatusMsg('rejected', '❌ 가입이 거절되었습니다. 관리자에게 문의하세요.');
+    return;
+  }
+
+  // 정상 로그인 (approved)
+  const isMaster = data.role === 'master';
+  document.getElementById('userEmail').textContent =
+    (isMaster ? '👑 마스터: ' : '로그인됨: ') + user.email;
+  document.getElementById('userInfo').classList.add('visible');
+  if (!isMaster) document.getElementById('btnWithdraw').classList.add('visible');
+  localStorage.setItem("uid", user.uid);
+  setCardsEnabled(true);
+
+  if (isMaster) {
+    loadMasterPanel();
+  } else {
+    document.getElementById('masterPanel').classList.remove('visible');
+  }
+});
+
+// ── 클라우드 저장/로드 ──
+window.saveCloud = async (key, data) => {
+  const uid = localStorage.getItem("uid");
+  if (!uid) return;
+  await setDoc(doc(db, "users", uid), { [key]: data }, { merge: true });
+};
+window.loadCloud = async (key) => {
+  const uid = localStorage.getItem("uid");
+  if (!uid) return null;
+  const snap = await getDoc(doc(db, "users", uid));
+  return snap.exists() ? snap.data()[key] : null;
+};
+</script>
+
+</body>
+</html>

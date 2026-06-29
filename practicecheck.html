@@ -1,0 +1,1383 @@
+<html lang="ko"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practice Check</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<script src="https://apis.google.com/_/scs/abc-static/_/js/k=gapi.lb.ko.4XlE21lAHZg.O/m=gapi_iframes/rt=j/sv=1/d=1/ed=1/rs=AHpOoo87KNXmV5OeSd-Dt__Wtv736527Nw/cb=gapi.loaded_0?le=scs,fedcm_migration_mod" async=""></script><script src="https://apis.google.com/_/scs/abc-static/_/js/k=gapi.lb.ko.Mrvmj7G-jDg.O/m=gapi_iframes/rt=j/sv=1/d=1/ed=1/rs=AHpOoo-OIiCBSoDYGTfHuGb2acpp8-6YBg/cb=gapi.loaded_0?le=scs" async=""></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<style>
+:root{
+  --bg:#F0F7EE;
+  --surface:#F7FAF5;
+  --card:#F7FAF5;
+  --card2:#EBF4E7;
+  --text:#2C2418;
+  --text2:#7A7060;
+  --sub:#ADA89E;
+  --border:#C8E0C0;
+  --accent:#52A869;
+  --accent2:#3A8A50;
+  --accent-light:#D8F0DC;
+  --ok:#3DAB6A;
+  --ok-light:#D4F0E0;
+  --no:#B05858;
+  --no-light:#EFE6E6;
+  --warn:#B87840;
+  --warn-light:#F0E8DC;
+  --star:#8A7C5E;
+  --shadow:0 2px 16px rgba(80,70,50,0.10);
+  --shadow-lg:0 8px 36px rgba(80,70,50,0.18);
+  --shadow-3d:0 6px 16px rgba(80,70,50,0.14), inset 0 1px 0 rgba(255,255,255,0.55);
+  --shadow-3d-lg:0 10px 26px rgba(80,70,50,0.20), inset 0 1px 0 rgba(255,255,255,0.60);
+  --shadow-3d-pressed:inset 0 3px 8px rgba(0,0,0,0.13);
+  --shadow-inset:inset 0 2px 8px rgba(0,0,0,0.09);
+  --radius:16px;
+}
+body.dark{
+  --bg:#0E1A10;
+  --surface:#141F14;
+  --card:#1A2A1A;
+  --card2:#1F321F;
+  --text:#EDE8DE;
+  --text2:#9E9890;
+  --sub:#6A6460;
+  --border:#2A4030;
+  --accent:#5EC87A;
+  --accent2:#7AD894;
+  --accent-light:#142814;
+  --ok:#4DC878;
+  --ok-light:#0A2012;
+  --no:#C07070;
+  --no-light:#2A1818;
+  --warn:#C0905A;
+  --warn-light:#201A10;
+  --star:#A09478;
+  --pomo:#C07070;
+  --pomo-light:#2A1818;
+  --shadow:0 2px 16px rgba(0,0,0,0.5);
+  --shadow-md:0 4px 18px rgba(0,0,0,0.4);
+  --shadow-hover:0 6px 24px rgba(0,0,0,0.6);
+  --shadow-3d:0 6px 16px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.10);
+  --shadow-3d-lg:0 10px 26px rgba(0,0,0,0.60), inset 0 1px 0 rgba(255,255,255,0.13);
+  --shadow-3d-pressed:inset 0 3px 8px rgba(0,0,0,0.35);
+  --shadow-inset:inset 0 2px 8px rgba(0,0,0,0.30);
+  --today-bg:#2A2818;
+  --today-text:#8CA87A;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.5;}
+header{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:none;padding:8px 20px;min-height:52px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;box-shadow:0 4px 16px rgba(80,70,50,0.12), inset 0 -1px 0 rgba(0,0,0,0.05);}
+.logo{font-size:15px;font-weight:700;color:var(--accent);letter-spacing:-0.3px;margin-right:6px;white-space:nowrap;}
+.header-sep{width:1px;height:20px;background:var(--border);margin:0 2px;}
+.header-group{display:flex;gap:6px;flex-wrap:wrap;}
+button{padding:6px 13px;border:none;border-radius:8px;background:var(--card2);color:var(--text2);font-family:inherit;font-size:12.5px;font-weight:500;cursor:pointer;transition:all 0.15s;white-space:nowrap;box-shadow:var(--shadow-3d);}
+button:hover{color:var(--accent);background:var(--accent-light);box-shadow:var(--shadow-3d-lg);transform:translateY(-1px);}
+button:active{box-shadow:var(--shadow-3d-pressed);transform:translateY(1px);}
+.btn-primary{background:var(--accent);color:#1A1614!important;border:none;font-weight:600;box-shadow:0 6px 18px rgba(122,140,110,0.45),inset 0 1px 0 rgba(255,255,255,0.30);}
+.btn-primary:hover{background:var(--accent2);color:#fff!important;box-shadow:0 10px 24px rgba(90,110,80,0.50),inset 0 1px 0 rgba(255,255,255,0.25);transform:translateY(-1px);}
+.btn-primary:active{box-shadow:inset 0 3px 8px rgba(0,0,0,0.20);transform:translateY(1px);}
+.btn-danger{background:#fee2e2;color:#dc2626!important;border:none;box-shadow:0 6px 16px rgba(220,38,38,0.25),inset 0 1px 0 rgba(255,255,255,0.40);}
+.btn-danger:hover{background:#dc2626;color:#fff!important;box-shadow:0 8px 20px rgba(220,38,38,0.45),inset 0 1px 0 rgba(255,255,255,0.20);transform:translateY(-1px);}
+.btn-danger:active{box-shadow:inset 0 3px 8px rgba(0,0,0,0.25);transform:translateY(1px);}
+input,select{padding:6px 11px;border:none;border-radius:8px;background:var(--surface);color:var(--text);font-family:inherit;font-size:13px;outline:none;transition:box-shadow 0.15s;box-shadow:var(--shadow-3d);}
+input:focus,select:focus{box-shadow:var(--shadow-3d-lg), 0 0 0 3px var(--accent-light);}
+input[type="date"]{min-width:140px;}
+.area-bar{background:var(--card);border-bottom:none;padding:8px 20px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;box-shadow:0 3px 10px rgba(80,70,50,0.08), inset 0 -1px 0 rgba(0,0,0,0.04);}
+.area-label{font-size:11px;font-weight:600;color:var(--sub);text-transform:uppercase;letter-spacing:0.07em;margin-right:2px;}
+.area-btn{border-radius:999px;padding:5px 14px;font-size:12.5px;}
+.area-btn.active{background:var(--accent);color:#1A1614!important;border:none;font-weight:600;box-shadow:0 6px 18px rgba(122,140,110,0.42),inset 0 1px 0 rgba(255,255,255,0.28);}
+.area-btn.dragging-src{opacity:0.35;pointer-events:none;}
+.area-btn.drag-over{outline:2px solid var(--accent);outline-offset:2px;}
+.manage-toggle-btn{font-size:12.5px;padding:5px 13px;}
+.manage-panel{background:var(--card);border-bottom:none;overflow:hidden;max-height:0;opacity:0;transition:max-height 0.28s ease,opacity 0.2s ease,padding 0.2s;padding:0 20px;box-shadow:0 4px 14px rgba(80,70,50,0.10);}
+.manage-panel.open{max-height:300px;opacity:1;padding:16px 20px;}
+.manage-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px;}
+.manage-section{background:var(--surface);border:none;border-radius:var(--radius);padding:12px 14px;box-shadow:var(--shadow-3d);}
+.manage-section-title{font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;}
+.manage-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.manage-row+.manage-row{margin-top:7px;}
+.container{max-width:1300px;margin:0 auto;padding:20px;display:flex;flex-direction:column;gap:20px;}
+.section-card{background:var(--card);border:none;border-radius:var(--radius);box-shadow:var(--shadow-3d);overflow:hidden;}
+.section-header{padding:14px 18px 12px;border-bottom:none;box-shadow:0 2px 6px rgba(0,0,0,0.06),inset 0 1px 0 rgba(255,255,255,0.35);display:flex;align-items:center;gap:8px;}
+.section-title{font-size:13px;font-weight:700;color:var(--text);}
+.section-body{padding:0;overflow-x:auto;}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:13px;}
+th{padding:10px 12px;text-align:center;background:var(--surface);color:var(--sub);font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid var(--border);white-space:nowrap;}
+th:first-child{text-align:left;padding-left:10px;padding-right:8px;position:sticky;left:0;z-index:2;background:var(--surface);box-shadow:2px 0 6px rgba(0,0,0,0.08);width:120px;min-width:120px;max-width:120px;}
+td{padding:10px 12px;text-align:center;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:middle;}
+td:first-child{text-align:left;padding-left:10px;padding-right:8px;font-weight:500;position:sticky;left:0;z-index:1;background:var(--card);box-shadow:2px 0 6px rgba(0,0,0,0.08);width:120px;min-width:120px;max-width:120px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;font-size:13px;scrollbar-width:thin;}
+td:first-child::-webkit-scrollbar{height:4px;}
+td:first-child::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+td:first-child::-webkit-scrollbar-track{background:transparent;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--surface);}
+tr:hover td:first-child{background:var(--surface);}
+.today-col{background:var(--today-bg)!important;color:var(--today-text)!important;}
+th.today-col{color:var(--today-text)!important;}
+td.cycle-cell{cursor:pointer;font-size:13px;font-weight:700;transition:background 0.12s;user-select:none;}
+td.cycle-cell:hover{filter:brightness(0.94);}
+.repeat-legend{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:8px 18px;border-top:none;box-shadow:inset 0 1px 0 rgba(0,0,0,0.05);font-size:11px;}
+.rep-badge{padding:2px 8px;border-radius:999px;font-weight:600;font-size:11px;box-shadow:0 2px 6px rgba(0,0,0,0.15),inset 0 1px 0 rgba(255,255,255,0.20);}
+#stats{min-width:auto;width:100%;font-size:13px;}
+#stats th,#stats td{font-size:13px;}
+#stats th:first-child,#stats td:first-child{width:auto;min-width:64px;max-width:none;overflow:visible;white-space:nowrap;}
+#stats td:not(:first-child){font-weight:600;color:var(--accent);}
+#stats td:first-child{color:var(--text);font-weight:500;}
+.week-nav{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.week-nav-btn{width:30px;height:30px;padding:0;display:flex;align-items:center;justify-content:center;font-size:12px;border-radius:8px;flex-shrink:0;box-shadow:var(--shadow-3d);}
+.week-nav-btn:hover{box-shadow:var(--shadow-3d-lg);transform:translateY(-1px);}
+.week-nav-btn:active{box-shadow:var(--shadow-3d-pressed);transform:translateY(1px);}
+#weekLabel{font-size:13px;font-weight:600;color:var(--text2);white-space:nowrap;min-width:130px;text-align:center;}
+.source-badge{display:inline-block;padding:1px 6px;border-radius:999px;font-size:10px;font-weight:600;margin-right:5px;background:var(--accent-light);color:var(--accent);box-shadow:0 2px 5px rgba(122,140,110,0.20),inset 0 1px 0 rgba(255,255,255,0.40);}
+/* ── 잠금 버튼 ── */
+.btn-lock{display:flex;align-items:center;gap:5px;font-size:12.5px;padding:5px 13px;border-radius:8px;transition:all 0.15s;}
+.btn-lock.locked{background:#fee2e2;color:#dc2626!important;border:none;box-shadow:0 5px 14px rgba(220,38,38,0.28),inset 0 1px 0 rgba(255,255,255,0.40);}
+.btn-lock.locked:hover{background:#dc2626;color:#fff!important;box-shadow:0 7px 18px rgba(220,38,38,0.45);}
+.btn-lock.unlocked{background:var(--ok-light);color:var(--ok)!important;border:none;box-shadow:0 5px 14px rgba(60,168,90,0.28),inset 0 1px 0 rgba(255,255,255,0.40);}
+.btn-lock.unlocked:hover{background:var(--ok);color:#fff!important;box-shadow:0 7px 18px rgba(60,168,90,0.45);}
+/* 잠금 시 체크 셀 비활성화 */
+#table.check-locked td.cycle-cell{cursor:not-allowed;opacity:0.65;pointer-events:none;}
+#table.check-locked{user-select:none;}
+
+/* ── 모드 전환 버튼 ── */
+.btn-mode{display:flex;align-items:center;gap:5px;font-size:12.5px;padding:5px 13px;border-radius:8px;transition:all 0.15s;font-weight:600;}
+.btn-mode.simple-active{background:var(--accent);color:#1A1614!important;border:none;box-shadow:0 6px 18px rgba(122,140,110,0.42),inset 0 1px 0 rgba(255,255,255,0.28);}
+.btn-mode.detail-active{background:var(--surface);color:var(--text2)!important;border:none;box-shadow:var(--shadow-3d);}
+
+/* ── 간단모드 ── */
+.simple-date-header{background:var(--card);border:none;border-radius:var(--radius);box-shadow:var(--shadow-3d);padding:16px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.simple-date-text{font-size:18px;font-weight:700;color:var(--text);}
+.simple-date-sub{font-size:12px;color:var(--text2);font-weight:500;}
+.simple-progress-wrap{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.simple-progress-text{font-size:13px;font-weight:600;color:var(--text2);}
+.simple-progress-bar-bg{width:120px;height:8px;background:var(--card2);border-radius:999px;overflow:hidden;box-shadow:var(--shadow-inset);}
+.simple-progress-bar{height:100%;background:var(--accent);border-radius:999px;transition:width 0.4s;}
+.simple-all-done{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--ok);background:var(--ok-light);border:none;border-radius:var(--radius);padding:20px 24px;box-shadow:0 6px 18px rgba(60,168,90,0.25),inset 0 1px 0 rgba(255,255,255,0.40);}
+.simple-cards-wrap{display:flex;flex-direction:column;gap:14px;}
+.simple-area-card{background:var(--card);border:none;border-radius:var(--radius);box-shadow:var(--shadow-3d);overflow:hidden;transition:box-shadow 0.2s;}
+.simple-area-card.all-done{box-shadow:0 6px 18px rgba(60,168,90,0.28),inset 0 1px 0 rgba(255,255,255,0.35);background:var(--ok-light);}
+.simple-area-header{padding:12px 18px;border-bottom:none;box-shadow:0 2px 5px rgba(0,0,0,0.05),inset 0 1px 0 rgba(255,255,255,0.30);display:flex;align-items:center;gap:8px;}
+.simple-area-card.all-done .simple-area-header{box-shadow:0 2px 5px rgba(60,168,90,0.12),inset 0 1px 0 rgba(255,255,255,0.30);}
+.simple-area-name{font-size:13px;font-weight:700;color:var(--text);}
+.simple-area-count{font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--card2);color:var(--text2);box-shadow:0 2px 5px rgba(0,0,0,0.08),inset 0 1px 0 rgba(255,255,255,0.35);}
+.simple-area-card.all-done .simple-area-count{background:#bbf7d0;color:#15803d;}
+.simple-area-done-icon{margin-left:auto;font-size:13px;color:var(--ok);font-weight:600;}
+.simple-habit-list{padding:8px 0;}
+.simple-habit-row{display:flex;align-items:center;gap:10px;padding:9px 18px;cursor:pointer;transition:background 0.12s;border-bottom:1px solid var(--border);}
+.simple-habit-row:last-child{border-bottom:none;}
+.simple-habit-row:hover{background:var(--surface);}
+.simple-habit-row.done{opacity:0.45;}
+.check-locked .simple-habit-row{cursor:not-allowed;}
+.simple-check-icon{width:24px;height:24px;border-radius:8px;border:none;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;font-weight:700;transition:all 0.15s;background:var(--surface);box-shadow:var(--shadow-3d);}
+.simple-habit-row.done .simple-check-icon{background:var(--ok);border:none;color:#fff;box-shadow:0 4px 12px rgba(60,168,90,0.40),inset 0 1px 0 rgba(255,255,255,0.25);}
+.simple-habit-name{font-size:13px;font-weight:500;color:var(--text);flex:1;}
+.simple-habit-row.done .simple-habit-name{text-decoration:line-through;color:var(--text2);}
+.simple-rep-badge{padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,0.15),inset 0 1px 0 rgba(255,255,255,0.20);}
+.simple-no-items{padding:32px 20px;text-align:center;color:var(--text2);font-size:13px;}
+</style>
+<script src="https://apis.google.com/js/api.js?onload=__iframefcb780326" type="text/javascript" charset="UTF-8" gapi_processed="true"></script></head>
+<body class="dark">
+<header>
+  <span class="logo">✅ Practice Check</span>
+  <div class="header-sep"></div>
+  <div class="header-group">
+    <button onclick="toggleDark()" style="display:none">◐ 테마</button>
+    <button onclick="goToday()">오늘</button>
+    <input type="date" id="weekPicker">
+  </div>
+  <div class="header-sep" style="display:none"></div>
+  <div class="header-group" style="display:none">
+    <button onclick="localBackup()">↓ 백업</button>
+    <button onclick="document.getElementById('localFile').click()">↑ 불러오기</button>
+    <input type="file" id="localFile" style="display:none">
+  </div>
+  <div class="header-sep"></div>
+  <div class="header-group">
+    <input type="email" id="emailInput" placeholder="이메일" style="width: 160px; display: inline-block;">
+    <input type="password" id="passwordInput" placeholder="비밀번호" style="width: 140px; display: inline-block;">
+    <button id="authBtn" onclick="toggleAuth()" style="display: inline-block;">🔓 로그인</button>
+    <button id="logoutBtn" onclick="logout()" style="display:none;">🔒 로그아웃</button>
+    <span id="userInfo" style="font-size:12px;color:var(--accent);margin-left:8px;display:none;"></span>
+  </div>
+  <div class="header-sep" style="display:none"></div>
+  <div class="header-group" style="display:none">
+    <button onclick="FirebaseSync.upload()" id="fbUploadBtn">☁️ 저장</button>
+    <button onclick="FirebaseSync.download()" id="fbDownloadBtn">☁️ 불러오기</button>
+    <span id="fbStatus" style="font-size: 12px; color: rgb(146, 64, 14); margin-left: 8px;">⚠️ 로그아웃됨</span>
+  </div>
+</header>
+<div class="area-bar">
+  <span class="area-label">카테고리</span>
+  <div id="areaButtons" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;"><button class="area-btn active" draggable="true" data-idx="0" style="cursor: grab;">기본</button></div>
+  <button class="area-btn" onclick="addArea()">+ 추가</button>
+  <button class="area-btn" onclick="renameArea()">이름변경</button>
+  <button class="area-btn btn-danger" onclick="deleteArea()">삭제</button>
+  <div style="margin-left:auto;display:flex;gap:6px;align-items:center;">
+    <button id="modeToggleBtn" class="area-btn btn-mode detail-active" onclick="toggleViewMode()">📋 간단모드</button>
+    <button class="manage-toggle-btn" onclick="document.querySelector('.manage-panel').classList.toggle('open')">⚙ 관리</button>
+  </div>
+</div>
+<div class="manage-panel">
+  <div class="manage-grid">
+    <div class="manage-section">
+      <div class="manage-section-title">항목</div>
+      <div class="manage-row">
+        <select id="habitSelect" style="flex:1;min-width:100px;"></select>
+        <input id="habitName" placeholder="항목 이름" style="flex:1;min-width:100px;">
+      </div>
+      <div class="manage-row">
+        <button class="btn-primary" onclick="addHabit()">추가</button>
+        <button onclick="updateHabit()">수정</button>
+        <button class="btn-danger" onclick="deleteHabit()">삭제</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <!-- 간단모드 뷰 -->
+  <div id="simpleView" style="display:none;"></div>
+  <!-- 상세모드 뷰 -->
+  <div id="detailView" style="display: block;">
+  <div class="section-card">
+    <div class="section-header">
+      <span class="section-title">📅 주간 기록</span>
+      <button id="lockBtn" class="btn-lock unlocked" onclick="toggleCheckLock()" title="달력 체크 잠금/해제">🔓 해제</button>
+      <div class="week-nav">
+        <button class="week-nav-btn" onclick="prevWeek()">◀</button>
+        <span id="weekLabel">5월 18일 – 5월 24일</span>
+        <button class="week-nav-btn" onclick="nextWeek()">▶</button>
+      </div>
+    </div>
+    <div class="section-body"><table id="table"><thead><tr><th>항목</th><th class="today-col">월<br><span style="font-size:10px;font-weight:500;opacity:0.8;">5/18</span></th><th class="">화<br><span style="font-size:10px;font-weight:500;opacity:0.8;">5/19</span></th><th class="">수<br><span style="font-size:10px;font-weight:500;opacity:0.8;">5/20</span></th><th class="">목<br><span style="font-size:10px;font-weight:500;opacity:0.8;">5/21</span></th><th class="">금<br><span style="font-size:10px;font-weight:500;opacity:0.8;">5/22</span></th><th class="">토<br><span style="font-size:10px;font-weight:500;opacity:0.8;">5/23</span></th><th class="">일<br><span style="font-size:10px;font-weight:500;opacity:0.8;">5/24</span></th></tr></thead><tbody></tbody></table></div>
+    <div class="repeat-legend">
+      <span style="font-size:11px;font-weight:600;color:var(--sub);">반복 주기:</span>
+      <span class="rep-badge" style="background:#f97316;color:#fff;">D+1</span>
+      <span class="rep-badge" style="background:#f59e0b;color:#000;">D+3</span>
+      <span class="rep-badge" style="background:#3b82f6;color:#fff;">D+7</span>
+      <span class="rep-badge" style="background:#22c55e;color:#fff;">D+30</span>
+      <span class="rep-badge" style="background:#ef4444;color:#fff;">미복습</span>
+      <span class="rep-badge" style="background:#dcfce7;color:#16a34a;border:none;box-shadow:0 2px 6px rgba(22,163,74,0.22),inset 0 1px 0 rgba(255,255,255,0.50);">✓ 완료</span>
+    </div>
+  </div>
+  <div class="section-card">
+    <div class="section-header"><span class="section-title">📊 통계</span></div>
+    <div class="section-body"><table id="stats"><thead><tr><th>항목</th><th>완료 횟수</th></tr></thead><tbody></tbody></table></div>
+  </div>
+  </div><!-- /detailView -->
+</div>
+<script>
+const PC_AREAS_KEY='pc_areas',PC_REPEATS_KEY='pc_repeats';
+const PC_DEL_AREAS_KEY='pc_deleted_areas',PC_DEL_HABITS_KEY='pc_deleted_habits';
+/* tombstone(삭제 로그) 만료: 30일이 지나면 무효화 → 같은 이름을 다시 만들었을 때 좀비 부활을 막되,
+   사용자가 영원히 같은 이름을 못 만드는 상황도 방지 */
+const PC_TOMB_TTL_MS=30*24*60*60*1000;
+function pcGetDeletedAreas(){try{return JSON.parse(localStorage.getItem(PC_DEL_AREAS_KEY)||'{}')}catch{return {}}}
+function pcSaveDeletedAreas(d){localStorage.setItem(PC_DEL_AREAS_KEY,JSON.stringify(d));}
+function pcGetDeletedHabits(){try{return JSON.parse(localStorage.getItem(PC_DEL_HABITS_KEY)||'{}')}catch{return {}}}
+function pcSaveDeletedHabits(d){localStorage.setItem(PC_DEL_HABITS_KEY,JSON.stringify(d));}
+function pcMarkAreaDeleted(areaName){const d=pcGetDeletedAreas();d[areaName]=Date.now();pcSaveDeletedAreas(d);}
+function pcMarkHabitDeleted(areaName,habitName){const d=pcGetDeletedHabits();const k=areaName+'::'+habitName;d[k]=Date.now();pcSaveDeletedHabits(d);}
+/* 사용자가 같은 이름의 카테고리/항목을 다시 만들면 → 부활 의도로 간주 → tombstone 즉시 제거 */
+function pcUnmarkAreaDeleted(areaName){const d=pcGetDeletedAreas();if(d[areaName]){delete d[areaName];pcSaveDeletedAreas(d);}}
+function pcUnmarkHabitDeleted(areaName,habitName){const d=pcGetDeletedHabits();const k=areaName+'::'+habitName;if(d[k]){delete d[k];pcSaveDeletedHabits(d);}}
+function pcMergeDeletedAreas(a,b){const out=Object.assign({},a||{});Object.entries(b||{}).forEach(([k,v])=>{if(!out[k]||v>out[k])out[k]=v;});return out;}
+function pcMergeDeletedHabits(a,b){const out=Object.assign({},a||{});Object.entries(b||{}).forEach(([k,v])=>{if(!out[k]||v>out[k])out[k]=v;});return out;}
+/* tombstone이 만료되었거나, 현재 areas에 같은 이름이 살아있으면 → 무효 처리 */
+function pcIsAreaTombActive(areaName,tombTs,liveAreaNamesSet){
+  if(!tombTs)return false;
+  if(Date.now()-tombTs>PC_TOMB_TTL_MS)return false; // 30일 만료
+  if(liveAreaNamesSet&&liveAreaNamesSet.has(areaName))return false; // 같은 이름이 살아있으면 부활 의도
+  return true;
+}
+function pcIsHabitTombActive(habitKey,tombTs,liveHabitKeysSet){
+  if(!tombTs)return false;
+  if(Date.now()-tombTs>PC_TOMB_TTL_MS)return false;
+  if(liveHabitKeysSet&&liveHabitKeysSet.has(habitKey))return false;
+  return true;
+}
+const REPEAT_OFFSETS=[1,3,7,30];
+const REPEAT_COLORS=[{bg:'#f97316',text:'#fff',label:'D+1'},{bg:'#f59e0b',text:'#000',label:'D+3'},{bg:'#3b82f6',text:'#fff',label:'D+7'},{bg:'#22c55e',text:'#fff',label:'D+30'}];
+function pcLocalDateStr(d){const dt=d||new Date();return dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');}
+function pcGetRepeats(){try{return JSON.parse(localStorage.getItem(PC_REPEATS_KEY)||'{}')}catch{return {}}}
+function pcSaveRepeats(r){localStorage.setItem(PC_REPEATS_KEY,JSON.stringify(r));}
+function pcSetRepeat(areaName,habitName,todayDate){
+  const today=todayDate?new Date(todayDate):new Date();
+  const todayStr=pcLocalDateStr(today);
+  const repeats=pcGetRepeats(),rKey=areaName+'::'+habitName,existing=repeats[rKey];
+  /* ★ 핵심 수정: 이미 repeat이 존재하면 무조건 스킵 — 최초 기록에서만 D-day 생성 */
+  if(existing && existing.baseDate) return false;
+  /* lm_repeatSchedule에도 이미 있으면 스킵 */
+  try{
+    const lmAll=JSON.parse(localStorage.getItem('lm_repeatSchedule')||'{}');
+    if(lmAll[rKey] && lmAll[rKey].baseDate) return false;
+  }catch{}
+  const due=REPEAT_OFFSETS.map(d=>{const dt=new Date(today);dt.setDate(dt.getDate()+d);return pcLocalDateStr(dt);});
+  const repeatObj={baseDate:todayStr,due};
+  repeats[rKey]=repeatObj;pcSaveRepeats(repeats);
+  /* ★ lm_repeatSchedule에도 동기화 → linkmanage 카드 강조 일치 */
+  try{
+    const LM_KEY='lm_repeatSchedule';
+    const lmAll=JSON.parse(localStorage.getItem(LM_KEY)||'{}');
+    lmAll[rKey]=repeatObj;
+    localStorage.setItem(LM_KEY,JSON.stringify(lmAll));
+  }catch(e){console.warn('lm_repeatSchedule 동기화 실패:',e);}
+  return true;
+}
+function pcClearRepeatBothStores(areaName,habitName){
+  /* pc_repeats 삭제 */
+  const repeats=pcGetRepeats(),rKey=areaName+'::'+habitName;
+  if(repeats[rKey]){delete repeats[rKey];pcSaveRepeats(repeats);}
+  /* lm_repeatSchedule에서도 삭제 */
+  try{
+    const LM_KEY='lm_repeatSchedule';
+    const lmAll=JSON.parse(localStorage.getItem(LM_KEY)||'{}');
+    if(lmAll[rKey]){delete lmAll[rKey];localStorage.setItem(LM_KEY,JSON.stringify(lmAll));}
+  }catch(e){console.warn('lm_repeatSchedule 삭제 실패:',e);}
+}
+function pcClearRepeat(areaName,habitName){
+  // 체크 해제 시 해당 습관의 반복일정(D+1/3/7/30) 및 알림 전체 삭제
+  return pcClearRepeatBothStores(areaName,habitName);
+}
+function pcGetRepeatInfo(areaName,habitName,dateStr){
+  const today=pcLocalDateStr(),rKey=areaName+'::'+habitName;
+  const pcRep=pcGetRepeats()[rKey]||null;
+  /* ★ lm_repeatSchedule도 함께 확인 → linkmanage 주황색 테두리와 일치 */
+  var lmRep=null;
+  try{var lmAll=JSON.parse(localStorage.getItem('lm_repeatSchedule')||'{}');lmRep=lmAll[rKey]||null;}catch{}
+  // 두 저장소 중 baseDate가 더 최신인 것 사용 (linkmanage checkRepeatToday와 동일 로직)
+  var rep=null;
+  if(pcRep&&pcRep.baseDate&&lmRep&&lmRep.baseDate){rep=pcRep.baseDate>=lmRep.baseDate?pcRep:lmRep;}
+  else{rep=pcRep||lmRep;}
+  if(!rep)return null;
+  const idx=rep.due.indexOf(dateStr);if(idx<0)return null;
+  if(dateStr<today)return{bg:'#ef4444',text:'#fff',label:'미복습'};
+  return Object.assign({},REPEAT_COLORS[idx]);
+}
+let areas,currentAreaIndex;
+function initData(){
+  // ★ 핵심 수정: localStorage에서 저장된 areas 먼저 로드
+  const raw=localStorage.getItem(PC_AREAS_KEY);
+  if(raw){
+    try{
+      areas=JSON.parse(raw);
+      if(Array.isArray(areas)&&areas.length>0){
+        console.log('✅ localStorage에서 areas 로드 성공:',areas.length,'개 카테고리');
+        currentAreaIndex=parseInt(localStorage.getItem('pc_areaIdx')||'0');
+        if(currentAreaIndex>=areas.length)currentAreaIndex=0;
+        return; // 성공하면 여기서 끝!
+      }
+    }catch(e){console.warn('⚠️ localStorage 파싱 오류:',e);}
+  }
+  
+  // localStorage에 데이터가 없으면 이전 형식(old)에서 마이그레이션 시도
+  const old=JSON.parse(localStorage.getItem('areas')||'[]');
+  if(old.length){
+    areas=old.map(a=>({name:a.name,habits:(a.habits||[]).map(h=>({name:h.name,source:'manual'})),data:a.data||{}}));
+    /* 마이그레이션된 카테고리/항목들의 tombstone 해제 (살아있다는 신호) */
+    areas.forEach(a=>{
+      pcUnmarkAreaDeleted(a.name);
+      (a.habits||[]).forEach(h=>pcUnmarkHabitDeleted(a.name,h.name));
+    });
+    console.log('📝 이전 형식에서 마이그레이션:',areas.length,'개 카테고리');
+  }else{
+    areas=[{name:'기본',habits:[],data:{}}];
+    pcUnmarkAreaDeleted('기본'); // '기본' tombstone이 있으면 즉시 해제 (무한 좀비 방지)
+    console.log('📝 새로운 areas 생성');
+  }
+  
+  localStorage.setItem(PC_AREAS_KEY,JSON.stringify(areas));
+  currentAreaIndex=parseInt(localStorage.getItem('pc_areaIdx')||'0');
+  if(currentAreaIndex>=areas.length)currentAreaIndex=0;
+}
+function getArea(){return areas[currentAreaIndex];}
+function save(){
+  localStorage.setItem(PC_AREAS_KEY,JSON.stringify(areas));
+  localStorage.setItem('pc_areaIdx',String(currentAreaIndex));
+  console.log('💾 localStorage에 저장됨');
+}
+function renderAreaBar(){
+  const wrap=document.getElementById('areaButtons');
+  wrap.innerHTML='';
+
+  areas.forEach((a,i)=>{
+    const b=document.createElement('button');
+    b.textContent=a.name;
+    b.className='area-btn'+(i===currentAreaIndex?' active':'');
+    b.draggable=true;
+    b.dataset.idx=i;
+    b.style.cursor='grab';
+
+    // 클릭으로 전환
+    b.onclick=()=>{currentAreaIndex=i;render();};
+
+    // ── 드래그 이벤트 ──
+    b.addEventListener('dragstart',e=>{
+      e.dataTransfer.effectAllowed='move';
+      e.dataTransfer.setData('text/plain',String(i));
+      setTimeout(()=>b.classList.add('dragging-src'),0);
+    });
+    b.addEventListener('dragend',()=>{
+      b.classList.remove('dragging-src');
+      document.querySelectorAll('.area-btn').forEach(el=>el.classList.remove('drag-over'));
+    });
+    b.addEventListener('dragover',e=>{
+      e.preventDefault();
+      e.dataTransfer.dropEffect='move';
+      document.querySelectorAll('.area-btn').forEach(el=>el.classList.remove('drag-over'));
+      b.classList.add('drag-over');
+    });
+    b.addEventListener('dragleave',e=>{
+      // 자식 요소로 이동할 때 오발 방지
+      if(!b.contains(e.relatedTarget)) b.classList.remove('drag-over');
+    });
+    b.addEventListener('drop',e=>{
+      e.preventDefault();
+      e.stopPropagation();
+      document.querySelectorAll('.area-btn').forEach(el=>el.classList.remove('drag-over'));
+      const from=parseInt(e.dataTransfer.getData('text/plain'));
+      const to=parseInt(b.dataset.idx);
+      if(isNaN(from)||from===to)return;
+      const moved=areas.splice(from,1)[0];
+      areas.splice(to,0,moved);
+      if(currentAreaIndex===from) currentAreaIndex=to;
+      else if(from<to && currentAreaIndex>from && currentAreaIndex<=to) currentAreaIndex--;
+      else if(from>to && currentAreaIndex>=to && currentAreaIndex<from) currentAreaIndex++;
+      save();
+      /* ★ drop 직후 render하면 dragend 이벤트가 유실되어 freeze 발생.
+         requestAnimationFrame으로 현재 이벤트 사이클이 끝난 뒤 렌더. */
+      requestAnimationFrame(()=>render());
+    });
+
+    // ── 터치 드래그 (모바일) ──
+    let touchSrcIdx=null,ghost=null,touchStartX=0,touchStartY=0,isDragging=false;
+    b.addEventListener('touchstart',e=>{
+      touchSrcIdx=i;
+      touchStartX=e.touches[0].clientX;
+      touchStartY=e.touches[0].clientY;
+      isDragging=false;
+      ghost=null;
+    },{passive:true});
+    b.addEventListener('touchmove',e=>{
+      const dx=e.touches[0].clientX-touchStartX,dy=e.touches[0].clientY-touchStartY;
+      if(!isDragging&&Math.sqrt(dx*dx+dy*dy)>10){
+        isDragging=true;
+        ghost=b.cloneNode(true);
+        ghost.style.cssText='position:fixed;z-index:9999;opacity:0.75;pointer-events:none;border-radius:999px;padding:5px 14px;font-size:12.5px;background:var(--accent);color:#fff;border:none;font-family:inherit;';
+        document.body.appendChild(ghost);
+        b.classList.add('dragging-src');
+      }
+      if(isDragging){
+        if(ghost){ghost.style.left=(e.touches[0].clientX-30)+'px';ghost.style.top=(e.touches[0].clientY-18)+'px';}
+        const target=document.elementFromPoint(e.touches[0].clientX,e.touches[0].clientY);
+        document.querySelectorAll('.area-btn').forEach(el=>el.classList.remove('drag-over'));
+        if(target&&target.classList.contains('area-btn')&&target!==b) target.classList.add('drag-over');
+      }
+    },{passive:true});
+    b.addEventListener('touchend',e=>{
+      if(ghost){ghost.remove();ghost=null;}
+      b.classList.remove('dragging-src');
+      document.querySelectorAll('.area-btn').forEach(el=>el.classList.remove('drag-over'));
+      const wasDragging=isDragging;
+      isDragging=false;
+      if(!wasDragging){
+        // 단순 탭 → 카테고리 전환
+        currentAreaIndex=i;render();
+      } else {
+        // 드래그 완료 → 순서 변경
+        const target=document.elementFromPoint(e.changedTouches[0].clientX,e.changedTouches[0].clientY);
+        if(target&&target.classList.contains('area-btn')&&touchSrcIdx!==null){
+          const to=parseInt(target.dataset.idx),from=touchSrcIdx;
+          if(!isNaN(to)&&from!==to){
+            const moved=areas.splice(from,1)[0];
+            areas.splice(to,0,moved);
+            if(currentAreaIndex===from) currentAreaIndex=to;
+            else if(from<to&&currentAreaIndex>from&&currentAreaIndex<=to) currentAreaIndex--;
+            else if(from>to&&currentAreaIndex>=to&&currentAreaIndex<from) currentAreaIndex++;
+            save();
+            requestAnimationFrame(()=>render());
+          }
+        }
+      }
+      touchSrcIdx=null;
+    });
+
+    wrap.appendChild(b);
+  });
+}
+/* ══════════════════════════════════════════════════════════
+   pcReverseSync — PC → LM / MC 역방향 동기화 모듈
+   practicecheck에서 카테고리/항목을 추가·삭제·수정하거나
+   체크(완료) 처리할 때 linkmanage(lmData/lmGroups)와
+   memorycard(MP_categories/sessions_*)에도 반영한다.
+   ◆ LM 대상: source='lm' 항목 + 루틴 카테고리 구조
+   ◆ MC 대상: source='mc' 항목 + 카테고리 목록
+══════════════════════════════════════════════════════════ */
+const pcReverseSync = (function(){
+
+  /* ── LM 헬퍼 ── */
+  function lmGetData(){ try{return JSON.parse(localStorage.getItem('lmData')||'{}')}catch{return {}} }
+  function lmSaveData(d){ localStorage.setItem('lmData', JSON.stringify(d)) }
+  function lmGetGroups(){ try{return JSON.parse(localStorage.getItem('lmGroups')||'[]')}catch{return []} }
+  function lmSaveGroups(g){ localStorage.setItem('lmGroups', JSON.stringify(g)) }
+
+  /* LM에서 '루틴' 그룹에 속하는 카테고리인지 */
+  function lmIsRoutineCat(catName){
+    const groups = lmGetGroups()
+    const rg = groups.find(g => g.name === '루틴')
+    return rg ? rg.cats.includes(catName) : false
+  }
+
+  /* LM: 카테고리(루틴용)가 없으면 lmData에 빈 배열로 추가 */
+  function lmEnsureCategory(catName){
+    const d = lmGetData()
+    if(!d[catName]){ d[catName] = []; lmSaveData(d) }
+  }
+
+  /* LM: 루틴 그룹에 카테고리 등록 (lmGroups) */
+  function lmEnsureRoutineGroup(catName){
+    const groups = lmGetGroups()
+    let rg = groups.find(g => g.name === '루틴')
+    if(!rg){ rg = {id:'g_routine_'+Date.now(), name:'루틴', cats:[]}; groups.push(rg) }
+    if(!rg.cats.includes(catName)){ rg.cats.push(catName) }
+    lmSaveGroups(groups)
+    lmEnsureCategory(catName)
+  }
+
+  /* LM: 항목 추가 (source='lm'인 항목만 → link 타입, favorite=true) */
+  function lmAddHabit(catName, habitName){
+    if(!lmIsRoutineCat(catName)) return // 루틴 카테고리가 아니면 무시
+    const d = lmGetData()
+    if(!d[catName]) d[catName] = []
+    const exists = d[catName].find(i => i.title === habitName)
+    if(!exists){
+      d[catName].push({
+        id: 'pc_'+Date.now()+'_'+Math.random().toString(36).slice(2,6),
+        title: habitName, url: '', text: '', type: 'link',
+        iconFile: null, favorite: true, _pcSource: true
+      })
+      lmSaveData(d)
+    }
+  }
+
+  /* LM: 항목 삭제 (_pcSource=true 또는 source='lm'으로 등록된 것만) */
+  function lmRemoveHabit(catName, habitName){
+    const d = lmGetData()
+    if(!d[catName]) return
+    const before = d[catName].length
+    d[catName] = d[catName].filter(i => i.title !== habitName || !i._pcSource)
+    if(d[catName].length !== before) lmSaveData(d)
+  }
+
+  /* LM: 항목 이름 변경 */
+  function lmRenameHabit(catName, oldName, newName){
+    const d = lmGetData()
+    if(!d[catName]) return
+    const item = d[catName].find(i => i.title === oldName && i._pcSource)
+    if(item){ item.title = newName; lmSaveData(d) }
+  }
+
+  /* LM: 카테고리 이름 변경 */
+  function lmRenameCategory(oldName, newName){
+    const d = lmGetData()
+    if(d[oldName]){ d[newName]=d[oldName]; delete d[oldName]; lmSaveData(d) }
+    const groups = lmGetGroups()
+    groups.forEach(g=>{ const i=g.cats.indexOf(oldName); if(i!==-1) g.cats[i]=newName })
+    lmSaveGroups(groups)
+  }
+
+  /* LM: 카테고리 삭제 — PC에서 만든 _pcSource 항목만 정리.
+     ★ 수정: lmData의 카테고리 자체와 lmGroups는 절대 삭제하지 않음.
+        (PC의 '학습기록' 삭제가 LM에 저장된 카드들을 지우면 안 됨) */
+  function lmRemoveCategory(catName){
+    const d = lmGetData()
+    if(d[catName]){
+      // _pcSource 항목만 삭제, 나머지 카드·링크는 모두 보존
+      const filtered = d[catName].filter(i => !i._pcSource)
+      // 카드가 남아있으면 유지, 완전히 비어도 카테고리 구조는 유지
+      if(filtered.length < d[catName].length){
+        d[catName] = filtered
+        lmSaveData(d)
+      }
+    }
+    // ★ lmGroups(루틴 그룹 포함)에서는 카테고리를 제거하지 않음
+    //   → LM에서 해당 카테고리가 그대로 보존됨
+  }
+
+  /* LM: 체크(완료) 반영 — markDone */
+  function lmMarkDone(catName, habitName){
+    if(!lmIsRoutineCat(catName)) return
+    const d = lmGetData()
+    if(!d[catName]) return
+    const item = d[catName].find(i => i.title === habitName)
+    if(item && !item.favorite){ item.favorite = true; lmSaveData(d) }
+  }
+
+  /* ── MC 헬퍼 ── */
+  function mcGetCats(){ try{return JSON.parse(localStorage.getItem('MP_categories')||'["기본"]')}catch{return ['기본']} }
+  function mcSaveCats(c){ localStorage.setItem('MP_categories', JSON.stringify(c)) }
+  function mcCatKey(cat, base){ return base+'_'+cat }
+  function mcGetSessions(cat){ try{return JSON.parse(localStorage.getItem(mcCatKey(cat,'sessions'))||'{}')}catch{return {}} }
+  function mcSaveSessions(cat, s){ localStorage.setItem(mcCatKey(cat,'sessions'), JSON.stringify(s)) }
+
+  /* MC: 카테고리 추가 */
+  function mcEnsureCategory(catName){
+    const cats = mcGetCats()
+    if(!cats.includes(catName)){ cats.push(catName); mcSaveCats(cats) }
+  }
+
+  /* MC: 세션 추가 (source='mc') */
+  function mcAddHabit(catName, habitName){
+    mcEnsureCategory(catName)
+    const sessions = mcGetSessions(catName)
+    if(!sessions[habitName]){
+      sessions[habitName] = { words:[], positions:[], completedWords:[], _pcSource:true }
+      mcSaveSessions(catName, sessions)
+    }
+  }
+
+  /* MC: 세션 삭제 */
+  function mcRemoveHabit(catName, habitName){
+    const sessions = mcGetSessions(catName)
+    if(sessions[habitName] && sessions[habitName]._pcSource){
+      delete sessions[habitName]
+      mcSaveSessions(catName, sessions)
+    }
+  }
+
+  /* MC: 세션 이름 변경 */
+  function mcRenameHabit(catName, oldName, newName){
+    const sessions = mcGetSessions(catName)
+    if(sessions[oldName] && sessions[oldName]._pcSource){
+      sessions[newName] = sessions[oldName]
+      delete sessions[oldName]
+      mcSaveSessions(catName, sessions)
+    }
+    // 완료/상태 키도 이전
+    ;['completedSessions','memoryPathState'].forEach(base=>{
+      const oldK=mcCatKey(catName,base), newK=mcCatKey(catName,base)
+      try{
+        const obj=JSON.parse(localStorage.getItem(oldK)||'{}')
+        if(obj[oldName]!==undefined){ obj[newName]=obj[oldName]; delete obj[oldName]; localStorage.setItem(oldK,JSON.stringify(obj)) }
+      }catch{}
+    })
+  }
+
+  /* MC: 카테고리 이름 변경 */
+  function mcRenameCategory(oldName, newName){
+    const cats = mcGetCats()
+    const idx = cats.indexOf(oldName)
+    if(idx !== -1){ cats[idx] = newName; mcSaveCats(cats) }
+    ;['sessions','completedSessions','memoryPathState'].forEach(base=>{
+      const oldK=mcCatKey(oldName,base), v=localStorage.getItem(oldK)
+      if(v!==null){ localStorage.setItem(mcCatKey(newName,base), v); localStorage.removeItem(oldK) }
+    })
+    // MP_currentCategory 업데이트
+    if(localStorage.getItem('MP_currentCategory')===oldName)
+      localStorage.setItem('MP_currentCategory', newName)
+  }
+
+  /* MC: 카테고리 삭제 (_pcSource 세션만 정리) */
+  function mcRemoveCategory(catName){
+    const sessions = mcGetSessions(catName)
+    let changed = false
+    Object.keys(sessions).forEach(k=>{ if(sessions[k]._pcSource){ delete sessions[k]; changed=true } })
+    if(changed) mcSaveSessions(catName, sessions)
+    // 세션이 완전히 비면 카테고리도 제거
+    if(Object.keys(sessions).length === 0 || Object.keys(mcGetSessions(catName)).length === 0){
+      const cats = mcGetCats().filter(c=>c!==catName)
+      mcSaveCats(cats)
+    }
+  }
+
+  /* ── 공개 API ── */
+  return {
+    /* 카테고리 추가: LM 루틴 그룹에 등록, MC 카테고리 추가 */
+    onAddArea(catName){
+      lmEnsureRoutineGroup(catName)
+      mcEnsureCategory(catName)
+    },
+    /* 카테고리 이름 변경 */
+    onRenameArea(oldName, newName){
+      lmRenameCategory(oldName, newName)
+      mcRenameCategory(oldName, newName)
+      /* ★ lm_repeatSchedule 키도 이전 */
+      try{
+        const LM_KEY='lm_repeatSchedule'
+        const lmAll=JSON.parse(localStorage.getItem(LM_KEY)||'{}')
+        const prefix=oldName+'::'
+        let changed=false
+        Object.keys(lmAll).filter(k=>k.startsWith(prefix)).forEach(k=>{
+          const t=k.slice(prefix.length)
+          lmAll[newName+'::'+t]=lmAll[k];delete lmAll[k];changed=true
+        })
+        if(changed) localStorage.setItem(LM_KEY,JSON.stringify(lmAll))
+      }catch{}
+    },
+    /* 카테고리 삭제 */
+    onDeleteArea(catName){
+      lmRemoveCategory(catName)
+      mcRemoveCategory(catName)
+      /* ★ lm_repeatSchedule에서도 해당 카테고리 반복 일정 삭제 */
+      try{
+        const LM_KEY='lm_repeatSchedule'
+        const lmAll=JSON.parse(localStorage.getItem(LM_KEY)||'{}')
+        const prefix=catName+'::'
+        let changed=false
+        Object.keys(lmAll).filter(k=>k.startsWith(prefix)).forEach(k=>{delete lmAll[k];changed=true})
+        if(changed) localStorage.setItem(LM_KEY,JSON.stringify(lmAll))
+      }catch{}
+    },
+    /* 항목 추가 (source에 따라 반영 대상 결정) */
+    onAddHabit(catName, habitName, source){
+      // PC에서 수동 추가 → LM·MC 양쪽에 추가
+      lmAddHabit(catName, habitName)
+      mcAddHabit(catName, habitName)
+    },
+    /* 항목 이름 변경 */
+    onRenameHabit(catName, oldName, newName){
+      lmRenameHabit(catName, oldName, newName)
+      mcRenameHabit(catName, oldName, newName)
+      /* ★ lm_repeatSchedule 키도 이전 */
+      try{
+        const LM_KEY='lm_repeatSchedule'
+        const lmAll=JSON.parse(localStorage.getItem(LM_KEY)||'{}')
+        const oldK=catName+'::'+oldName, newK=catName+'::'+newName
+        if(lmAll[oldK]){lmAll[newK]=lmAll[oldK];delete lmAll[oldK];localStorage.setItem(LM_KEY,JSON.stringify(lmAll))}
+      }catch{}
+      /* ★ pc_repeats 키도 이전 */
+      try{
+        const pcAll=pcGetRepeats()
+        const oldK=catName+'::'+oldName, newK=catName+'::'+newName
+        if(pcAll[oldK]){pcAll[newK]=pcAll[oldK];delete pcAll[oldK];pcSaveRepeats(pcAll)}
+      }catch{}
+    },
+    /* 항목 삭제 */
+    onDeleteHabit(catName, habitName, source){
+      if(source === 'lm') lmRemoveHabit(catName, habitName)
+      else if(source === 'mc') mcRemoveHabit(catName, habitName)
+      else { lmRemoveHabit(catName, habitName); mcRemoveHabit(catName, habitName) }
+      /* ★ lm_repeatSchedule에서도 삭제 */
+      try{
+        const LM_KEY='lm_repeatSchedule'
+        const lmAll=JSON.parse(localStorage.getItem(LM_KEY)||'{}')
+        const rKey=catName+'::'+habitName
+        if(lmAll[rKey]){delete lmAll[rKey];localStorage.setItem(LM_KEY,JSON.stringify(lmAll))}
+      }catch{}
+    },
+    /* 체크(완료) 반영 */
+    onCheck(catName, habitName, done){
+      if(done){
+        lmMarkDone(catName, habitName)
+      }
+    }
+  }
+})()
+
+function addArea(){const name=prompt('카테고리 이름');if(!name)return;pcUnmarkAreaDeleted(name);areas.push({name,habits:[],data:{}});currentAreaIndex=areas.length-1;save();pcReverseSync.onAddArea(name);render();}
+function renameArea(){const oldName=getArea().name;const name=prompt('새 이름',oldName);if(!name||name===oldName)return;pcUnmarkAreaDeleted(name);getArea().name=name;save();pcReverseSync.onRenameArea(oldName,name);render();}
+function deleteArea(){if(areas.length===1)return alert('최소 1개 필요');const aName=areas[currentAreaIndex].name;pcMarkAreaDeleted(aName);areas.splice(currentAreaIndex,1);currentAreaIndex=0;save();try{pcReverseSync.onDeleteArea(aName);}catch(e){console.warn('onDeleteArea 동기화 오류:',e);}render();save();}
+function renderHabitSelect(){document.getElementById('habitSelect').innerHTML=getArea().habits.map((h,i)=>'<option value="'+i+'">'+h.name+'</option>').join('');}
+function addHabit(){const name=document.getElementById('habitName').value.trim();if(!name)return;const catName=getArea().name;pcUnmarkHabitDeleted(catName,name);getArea().habits.push({name,source:'manual'});save();try{pcReverseSync.onAddHabit(catName,name,'manual');}catch(e){console.warn('onAddHabit 동기화 오류:',e);}render();}
+function updateHabit(){const idx=document.getElementById('habitSelect').value,name=document.getElementById('habitName').value.trim();if(!name)return;const a=getArea();const oldName=a.habits[idx]?a.habits[idx].name:null;const src=a.habits[idx]?a.habits[idx].source:'manual';pcUnmarkHabitDeleted(a.name,name);a.habits[idx].name=name;save();if(oldName&&oldName!==name){try{pcReverseSync.onRenameHabit(a.name,oldName,name);}catch(e){console.warn('onRenameHabit 동기화 오류:',e);}}render();}
+function deleteHabit(){const a=getArea();const hi=document.getElementById('habitSelect').value;const hName=a.habits[hi]?a.habits[hi].name:null;const hSrc=a.habits[hi]?a.habits[hi].source:'manual';if(hName)pcMarkHabitDeleted(a.name,hName);a.habits.splice(hi,1);save();if(hName){try{pcReverseSync.onDeleteHabit(a.name,hName,hSrc);}catch(e){console.warn('onDeleteHabit 동기화 오류:',e);}}render();save();}
+let currentDate=new Date();
+const DAY_LABELS=['월','화','수','목','금','토','일'];
+function getWeek(d){const date=new Date(d),day=date.getDay(),diff=date.getDate()-day+(day===0?-6:1);const monday=new Date(date.setDate(diff));return Array.from({length:7},(_,i)=>{const nd=new Date(monday);nd.setDate(monday.getDate()+i);return nd;});}
+function goToday(){currentDate=new Date();document.getElementById('weekPicker').valueAsDate=currentDate;render();}
+function prevWeek(){currentDate=new Date(currentDate);currentDate.setDate(currentDate.getDate()-7);document.getElementById('weekPicker').valueAsDate=currentDate;render();}
+function nextWeek(){currentDate=new Date(currentDate);currentDate.setDate(currentDate.getDate()+7);document.getElementById('weekPicker').valueAsDate=currentDate;render();}
+document.getElementById('weekPicker').addEventListener('change',e=>{currentDate=new Date(e.target.value);render();});
+let _curHabits=[],_curWeek=[];
+/* ── 달력 체크 잠금 ── */
+let checkLocked = (localStorage.getItem('pc_checkLocked')==='1');
+function toggleCheckLock(){
+  checkLocked = !checkLocked;
+  localStorage.setItem('pc_checkLocked', checkLocked ? '1' : '0');
+  applyLockUI();
+}
+function applyLockUI(){
+  const btn = document.getElementById('lockBtn');
+  const tbl = document.getElementById('table');
+  if(checkLocked){
+    btn.textContent = '🔒 잠금';
+    btn.className = 'btn-lock locked';
+    tbl.classList.add('check-locked');
+  } else {
+    btn.textContent = '🔓 해제';
+    btn.className = 'btn-lock unlocked';
+    tbl.classList.remove('check-locked');
+  }
+}
+function renderTable(){
+  const a=getArea(),week=getWeek(currentDate),todayStr=new Date().toDateString();
+  _curHabits=a.habits;_curWeek=week;
+  const first=week[0],last=week[6];
+  document.getElementById('weekLabel').textContent=(first.getMonth()+1)+'월 '+first.getDate()+'일 \u2013 '+(last.getMonth()+1)+'월 '+last.getDate()+'일';
+  let html='<thead><tr><th>항목</th>';
+  week.forEach((d,i)=>{const isToday=d.toDateString()===todayStr;html+='<th class="'+(isToday?'today-col':'')+'">' +DAY_LABELS[i]+'<br><span style="font-size:10px;font-weight:500;opacity:0.8;">'+(d.getMonth()+1)+'/'+d.getDate()+'</span></th>';});
+  html+='</tr></thead><tbody>';
+  a.habits.forEach((h,hi)=>{
+    const src=h.source==='lm'?'<span class="source-badge">LM</span>':h.source==='mc'?'<span class="source-badge" style="background:#fef3c7;color:#b45309;">MC</span>':'';
+    html+='<tr><td>'+src+h.name+'</td>';
+    week.forEach((d,di)=>{
+      const isToday=d.toDateString()===todayStr,key=h.name+d.toDateString(),done=a.data[key]===1,dStr=pcLocalDateStr(d);
+      const rep=done?null:pcGetRepeatInfo(a.name,h.name,dStr);
+      let style='',content='',title='';
+      if(done){style=isToday?'background:#86efac;color:#15803d;':'background:#dcfce7;color:#16a34a;';content='&#10003;';}
+      else if(rep){style='background:'+rep.bg+';color:'+rep.text+';';content=rep.label;title=rep.label;}
+      else if(isToday){style='background:var(--today-bg);color:var(--today-text);';}
+      html+='<td class="cycle-cell'+(isToday?' today-col':'')+'" onclick="cycle('+hi+','+di+')" style="'+style+'" title="'+title+'">'+content+'</td>';
+    });
+    html+='</tr>';
+  });
+  html+='</tbody>';
+  document.getElementById('table').innerHTML=html;
+  applyLockUI();
+}
+function cycle(habitIdx,dayIdx){
+  if(checkLocked) return;  // 잠금 상태면 체크 불가
+  const a=getArea(),h=_curHabits[habitIdx],day=_curWeek[dayIdx],key=h.name+day.toDateString(),newV=a.data[key]===1?0:1;
+  a.data[key]=newV;
+  if(newV===1){
+    pcSetRepeat(a.name,h.name,day);
+    pcReverseSync.onCheck(a.name,h.name,true);
+  } else {
+    /* ★ 수정: 최초 기록 날짜(baseDate)를 해제할 때만 D-day 스케줄 삭제 */
+    const uncheckedDateStr=pcLocalDateStr(day);
+    const rKey=a.name+'::'+h.name;
+    let baseDate=null;
+    try{ const rep=pcGetRepeats()[rKey]; if(rep) baseDate=rep.baseDate; }catch{}
+    if(!baseDate){
+      try{ const lmAll=JSON.parse(localStorage.getItem('lm_repeatSchedule')||'{}'); if(lmAll[rKey]) baseDate=lmAll[rKey].baseDate; }catch{}
+    }
+    if(baseDate && uncheckedDateStr===baseDate){
+      pcClearRepeat(a.name,h.name);
+    }
+    pcReverseSync.onCheck(a.name,h.name,false);
+  }
+  save();renderTable();renderStats();
+}
+function renderStats(){
+  const a=getArea();
+  let html='<thead><tr><th>항목</th><th>완료 횟수</th></tr></thead><tbody>';
+  a.habits.forEach(h=>{const count=Object.keys(a.data).filter(k=>k.startsWith(h.name)&&a.data[k]===1).length;html+='<tr><td>'+h.name+'</td><td>'+(count>0?count:"<span style='color:var(--border)'>\u2014</span>")+'</td></tr>';});
+  html+='</tbody>';
+  document.getElementById('stats').innerHTML=html;
+}
+function render(){renderAreaBar();renderHabitSelect();updateModeBtn();if(viewMode==='simple'){_pcRefreshCache();document.getElementById('detailView').style.display='none';document.getElementById('simpleView').style.display='block';renderSimpleMode();}else{document.getElementById('detailView').style.display='block';document.getElementById('simpleView').style.display='none';renderTable();renderStats();}}
+
+/* ── 모드 전환 ── */
+let viewMode=localStorage.getItem('pc_viewMode')||'detail';
+/* 세션 캐시: 오늘 표시할 항목을 기억 (체크/해제 후에도 목록 유지) */
+let _pcTodayKeys=new Set(),_pcTodayDate='';
+function _pcRefreshCache(){
+  const todayStr=pcLocalDateStr();
+  if(_pcTodayDate===todayStr)return;
+  _pcTodayDate=todayStr;_pcTodayKeys.clear();
+  areas.forEach(a=>(a.habits||[]).forEach(h=>{
+    if(pcGetRepeatInfo(a.name,h.name,todayStr)!==null)
+      _pcTodayKeys.add(a.name+'::'+h.name);
+  }));
+}
+function toggleViewMode(){
+  viewMode=viewMode==='detail'?'simple':'detail';
+  localStorage.setItem('pc_viewMode',viewMode);
+  updateModeBtn();
+  if(viewMode==='simple'){
+    _pcRefreshCache();
+    document.getElementById('detailView').style.display='none';
+    document.getElementById('simpleView').style.display='block';
+    renderSimpleMode();
+  }else{
+    document.getElementById('detailView').style.display='block';
+    document.getElementById('simpleView').style.display='none';
+    renderTable();renderStats();
+  }
+}
+function updateModeBtn(){const btn=document.getElementById('modeToggleBtn');if(!btn)return;if(viewMode==='simple'){btn.textContent='📅 상세모드';btn.classList.add('simple-active');btn.classList.remove('detail-active');}else{btn.textContent='📋 간단모드';btn.classList.add('detail-active');btn.classList.remove('simple-active');}}
+function cycleSimple(areaIdx,habitIdx){
+  if(checkLocked)return;
+  const a=areas[areaIdx],h=a.habits[habitIdx];
+  const todayDate=new Date(),todayKey=todayDate.toDateString(),key=h.name+todayKey;
+  const newV=a.data[key]===1?0:1;
+  a.data[key]=newV;
+  if(newV===1){
+    pcSetRepeat(a.name,h.name,todayDate);
+    pcReverseSync.onCheck(a.name,h.name,true);
+  } else {
+    /* ★ 수정: 오늘이 최초 기록 날짜(baseDate)인 경우에만 D-day 스케줄 삭제 */
+    const todayStr=pcLocalDateStr(todayDate);
+    const rKey=a.name+'::'+h.name;
+    let baseDate=null;
+    try{ const rep=pcGetRepeats()[rKey]; if(rep) baseDate=rep.baseDate; }catch{}
+    if(!baseDate){
+      try{ const lmAll=JSON.parse(localStorage.getItem('lm_repeatSchedule')||'{}'); if(lmAll[rKey]) baseDate=lmAll[rKey].baseDate; }catch{}
+    }
+    if(baseDate && todayStr===baseDate){
+      pcClearRepeat(a.name,h.name);
+    }
+  }
+  save();renderSimpleMode();renderStats();
+}
+function renderSimpleMode(){
+  _pcRefreshCache();
+  const todayDate=new Date(),todayKey=todayDate.toDateString(),todayStr=pcLocalDateStr(todayDate);
+  const DAY_KO=['일','월','화','수','목','금','토'];
+  const dateLabel=todayDate.getFullYear()+'년 '+(todayDate.getMonth()+1)+'월 '+todayDate.getDate()+'일 ('+DAY_KO[todayDate.getDay()]+')';
+  // 오늘 할일이 있는 카테고리·항목만 추출
+  let totalItems=0,doneItems=0;
+  const areaData=areas.map((a,ai)=>{
+    const habits=a.habits.map((h,hi)=>{
+      const done=a.data[h.name+todayKey]===1;
+      const rep=pcGetRepeatInfo(a.name,h.name,todayStr);
+      // 세션 캐시에 있거나 done인 경우 표시 → 체크 해제해도 목록 유지
+      return{h,hi,done,rep,isToday:_pcTodayKeys.has(a.name+'::'+h.name)||done};
+    }).filter(item=>item.isToday);
+    const areaDone=habits.filter(i=>i.done).length;
+    totalItems+=habits.length;doneItems+=areaDone;
+    return{a,ai,habits,areaDone,areaTotal:habits.length};
+  }).filter(ad=>ad.areaTotal>0);
+
+  const pct=totalItems===0?100:Math.round(doneItems/totalItems*100);
+  const lockClass=checkLocked?'check-locked':'';
+  let html='';
+  // 날짜 헤더 카드
+  html+='<div class="simple-date-header">';
+  html+='<div><div class="simple-date-text">📋 오늘 할 일</div><div class="simple-date-sub">'+dateLabel+'</div></div>';
+  html+='<div class="simple-progress-wrap">';
+  html+='<span class="simple-progress-text">'+doneItems+' / '+totalItems+' 완료</span>';
+  html+='<div class="simple-progress-bar-bg"><div class="simple-progress-bar" style="width:'+pct+'%"></div></div>';
+  html+='</div></div>';
+
+  if(totalItems===0){
+    html+='<div class="simple-all-done">🎉 오늘 할 일이 없습니다! 모든 항목이 완료되었거나 오늘 예정된 항목이 없어요.</div>';
+  }else{
+    html+='<div class="simple-cards-wrap '+lockClass+'">';
+    areaData.forEach(({a,ai,habits,areaDone,areaTotal})=>{
+      const allDone=areaDone===areaTotal;
+      html+='<div class="simple-area-card'+(allDone?' all-done':'')+'"><div class="simple-area-header">';
+      html+='<span class="simple-area-name">'+a.name+'</span>';
+      html+='<span class="simple-area-count">'+areaDone+'/'+areaTotal+'</span>';
+      if(allDone)html+='<span class="simple-area-done-icon">✅ 완료</span>';
+      html+='</div><div class="simple-habit-list">';
+      habits.forEach(({h,hi,done,rep})=>{
+        const src=h.source==='lm'?'<span class="source-badge">LM</span>':h.source==='mc'?'<span class="source-badge" style="background:#fef3c7;color:#b45309;">MC</span>':'';
+        html+='<div class="simple-habit-row'+(done?' done':'')+'" onclick="cycleSimple('+ai+','+hi+')">';
+        html+='<div class="simple-check-icon">'+(done?'✓':'')+'</div>';
+        html+='<span class="simple-habit-name">'+src+h.name+'</span>';
+        if(rep&&!done)html+='<span class="simple-rep-badge" style="background:'+rep.bg+';color:'+rep.text+';">'+rep.label+'</span>';
+        html+='</div>';
+      });
+      html+='</div></div>';
+    });
+    html+='</div>';
+  }
+  document.getElementById('simpleView').innerHTML=html;
+}
+window.addEventListener('storage',e=>{
+  if(e.key===PC_AREAS_KEY){
+    /* ★ 버그 수정: 외부(링크매니저 _lmPull)가 pc_areas를 덮어쓸 때
+       현재 practicecheck의 인메모리 areas(=최신 체크 결과)와 머지하여
+       학습 결과가 사라지지 않도록 보호한다. */
+    try{
+      const incoming=JSON.parse(e.newValue||'[]');
+      const delAreas=pcGetDeletedAreas();
+      const delHabits=pcGetDeletedHabits();
+      // 현재 메모리의 areas를 base로 incoming을 머지
+      const merged=pcMergeAreasObj(areas, incoming, delAreas, delHabits);
+      areas=(merged.length>0)?merged:areas;
+      /* ★ pc_areas를 확정한 시각 기록 (linkmanage 타이밍 버그 방지) */
+      const _origSet=Storage.prototype.setItem.bind(localStorage);
+      _origSet(PC_AREAS_KEY,JSON.stringify(areas));
+      _origSet('__pcAreasWriteTs__',String(Date.now()));
+    }catch{
+      try{areas=JSON.parse(e.newValue||'[]');}catch{}
+    }
+    if(currentAreaIndex>=areas.length)currentAreaIndex=0;
+    render();
+  }
+  if(e.key===PC_REPEATS_KEY){
+    /* ★ 버그 수정: pc_repeats도 머지하여 반복 일정 손실 방지 */
+    try{
+      const incoming=JSON.parse(e.newValue||'{}');
+      const localRepeats=pcGetRepeats();
+      const merged=pcMergeRepeatsObj(localRepeats, incoming);
+      // 덮어쓰기가 아니라 머지 결과로 저장 (타이머가 있을 경우 안전)
+      localStorage.setItem(PC_REPEATS_KEY,JSON.stringify(merged));
+    }catch{}
+    renderTable();
+  }
+});
+/* ★ 외부 앱(linkmanage/memorycard) 체크 결과 자동 반영
+   storage 이벤트가 누락될 수 있는 환경(file://, 같은 탭 iframe 등)을 보완.
+   탭 전환·포커스·postMessage 시 localStorage에서 최신 pc_areas를 다시 읽어 merge. */
+(function(){
+  function _pcSyncFromStorage(){
+    try{
+      const raw=localStorage.getItem('pc_areas');
+      if(!raw) return;
+      const incoming=JSON.parse(raw);
+      if(!Array.isArray(incoming)||!incoming.length) return;
+      const delAreas=pcGetDeletedAreas();
+      const delHabits=pcGetDeletedHabits();
+      const merged=pcMergeAreasObj(areas, incoming, delAreas, delHabits);
+      if(merged.length>0) areas=merged;
+      if(currentAreaIndex>=areas.length) currentAreaIndex=0;
+      render();
+    }catch(e){console.warn('_pcSyncFromStorage 오류:',e);}
+  }
+  document.addEventListener('visibilitychange',()=>{
+    if(!document.hidden) _pcSyncFromStorage();
+  });
+  window.addEventListener('focus',()=>_pcSyncFromStorage());
+  window.addEventListener('message',function(e){
+    if(e.data && e.data.type === 'pc-sync-check') _pcSyncFromStorage();
+  });
+})();
+function localBackup(){const json=JSON.stringify(areas,null,2);const blob=new Blob(['\uFEFF'+json],{type:'application/json;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='practicecheck_backup.json';a.click();}
+document.getElementById('localFile').addEventListener('change',e=>{const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{areas=JSON.parse(reader.result.replace(/^\uFEFF/,''));currentAreaIndex=0;save();render();};reader.readAsText(file,'UTF-8');});
+
+/* ════════════════════════════════════════ Firebase 동기화 ════════════════════════════════════════ */
+const FIREBASE_CONFIG={apiKey:"AIzaSyA7ots3eKmIasUH4GW7nw797cdvEVP-Dk8",authDomain:"studyapp-58a1c.firebaseapp.com",projectId:"studyapp-58a1c",storageBucket:"studyapp-58a1c.firebasestorage.app",messagingSenderId:"481582276002",appId:"1:481582276002:web:4bebfca49c51cb8607e6fb"};
+let _fbInitialized=false;
+/* 공통 uid 취득 — Firebase auth 1순위, localStorage 폴백 */
+function getUid(){
+  try{
+    const u=(typeof firebase!=='undefined')&&firebase.auth&&firebase.auth().currentUser;
+    if(u)return u.uid;
+  }catch{}
+  return localStorage.getItem('uid')||localStorage.getItem('userEmail')||'anonymous';
+}
+function showFbStatus(msg,color='#8b909a'){const el=document.getElementById('fbStatus');if(el){el.textContent=msg;el.style.color=color;}}
+function updateAuthUI(){const isLoggedIn=!!localStorage.getItem('uid');const emailInput=document.getElementById('emailInput');const passwordInput=document.getElementById('passwordInput');const authBtn=document.getElementById('authBtn');const logoutBtn=document.getElementById('logoutBtn');const userInfo=document.getElementById('userInfo');if(isLoggedIn){emailInput.style.display='none';passwordInput.style.display='none';authBtn.style.display='none';logoutBtn.style.display='inline-block';userInfo.style.display='inline-block';const userEmail=localStorage.getItem('userEmail')||localStorage.getItem('uid');const userName=userEmail.includes('@')?userEmail.split('@')[0]:userEmail;userInfo.textContent='👤 '+userName;}else{emailInput.style.display='inline-block';passwordInput.style.display='inline-block';authBtn.style.display='inline-block';logoutBtn.style.display='none';userInfo.style.display='none';}}
+function waitForFirebase(){return new Promise(resolve=>{const check=()=>{if(typeof firebase!=='undefined'&&firebase.initializeApp){resolve();clearInterval(timer);}};const timer=setInterval(check,100);check();});}
+async function initFirebase(){if(_fbInitialized)return;try{await waitForFirebase();if(!firebase.apps.length){firebase.initializeApp(FIREBASE_CONFIG);}window._fbDb=firebase.firestore();window._fbAuth=firebase.auth();_fbInitialized=true;showFbStatus('✅ Firebase 준비됨','#16a34a');firebase.auth().onAuthStateChanged(user=>{if(user){localStorage.setItem('uid',user.uid);showFbStatus('✅ 로그인됨','#16a34a');}else{localStorage.removeItem('uid');showFbStatus('⚠️ 로그아웃됨','#92400e');}updateAuthUI();});}catch(e){console.error('❌ Firebase init error:',e);showFbStatus('❌ Firebase 오류','#dc2626');}}
+async function toggleAuth(){const email=document.getElementById('emailInput').value.trim();const password=document.getElementById('passwordInput').value.trim();if(!email||!password){alert('이메일과 비밀번호를 입력해주세요');return;}try{showFbStatus('⏳ 로그인 중...','#3a5bd9');await initFirebase();const auth=firebase.auth();try{await auth.signInWithEmailAndPassword(email,password);localStorage.setItem('userEmail',email);showFbStatus('✅ 로그인 성공','#16a34a');updateAuthUI();document.getElementById('emailInput').value='';document.getElementById('passwordInput').value='';}catch(e){if(e.code==='auth/user-not-found'){showFbStatus('⚠️ 회원 가입 중...','#3a5bd9');await auth.createUserWithEmailAndPassword(email,password);localStorage.setItem('userEmail',email);showFbStatus('✅ 회원 가입 완료','#16a34a');updateAuthUI();document.getElementById('emailInput').value='';document.getElementById('passwordInput').value='';}else{throw e;}}}catch(e){console.error('❌ Auth error:',e);showFbStatus('❌ 로그인 실패','#dc2626');alert('로그인 실패: '+e.message);}}
+function logout(){try{firebase.auth().signOut();localStorage.removeItem('uid');localStorage.removeItem('userEmail');showFbStatus('⚠️ 로그아웃됨','#92400e');updateAuthUI();}catch(e){console.error('❌ Logout error:',e);}}
+/* ── 스마트 머지: pc_areas / pc_repeats ─────────────────
+   여러 소스(practicecheck_backup, linkmanage 필드, 로컬)를
+   안전하게 합쳐 체크가 손실되지 않도록 한다.
+   - areas: 영역명 기준 union, habits는 이름 기준 union, data는 1(체크)이 우선
+   - repeats: rKey별로 baseDate 더 최신인 것 우선
+*/
+function pcMergeAreasObj(localArr, remoteArr, delAreas, delHabits){
+  if(!Array.isArray(localArr)) localArr=[];
+  if(!Array.isArray(remoteArr)) remoteArr=[];
+  const da=delAreas||{};
+  const dh=delHabits||{};
+  /* ★ 핵심 수정: 로컬(인메모리)에만 등장하는 이름으로 "살아있는" 판정 →
+     리모트에만 존재하는 항목의 tombstone은 유지하여 삭제가 정상 동작.
+     로컬에 존재한다면 사용자가 다시 만든/유지한 것이므로 tombstone 무효 처리.
+     30일 지난 tombstone도 무효. */
+  const liveAreaNames=new Set();
+  const liveHabitKeys=new Set();
+  localArr.forEach(a=>{
+    if(!a||!a.name)return;
+    liveAreaNames.add(a.name);
+    (a.habits||[]).forEach(h=>{ if(h&&h.name) liveHabitKeys.add(a.name+'::'+h.name); });
+  });
+  function areaTombActive(name){return pcIsAreaTombActive(name,da[name],liveAreaNames);}
+  function habitTombActive(key){return pcIsHabitTombActive(key,dh[key],liveHabitKeys);}
+
+  const map=new Map();
+  localArr.forEach(a=>{
+    if(!a||!a.name) return;
+    if(areaTombActive(a.name)) return; // 진짜 삭제된 카테고리만 스킵
+    map.set(a.name,{
+      name:a.name,
+      habits:Array.isArray(a.habits)?a.habits.filter(h=>h&&h.name&&!habitTombActive(a.name+'::'+h.name)).map(h=>({...h})):[],
+      data:a.data?Object.assign({},a.data):{}
+    });
+  });
+  remoteArr.forEach(a=>{
+    if(!a||!a.name) return;
+    if(areaTombActive(a.name)) return;
+    if(!map.has(a.name)){
+      map.set(a.name,{
+        name:a.name,
+        habits:Array.isArray(a.habits)?a.habits.filter(h=>h&&h.name&&!habitTombActive(a.name+'::'+h.name)).map(h=>({...h})):[],
+        data:a.data?Object.assign({},a.data):{}
+      });
+    }else{
+      const ex=map.get(a.name);
+      const hn=new Set(ex.habits.map(h=>h.name));
+      (a.habits||[]).forEach(h=>{
+        if(h&&h.name&&!hn.has(h.name)&&!habitTombActive(a.name+'::'+h.name)){ ex.habits.push({...h}); hn.add(h.name); }
+      });
+      Object.entries(a.data||{}).forEach(([k,v])=>{
+        /* ★ 수정: remote에서 체크(=1)가 들어오면 무조건 반영.
+           로컬이 0(해제)이더라도 외부 앱(linkmanage/memorycard)에서 새로 체크한 것이므로 우선.
+           로컬이 1이고 remote가 0이면 로컬(인메모리) 유지 — 체크 해제가 복원되는 버그 방지. */
+        if(ex.data[k]==null || v===1) ex.data[k]=v;
+      });
+    }
+  });
+  return Array.from(map.values());
+}
+function pcMergeRepeatsObj(localObj, remoteObj){
+  const out=Object.assign({},localObj||{});
+  Object.entries(remoteObj||{}).forEach(([k,v])=>{
+    if(!v||!v.baseDate) return;
+    const ex=out[k];
+    if(!ex||!ex.baseDate||v.baseDate>ex.baseDate) out[k]=v;
+  });
+  return out;
+}
+
+async function uploadToFirebase(silent=false){try{
+  showFbStatus('⏳ 저장 중...','#3a5bd9');await initFirebase();
+  const uid=getUid();
+  if(!uid||uid==='anonymous'){showFbStatus('⚠️ 로그인 필요','#92400e');if(!silent)alert('로그인이 필요합니다');return;}
+  const db=firebase.firestore();
+  const pack={areas,repeats:pcGetRepeats(),deletedAreas:pcGetDeletedAreas(),deletedHabits:pcGetDeletedHabits()};
+  /* ★ 안전장치: areas가 비어있거나 '기본 1개+항목 0'이면 → backup을 덮어쓰지 않는다.
+     (다른 기기/창에 더 풍부한 데이터가 있는데 빈 상태로 덮어쓰는 사고 방지) */
+  const isEmptyState=(!Array.isArray(pack.areas))
+    || pack.areas.length===0
+    || (pack.areas.length===1 && pack.areas[0] && pack.areas[0].name==='기본'
+        && (!pack.areas[0].habits || pack.areas[0].habits.length===0)
+        && (!pack.areas[0].data || Object.keys(pack.areas[0].data).length===0));
+  if(isEmptyState){
+    /* 원격에 진짜로 데이터가 있는지 확인 → 있으면 업로드 스킵 */
+    try{
+      const snap=await db.collection('users').doc(uid).get();
+      const raw=snap.exists?snap.data():{};
+      const remotePcb=raw.practicecheck_backup;
+      const hasRemoteData=remotePcb && Array.isArray(remotePcb.areas)
+        && remotePcb.areas.some(a=>a&&((a.habits&&a.habits.length>0)||(a.data&&Object.keys(a.data).length>0)));
+      if(hasRemoteData){
+        console.warn('⚠️ 로컬이 빈 상태 — 원격 데이터 보호를 위해 업로드 스킵');
+        showFbStatus('⚠️ 빈 상태 — 업로드 스킵','#92400e');
+        if(!silent)alert('현재 로컬 데이터가 비어있어 안전을 위해 업로드를 건너뛰었습니다.\n원격에 더 많은 데이터가 있으니 먼저 다운로드를 시도하세요.');
+        return;
+      }
+    }catch(e){console.warn('[pc] 빈 상태 검증 실패:',e);}
+  }
+  /* ★ 충돌 감지: 업로드 전 Firebase updatedAt 확인 */
+  if(!silent){
+    const localTs=Number(localStorage.getItem('__pcFbTs__')||0);
+    if(localTs>0){
+      try{
+        const chkSnap=await db.collection('users').doc(uid).get();
+        if(chkSnap.exists&&chkSnap.data().practicecheck_backup){
+          const fbUpdatedAt=chkSnap.data().practicecheck_backup.updatedAt||chkSnap.data().practicecheck_backup.ts||0;
+          if(fbUpdatedAt>localTs){
+            const fbDate=new Date(fbUpdatedAt).toLocaleString('ko-KR',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+            const lDate=new Date(localTs).toLocaleString('ko-KR',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+            const ok=confirm('⚠️ 충돌 경고\n\nFirebase 데이터가 로컬보다 최신입니다.\n  Firebase: '+fbDate+'\n  로컬:     '+lDate+'\n\n로컬 데이터로 덮어쓰면 Firebase의 최신 변경 사항이 사라집니다.\n계속 업로드하시겠습니까?');
+            if(!ok){showFbStatus('⚠️ 업로드 취소','#92400e');return;}
+          }
+        }
+      }catch(ce){console.warn('[pc] 충돌 검사 실패:',ce);}
+    }
+  }
+  // practicecheck_backup 단독 기록 (ts + updatedAt 포함)
+  // ★ 수정: 타 앱(linkmanage)의 data blob에 직접 주입하던 코드를 제거.
+  //   linkmanage는 pull 시 practicecheck_backup 필드를 직접 읽어 pc_areas/pc_repeats를 병합함.
+  const nowTs=Date.now();
+  const update={practicecheck_backup:{...pack, ts: nowTs, updatedAt: nowTs}};
+  await db.collection('users').doc(uid).set(update,{merge:true});
+  localStorage.setItem('__pcFbTs__', String(nowTs));
+  showFbStatus('✅ 저장됨','#16a34a');
+  if(!silent)alert('✅ Firebase에 저장되었습니다');
+  console.log('✅ Firebase upload success');
+}catch(e){console.error('❌ Upload error:',e);showFbStatus('❌ 저장 실패','#dc2626');if(!silent)alert('저장 실패: '+e.message);else throw e;}}
+
+async function downloadFromFirebase(silent=false){try{
+  showFbStatus('⏳ 불러오는 중...','#3a5bd9');await initFirebase();
+  const uid=getUid();
+  if(!uid||uid==='anonymous'){showFbStatus('⚠️ 로그인 필요','#92400e');if(!silent)alert('로그인이 필요합니다');return;}
+  /* ★ 충돌 감지: 다운로드 전 로컬 타임스탬프와 Firebase 비교 */
+  if(!silent){
+    const localTs=Number(localStorage.getItem('__pcFbTs__')||0);
+    if(localTs>0){
+      try{
+        const chkSnap=await firebase.firestore().collection('users').doc(uid).get();
+        if(chkSnap.exists&&chkSnap.data().practicecheck_backup){
+          const fbUpdatedAt=chkSnap.data().practicecheck_backup.updatedAt||chkSnap.data().practicecheck_backup.ts||0;
+          if(fbUpdatedAt>0&&localTs>fbUpdatedAt){
+            const lDate=new Date(localTs).toLocaleString('ko-KR',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+            const fbDate=new Date(fbUpdatedAt).toLocaleString('ko-KR',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+            const ok=confirm('⚠️ 충돌 경고\n\n로컬 데이터가 Firebase보다 최신입니다.\n  로컬:     '+lDate+'\n  Firebase: '+fbDate+'\n\nFirebase 데이터로 덮어쓰면 로컬의 최신 변경 사항이 사라집니다.\n계속 다운로드하시겠습니까?');
+            if(!ok){showFbStatus('⚠️ 다운로드 취소','#92400e');return;}
+          }
+        }
+      }catch(ce){console.warn('[pc] 충돌 검사 실패:',ce);}
+    }
+  }
+  const snap=await firebase.firestore().collection('users').doc(uid).get();
+  if(!snap.exists){showFbStatus('⚠️ 데이터 없음','#92400e');if(!silent)alert('저장된 데이터가 없습니다');return;}
+  const raw=snap.data();
+  // ★ 핵심 수정: practicecheck_backup 필드 + 로컬을 머지
+  const pcb=raw.practicecheck_backup||null;
+
+  /* ★ 구조적 수정: base 선택 로직
+     linkmanage의 _lmPull()은 자신의 Firebase pull 과정에서 pc_areas를
+     localStorage에 덮어쓰고 '__lmPcAreasWriteTs__' 타임스탬프를 기록한다.
+     practicecheck 입장에서 "linkmanage가 방금 덮어쓴 localStorage" 를
+     그대로 base로 쓰면 → linkmanage가 들고 있던 오래된 스냅샷이 base가 되어
+     Firebase에서 가져온 최신 데이터를 오염시키는 타이밍 버그가 발생한다.
+
+     해결: 인메모리 areas(practicecheck 자신이 마지막으로 확정한 상태)를 1순위 base로 쓰고,
+     localStorage는 linkmanage가 덮어쓰지 않은 경우(타임스탬프 없음 or 10초 초과)에만 fallback으로 허용.
+     이렇게 하면 linkmanage가 localStorage를 쓰는 타이밍에 무관하게 base가 오염되지 않는다. */
+  const LM_WRITE_GRACE_MS = 30000; // 30초 이내에 linkmanage가 쓴 경우 "오염된 것으로 간주" — 구조적 버그 수정
+  const lmWriteTs = Number(localStorage.getItem('__lmPcAreasWriteTs__') || 0);
+  const lmWroteRecently = lmWriteTs > 0 && (Date.now() - lmWriteTs) < LM_WRITE_GRACE_MS;
+
+  let mergedAreas = [];
+  if (Array.isArray(areas) && areas.length > 0) {
+    // 1순위: 인메모리 areas (practicecheck가 직접 확정한 마지막 상태)
+    mergedAreas = JSON.parse(JSON.stringify(areas));
+  } else if (!lmWroteRecently) {
+    // 2순위: localStorage — linkmanage가 최근에 덮어쓰지 않은 경우만 신뢰
+    try { mergedAreas = JSON.parse(localStorage.getItem(PC_AREAS_KEY) || 'null') || []; } catch {}
+  } else {
+    // linkmanage가 최근에 덮어썼고 인메모리도 비어있음
+    // → localStorage를 base로 쓰지 않고 빈 배열로 시작 (Firebase 데이터가 온전히 채워줌)
+    console.warn('[pc] linkmanage가 최근에 pc_areas를 덮어씀 — localStorage base 건너뜀, Firebase 데이터를 직접 사용');
+  }
+  let mergedRepeats=pcGetRepeats();
+  // ★ 삭제 로그 머지: 로컬 + Firebase(practicecheck_backup) 양쪽을 합산
+  let mergedDelAreas=pcGetDeletedAreas();
+  let mergedDelHabits=pcGetDeletedHabits();
+  if(pcb&&pcb.deletedAreas) mergedDelAreas=pcMergeDeletedAreas(mergedDelAreas,pcb.deletedAreas);
+  if(pcb&&pcb.deletedHabits) mergedDelHabits=pcMergeDeletedHabits(mergedDelHabits,pcb.deletedHabits);
+  // 머지된 삭제 로그를 로컬에 저장
+  pcSaveDeletedAreas(mergedDelAreas);
+  pcSaveDeletedHabits(mergedDelHabits);
+  /* ★ 핵심 수정: practicecheck_backup이 있으면 그것이 진실의 원천(single source of truth).
+     linkmanage 필드 안의 pc_areas 는 fallback일 뿐 (오래된 스냅샷을 들고 있다가 좀비 부활을 일으키므로 머지에서 제외). */
+  if(pcb&&pcb.areas){
+    // 메인 백업 사용 — 다른 앱 필드는 무시
+    mergedAreas=pcMergeAreasObj(mergedAreas,pcb.areas,mergedDelAreas,mergedDelHabits);
+  }else{
+    // 메인 백업이 없을 때만 fallback
+    if(lmExt.areas) mergedAreas=pcMergeAreasObj(mergedAreas,lmExt.areas,mergedDelAreas,mergedDelHabits);
+  }
+  // repeats도 동일 정책: practicecheck_backup 우선, 없으면 fallback
+  if(pcb&&pcb.repeats){
+    mergedRepeats=pcMergeRepeatsObj(mergedRepeats,pcb.repeats);
+  }else{
+    if(lmExt.repeats) mergedRepeats=pcMergeRepeatsObj(mergedRepeats,lmExt.repeats);
+  }
+  /* ★ 핵심 수정: 머지 결과(=현재 살아있는 이름들)를 기준으로 tombstone 무효 판정.
+     같은 이름이 살아있으면 tombstone은 무효 → 사용자가 다시 만든 것을 좀비 삭제하지 않는다.
+     30일 지난 tombstone도 무효. */
+  const liveNames=new Set(mergedAreas.map(a=>a.name));
+  const liveHKeys=new Set();
+  mergedAreas.forEach(a=>(a.habits||[]).forEach(h=>{if(h&&h.name)liveHKeys.add(a.name+'::'+h.name);}));
+  mergedAreas=mergedAreas.filter(a=>!pcIsAreaTombActive(a.name,mergedDelAreas[a.name],liveNames));
+  mergedAreas.forEach(a=>{a.habits=(a.habits||[]).filter(h=>!pcIsHabitTombActive(a.name+'::'+h.name,mergedDelHabits[a.name+'::'+h.name],liveHKeys));});
+
+  /* ★ 방어 로직: 머지 결과가 비어버렸는데 로컬에는 데이터가 있었다면 → 로컬을 보존.
+     (다른 앱이 빈 pc_areas를 박아넣었거나 좀비 tombstone이 모두 지웠을 때 사용자 데이터 보호) */
+  let localAreasBackup=null;
+  try{ localAreasBackup=JSON.parse(localStorage.getItem(PC_AREAS_KEY)||'null'); }catch{}
+  if(!mergedAreas.length && Array.isArray(localAreasBackup) && localAreasBackup.length>0){
+    console.warn('⚠️ 머지 결과가 비어있어 로컬 데이터를 보존합니다');
+    mergedAreas=localAreasBackup;
+    showFbStatus('⚠️ 로컬 보존','#92400e');
+  }
+
+  if(!mergedAreas.length&&!pcb&&!lmExt.areas){
+    showFbStatus('⚠️ 데이터 없음','#92400e');
+    if(!silent)alert('저장된 데이터가 없습니다');
+    return;
+  }
+  /* 머지 결과가 정말 비어있으면(=원격에는 데이터가 있었으나 모두 삭제됨) 기본 카테고리 1개 보장 */
+  if(!mergedAreas.length){
+    mergedAreas=[{name:'기본',habits:[],data:{}}];
+    pcUnmarkAreaDeleted('기본'); // '기본' tombstone이 있으면 즉시 해제
+  }
+  areas=mergedAreas;
+  localStorage.setItem(PC_AREAS_KEY,JSON.stringify(areas));
+  localStorage.setItem(PC_REPEATS_KEY,JSON.stringify(mergedRepeats));
+  /* ★ 구조적 버그 수정: practicecheck가 pc_areas를 확정한 시각을 기록
+     linkmanage의 _lmPull이 이 타임스탬프를 보고 '오래된 스냅샷'임을 판별 가능 */
+  localStorage.setItem('__pcAreasWriteTs__', String(Date.now()));
+  if(currentAreaIndex>=areas.length) currentAreaIndex=0;
+  render();
+  /* ★ 로컬 타임스탬프 갱신 */
+  const pcbTs=(raw.practicecheck_backup&&(raw.practicecheck_backup.updatedAt||raw.practicecheck_backup.ts))||Date.now();
+  localStorage.setItem('__pcFbTs__', String(pcbTs));
+  showFbStatus('✅ 불러왔음','#16a34a');
+  if(!silent)alert('✅ Firebase에서 다운로드되었습니다');
+  console.log('✅ Firebase download success (merged from all sources)');
+}catch(e){console.error('❌ Download error:',e);showFbStatus('❌ 불러오기 실패','#dc2626');if(!silent)alert('다운로드 실패: '+e.message);}}
+window.FirebaseSync={upload:uploadToFirebase,download:downloadFromFirebase};
+
+;(function(){
+  const badge=document.createElement('div');
+  badge.style.cssText='position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:99999;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:rgba(0,0,0,0.65);color:#fff;pointer-events:none;opacity:0;transition:opacity 0.4s;white-space:nowrap;';
+  document.body.appendChild(badge);
+  let timer=null;
+  function showBadge(text,color){badge.textContent=text;badge.style.background=color||'#374151';badge.style.opacity='1';clearTimeout(badge._h);badge._h=setTimeout(()=>badge.style.opacity='0',3500);}
+  const _orig=localStorage.setItem.bind(localStorage);
+  const PC_AUTO_WATCH_KEYS=new Set(["lmData","lmGroups","lmTodos","lmPomoLog","lmClickLog","lm_repeatSchedule","pc_areas","pc_repeats","pc_deleted_areas","pc_deleted_habits","pvocab_customs","pvocab_maxstep","pvocab_categories","tre_arts","tre_vc","MP_categories","MP_currentCategory","mp_maxStep","pomoConfig","scheduleData","sk_routines","sk_routineChecks","trackerApp","lmCatPw","cardSizePx","lmTodosDeleted","lmSchedDeleted"]);
+  const PC_AUTO_WATCH_PFXS=["pvocab_pos_","sessions_","memoryPathState_","completedSessions_","pvocab_"];
+  localStorage.setItem=function(key,val){
+    _orig(key,val);
+    if(getUid()==='anonymous')return;
+    if(PC_AUTO_WATCH_KEYS.has(key)||PC_AUTO_WATCH_PFXS.some(p=>key.startsWith(p))){
+      clearTimeout(timer);showBadge('\u270f\ufe0f 변경 감지 \u2014 45초 후 자동 저장','#92400e');
+      timer=setTimeout(async()=>{showBadge('\u2601\ufe0f 자동 저장 중...','#1d4ed8');try{await uploadToFirebase(true);showBadge('\u2705 자동 저장 완료','#065f46');}catch(e){showBadge('\u274c 자동 저장 실패','#991b1b');}},45000);
+    }
+  };
+})();
+function toggleDark(force){
+  if(force!==undefined) document.body.classList.toggle('dark',force);
+  else document.body.classList.toggle('dark');
+  const isDark=document.body.classList.contains('dark');
+  localStorage.setItem('darkMode',isDark?'true':'false');
+  localStorage.setItem('lmTheme',isDark?'dark':'light');
+}
+window.onload=async()=>{
+  // 1) 다크모드 설정
+  var d=localStorage.getItem('darkMode')||localStorage.getItem('lmTheme');
+  if(d==='true'||d==='dark') document.body.classList.add('dark');
+  
+  // 2) localStorage에서 데이터 로드 (초기화)
+  initData();
+  
+  // 3) 간단모드 상태 복원 (PC/모바일 양쪽에서 유지)
+  const savedSimpleMode=localStorage.getItem('simpleMode');
+  if(savedSimpleMode==='true') simpleMode=true;
+  
+  // 4) UI 렌더링
+  render();
+  
+  // 5) 오늘 날짜로 이동 (간단모드가 유지되도록 약간의 딜레이 후 실행)
+  setTimeout(()=>{
+    goToday();
+    render(); // 이동 후 UI 재렌더링하여 간단모드 표시 유지
+  }, 50);
+  
+  // 6) Firebase 초기화 (로그인되어 있으면 동기화)
+  await initFirebase();
+  if(getUid()!=='anonymous'){
+    await downloadFromFirebase(true);
+  }
+};
+</script><div style="position: fixed; top: 8px; left: 50%; transform: translateX(-50%); z-index: 99999; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: rgba(0, 0, 0, 0.65); color: rgb(255, 255, 255); pointer-events: none; opacity: 0; transition: opacity 0.4s; white-space: nowrap;"></div><div style="position: fixed; top: 8px; left: 50%; transform: translateX(-50%); z-index: 99999; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: rgba(0, 0, 0, 0.65); color: rgb(255, 255, 255); pointer-events: none; opacity: 0; transition: opacity 0.4s; white-space: nowrap;"></div>
+<script>
+/* ═══════════════════════════════════════
+   부모(linkmanage)에서 다크모드 메시지 받기
+═══════════════════════════════════════ */
+window.addEventListener('message', function(e) {
+  if(e.data && e.data.type === 'theme-toggle'){
+    var isDark = !!e.data.dark;
+    toggleDark(isDark);
+  }
+  /* ★ 전체 저장/불러오기 연동 (wc-sync) */
+  if(e.data && e.data.type === 'wc-sync'){
+    if(e.data.dir === 'push') FirebaseSync.upload(true);
+    else if(e.data.dir === 'pull') FirebaseSync.download(true);
+  }
+}, false);
+</script>
+
+
+<iframe ng-non-bindable="" frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" tabindex="-1" vspace="0" width="100%" aria-hidden="true" id="I0_1778747126858" name="I0_1778747126858" src="https://studyapp-58a1c.firebaseapp.com/__/auth/iframe?apiKey=AIzaSyA7ots3eKmIasUH4GW7nw797cdvEVP-Dk8&amp;appName=%5BDEFAULT%5D&amp;v=10.12.2&amp;eid=p&amp;usegapi=1&amp;jsh=m%3B%2F_%2Fscs%2Fabc-static%2F_%2Fjs%2Fk%3Dgapi.lb.ko.Mrvmj7G-jDg.O%2Fd%3D1%2Frs%3DAHpOoo-OIiCBSoDYGTfHuGb2acpp8-6YBg%2Fm%3D__features__#id=I0_1778747126858&amp;_gfid=I0_1778747126858&amp;parent=file%3A%2F%2F&amp;pfname=&amp;rpctoken=17741789" style="position: absolute; top: -100px; width: 1px; height: 1px;"></iframe>
+<iframe ng-non-bindable="" frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" tabindex="-1" vspace="0" width="100%" aria-hidden="true" id="I0_1779089294080" name="I0_1779089294080" src="https://studyapp-58a1c.firebaseapp.com/__/auth/iframe?apiKey=AIzaSyA7ots3eKmIasUH4GW7nw797cdvEVP-Dk8&amp;appName=%5BDEFAULT%5D&amp;v=10.12.2&amp;eid=p&amp;usegapi=1&amp;jsh=m%3B%2F_%2Fscs%2Fabc-static%2F_%2Fjs%2Fk%3Dgapi.lb.ko.4XlE21lAHZg.O%2Fd%3D1%2Frs%3DAHpOoo87KNXmV5OeSd-Dt__Wtv736527Nw%2Fm%3D__features__#id=I0_1779089294080&amp;_gfid=I0_1779089294080&amp;parent=file%3A%2F%2F&amp;pfname=&amp;rpctoken=13643122" style="position: absolute; top: -100px; width: 1px; height: 1px;"></iframe></body></html>

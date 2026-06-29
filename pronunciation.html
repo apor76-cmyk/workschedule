@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>발음 훈련</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F0F7EE;
+  --surface:#F7FAF5;
+  --card:#F7FAF5;
+  --card2:#EBF4E7;
+  --border:#C8E0C0;
+  --text:#2C2418;
+  --text2:#7A7060;
+  --sub:#ADA89E;
+  --accent:#52A869;
+  --accent2:#3A8A50;
+  --accent-dim:rgba(122,140,110,0.10);
+  --warn:#B05858;
+  --warn-dim:rgba(176,88,88,0.10);
+  --gold:#8A7C5E;
+  --gold-dim:rgba(138,124,94,0.10);
+  --blue:#3A6E9E;
+  --blue-dim:rgba(58,110,158,0.10);
+  --purple:#6A6E9E;
+  --purple-dim:rgba(106,110,158,0.10);
+  --radius:16px;
+  --radius-sm:10px;
+  --shadow-3d:0 6px 16px rgba(80,70,50,0.14), inset 0 1px 0 rgba(255,255,255,0.55);
+  --shadow-3d-lg:0 10px 26px rgba(80,70,50,0.20), inset 0 1px 0 rgba(255,255,255,0.60);
+  --shadow-3d-pressed:inset 0 3px 8px rgba(0,0,0,0.13);
+  --shadow-inset:inset 0 2px 8px rgba(0,0,0,0.09);
+  --font-ko:'Noto Sans KR',sans-serif;
+  --font-en:'Space Mono',monospace;
+}
+/* 다크 모드 */
+body.dark{
+  --bg:#111412;
+  --surface:#181C1A;
+  --card:#1C2220;
+  --card2:#222820;
+  --border:#2A3028;
+  --text:#EDE8DE;
+  --text2:#8A9488;
+  --sub:#4A5A50;
+  --accent:#5EC87A;
+  --accent2:#6A8E70;
+  --accent-dim:rgba(140,168,122,0.12);
+  --warn:#C07070;
+  --warn-dim:rgba(192,112,112,0.12);
+  --gold:#C0A060;
+  --gold-dim:rgba(192,160,96,0.12);
+  --blue:#6A9FCC;
+  --blue-dim:rgba(106,159,204,0.12);
+  --purple:#A07ACC;
+  --purple-dim:rgba(160,122,204,0.12);
+  --shadow-3d:0 6px 16px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.10);
+  --shadow-3d-lg:0 10px 26px rgba(0,0,0,0.60), inset 0 1px 0 rgba(255,255,255,0.13);
+  --shadow-3d-pressed:inset 0 3px 8px rgba(0,0,0,0.35);
+  --shadow-inset:inset 0 2px 8px rgba(0,0,0,0.30);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+body{
+  font-family:var(--font-ko);
+  background:var(--bg);
+  color:var(--text);
+  display:flex;flex-direction:column;
+  overscroll-behavior:none;
+}
+button{font-family:var(--font-ko);cursor:pointer;border:none;outline:none;transition:all 0.15s ease;user-select:none;}
+button:active{transform:scale(0.95);}
+
+/* ─── Layout ─── */
+#app-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px 10px;
+  background:var(--surface);
+  border-bottom:none;
+  box-shadow:0 4px 14px rgba(0,0,0,0.25), inset 0 -1px 0 rgba(255,255,255,0.05);
+  flex-shrink:0;
+}
+.app-title{
+  font-family:var(--font-en);
+  font-size:14px;font-weight:700;
+  color:var(--accent);
+  letter-spacing:-0.5px;
+}
+.app-subtitle{font-size:11px;color:var(--sub);margin-top:1px;}
+.header-actions{display:flex;gap:8px;align-items:center;}
+.icon-btn{
+  width:34px;height:34px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;
+  background:var(--card2);color:var(--text2);border:none;
+  box-shadow:var(--shadow-3d);
+}
+.icon-btn:hover{background:var(--accent-dim);color:var(--accent);box-shadow:var(--shadow-3d-lg);transform:translateY(-1px);}
+.icon-btn:active{box-shadow:var(--shadow-3d-pressed);transform:translateY(1px);}
+
+/* ─── Level Tabs ─── */
+#levelBar{
+  display:flex;gap:0;
+  background:var(--surface);
+  border-bottom:none;
+  box-shadow:0 2px 8px rgba(0,0,0,0.15),inset 0 -1px 0 rgba(255,255,255,0.05);
+  flex-shrink:0;
+  padding:0 12px;
+}
+.level-tab{
+  flex:1;padding:10px 0 9px;
+  font-size:12px;font-weight:700;
+  color:var(--sub);
+  background:transparent;
+  border-bottom:2px solid transparent;
+  border-radius:0;
+  transition:all 0.18s;
+  letter-spacing:0.02em;
+}
+.level-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.level-tab .lv-badge{
+  font-size:9px;font-weight:800;font-family:var(--font-en);
+  padding:1px 6px;border-radius:999px;
+  background:var(--card2);color:var(--sub);
+  margin-left:4px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.15),inset 0 1px 0 rgba(255,255,255,0.10);
+}
+.level-tab.active .lv-badge{background:var(--accent-dim);color:var(--accent);box-shadow:0 2px 5px rgba(140,168,122,0.20);}
+
+/* ─── Category Pills ─── */
+#catScroll{
+  display:flex;gap:6px;padding:10px 14px 8px;
+  overflow-x:auto;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;flex-shrink:0;
+}
+#catScroll::-webkit-scrollbar{display:none;}
+.cat-pill{
+  padding:6px 14px;border-radius:999px;
+  font-size:11px;font-weight:700;white-space:nowrap;
+  background:var(--card);color:var(--text2);border:none;
+  flex-shrink:0;cursor:pointer;transition:all 0.15s;
+  box-shadow:var(--shadow-3d);
+}
+.cat-pill:hover{box-shadow:var(--shadow-3d-lg);transform:translateY(-1px);}
+.cat-pill:active{box-shadow:var(--shadow-3d-pressed);transform:translateY(1px);}
+.cat-pill.active{background:var(--accent-dim);color:var(--accent);border:none;box-shadow:0 4px 12px rgba(140,168,122,0.30),inset 0 1px 0 rgba(255,255,255,0.15);}
+
+/* ─── Main content area ─── */
+#mainArea{
+  flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  padding:0 14px 80px;
+}
+
+/* ─── Mode Toggle ─── */
+#modeToggle{
+  display:flex;gap:6px;padding:10px 14px 8px;
+  flex-shrink:0;
+}
+.mode-btn{
+  flex:1;padding:9px;border-radius:var(--radius-sm);
+  font-size:12px;font-weight:700;
+  background:var(--card);color:var(--sub);border:none;
+  transition:all 0.15s;
+  box-shadow:var(--shadow-3d);
+}
+.mode-btn:hover{box-shadow:var(--shadow-3d-lg);transform:translateY(-1px);}
+.mode-btn:active{box-shadow:var(--shadow-3d-pressed);transform:translateY(1px);}
+.mode-btn.active{background:var(--accent-dim);color:var(--accent);border:none;box-shadow:0 5px 14px rgba(140,168,122,0.30),inset 0 1px 0 rgba(255,255,255,0.15);}
+
+/* ─── Practice Card ─── */
+.practice-section{margin-bottom:16px;}
+.section-header{
+  font-size:11px;font-weight:700;color:var(--sub);
+  text-transform:uppercase;letter-spacing:0.1em;
+  padding:14px 0 8px;
+}
+.phono-card{
+  background:var(--card);border:none;
+  border-radius:var(--radius);padding:0;
+  overflow:hidden;
+  margin-bottom:10px;
+  transition:all 0.2s;
+  box-shadow:var(--shadow-3d);
+}
+.phono-card:hover{box-shadow:var(--shadow-3d-lg);transform:translateY(-1px);}
+.phono-card-head{
+  display:flex;align-items:center;
+  padding:12px 14px;gap:10px;
+  cursor:pointer;
+}
+.phono-tag{
+  font-size:18px;font-weight:700;font-family:var(--font-en);
+  color:var(--accent);min-width:40px;text-align:center;
+  letter-spacing:-1px;
+}
+.phono-info{flex:1;}
+.phono-name{font-size:13px;font-weight:700;color:var(--text);}
+.phono-tip{font-size:11px;color:var(--text2);margin-top:2px;line-height:1.4;}
+.phono-expand{font-size:16px;color:var(--sub);transition:transform 0.2s;}
+.phono-card.expanded .phono-expand{transform:rotate(180deg);}
+
+.phono-body{
+  display:none;
+  border-top:none;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,0.10);
+  padding:14px;
+}
+.phono-card.expanded .phono-body{display:block;}
+
+/* ─── Word Pairs ─── */
+.pair-row{
+  display:flex;gap:8px;margin-bottom:8px;align-items:stretch;
+}
+.pair-word{
+  flex:1;background:var(--card2);border:none;
+  border-radius:var(--radius-sm);padding:10px 12px;
+  cursor:pointer;transition:all 0.15s;
+  display:flex;flex-direction:column;gap:3px;
+  position:relative;overflow:hidden;
+  box-shadow:var(--shadow-3d);
+}
+.pair-word:hover{box-shadow:var(--shadow-3d-lg);transform:translateY(-1px);}
+.pair-word:active{box-shadow:var(--shadow-3d-pressed);transform:scale(0.97);}
+.pair-word.playing{border:none;background:var(--accent-dim);box-shadow:0 5px 16px rgba(140,168,122,0.35),inset 0 1px 0 rgba(255,255,255,0.15);}
+.pair-word .pw-en{
+  font-size:16px;font-weight:700;font-family:var(--font-en);
+  color:var(--text);letter-spacing:-0.5px;
+}
+.pair-word .pw-ipa{
+  font-size:11px;color:var(--text2);font-family:var(--font-en);
+}
+.pair-word .pw-ko{font-size:11px;color:var(--sub);}
+.pair-word .play-hint{
+  position:absolute;top:7px;right:8px;
+  font-size:12px;color:var(--accent);opacity:0.5;
+}
+.pair-word:hover .play-hint{opacity:1;}
+.pair-sep{
+  display:flex;align-items:center;
+  font-size:10px;font-weight:700;color:var(--sub);
+  padding:0 2px;
+}
+
+/* ─── Key Difference Tip ─── */
+.diff-box{
+  background:var(--accent-dim);border:none;box-shadow:0 3px 10px rgba(140,168,122,0.20),inset 0 1px 0 rgba(255,255,255,0.10);
+  border-radius:var(--radius-sm);padding:10px 12px;
+  font-size:12px;color:var(--text2);line-height:1.6;
+  margin-bottom:10px;
+}
+.diff-box strong{color:var(--accent);}
+
+/* ─── Play All Button ─── */
+.play-all-btn{
+  width:100%;padding:11px;border-radius:var(--radius-sm);
+  font-size:13px;font-weight:700;
+  background:var(--accent-dim);color:var(--accent);
+  border:none;
+  box-shadow:0 5px 14px rgba(140,168,122,0.28),inset 0 1px 0 rgba(255,255,255,0.15);
+  margin-top:4px;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+}
+.play-all-btn:hover{box-shadow:0 7px 20px rgba(140,168,122,0.40);transform:translateY(-1px);}
+.play-all-btn:active{background:var(--accent);color:#000;}
+.play-all-btn.playing{
+  background:var(--accent);color:#000;
+  animation:pulse-btn 1s ease-in-out infinite;
+}
+@keyframes pulse-btn{
+  0%, 100%{opacity:1;}
+  50%{opacity:0.7;}
+}
+
+/* ─── Quiz Mode ─── */
+#quizArea{
+  flex:1;display:flex;flex-direction:column;
+  padding:16px 14px 80px;
+  gap:14px;
+  overflow-y:auto;
+}
+.quiz-card{
+  background:var(--card);border:none;
+  border-radius:20px;padding:20px;
+  text-align:center;
+  box-shadow:var(--shadow-3d);
+}
+.quiz-prompt{
+  font-size:12px;font-weight:700;color:var(--sub);
+  text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;
+}
+.quiz-listen-btn{
+  width:90px;height:90px;border-radius:50%;
+  background:var(--accent-dim);border:none;
+  box-shadow:0 6px 20px rgba(140,168,122,0.35),inset 0 1px 0 rgba(255,255,255,0.15);
+  font-size:36px;
+  display:flex;align-items:center;justify-content:center;
+  margin:12px auto;
+  transition:all 0.2s;
+}
+.quiz-listen-btn:active{transform:scale(0.93);background:var(--accent);color:#000;}
+.quiz-listen-btn.playing{
+  animation:pulse-ring 1s ease-in-out infinite;
+}
+@keyframes pulse-ring{
+  0%{box-shadow:0 0 0 0 rgba(77,255,180,0.5);}
+  70%{box-shadow:0 0 0 16px rgba(77,255,180,0);}
+  100%{box-shadow:0 0 0 0 rgba(77,255,180,0);}
+}
+.quiz-hint{font-size:11px;color:var(--sub);margin-bottom:14px;}
+.quiz-choices{display:flex;flex-direction:column;gap:8px;}
+.quiz-choice{
+  padding:14px;border-radius:var(--radius-sm);
+  font-size:15px;font-weight:700;font-family:var(--font-en);
+  background:var(--card2);color:var(--text);border:none;
+  transition:all 0.15s;letter-spacing:-0.3px;
+  box-shadow:var(--shadow-3d);
+}
+.quiz-choice:hover{box-shadow:var(--shadow-3d-lg);transform:translateY(-1px);}
+.quiz-choice.correct{background:rgba(77,255,180,0.2);color:var(--accent);border:none;box-shadow:0 4px 14px rgba(140,168,122,0.35),inset 0 1px 0 rgba(255,255,255,0.15);}
+.quiz-choice.wrong{background:rgba(255,107,107,0.2);color:var(--warn);border:none;box-shadow:0 4px 14px rgba(192,112,112,0.30),inset 0 1px 0 rgba(255,255,255,0.10);}
+.quiz-choice:disabled{cursor:default;transform:none;}
+
+.quiz-result{
+  margin-top:4px;padding:12px 14px;
+  border-radius:var(--radius-sm);
+  font-size:13px;font-weight:600;
+  line-height:1.5;
+  display:none;
+}
+.quiz-result.show{display:block;}
+.quiz-result.ok{background:rgba(77,255,180,0.12);color:var(--accent);}
+.quiz-result.fail{background:rgba(255,107,107,0.12);color:var(--warn);}
+
+.quiz-next-btn{
+  width:100%;padding:13px;border-radius:var(--radius-sm);
+  font-size:14px;font-weight:700;
+  background:var(--accent);color:#000;border:none;
+  box-shadow:0 6px 18px rgba(140,168,122,0.45),inset 0 1px 0 rgba(255,255,255,0.28);
+  display:none;
+  margin-top:6px;
+}
+.quiz-next-btn.show{display:block;}
+
+/* ─── Stats bar ─── */
+#statsBar{
+  display:flex;gap:12px;align-items:center;
+  padding:8px 14px;
+  background:var(--surface);border-bottom:none;
+  box-shadow:0 2px 8px rgba(0,0,0,0.15),inset 0 -1px 0 rgba(255,255,255,0.05);
+  flex-shrink:0;
+}
+.stat-item{display:flex;align-items:center;gap:5px;}
+.stat-label{font-size:10px;color:var(--sub);font-weight:600;}
+.stat-value{font-size:13px;font-weight:800;font-family:var(--font-en);}
+.stat-value.green{color:var(--accent);}
+.stat-value.red{color:var(--warn);}
+.stat-value.gold{color:var(--gold);}
+.stat-sep{width:1px;height:16px;background:var(--border);}
+.streak-badge{
+  margin-left:auto;
+  font-size:10px;font-weight:700;
+  padding:3px 9px;border-radius:999px;
+  background:var(--gold-dim);color:var(--gold);
+  font-family:var(--font-en);
+  box-shadow:0 3px 8px rgba(192,160,96,0.20),inset 0 1px 0 rgba(255,255,255,0.15);
+}
+
+/* ─── Progress bar ─── */
+.quiz-progress{
+  display:flex;align-items:center;gap:8px;
+  padding:0 14px 8px;flex-shrink:0;
+}
+.q-prog-bar{flex:1;height:4px;border-radius:999px;background:var(--border);box-shadow:var(--shadow-inset);}
+.q-prog-fill{height:100%;border-radius:999px;background:var(--accent);transition:width 0.4s;}
+.q-prog-label{font-size:10px;font-weight:700;font-family:var(--font-en);color:var(--sub);}
+
+/* ─── Tip sheet ─── */
+.mouth-tip{
+  background:var(--card2);border:none;box-shadow:var(--shadow-3d);
+  border-radius:var(--radius-sm);padding:10px 12px;
+  font-size:11px;color:var(--text2);margin-top:8px;line-height:1.6;
+}
+.mouth-tip-title{font-size:10px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;}
+
+/* ─── Level intro ─── */
+.level-intro{
+  margin:12px 0 4px;
+  background:linear-gradient(135deg,var(--card) 0%,var(--card2) 100%);
+  border:none;border-radius:var(--radius);
+  box-shadow:var(--shadow-3d);
+  padding:14px;
+  display:flex;gap:12px;align-items:center;
+}
+.lv-icon{font-size:32px;}
+.lv-intro-name{font-size:16px;font-weight:800;color:var(--text);}
+.lv-intro-desc{font-size:12px;color:var(--text2);margin-top:3px;line-height:1.4;}
+
+/* ─── Sentence mode ─── */
+.sent-card{
+  background:var(--card);border:none;
+  border-radius:var(--radius);padding:14px;
+  margin-bottom:10px;
+  box-shadow:var(--shadow-3d);
+}
+.sent-en{
+  font-size:15px;font-weight:700;color:var(--text);
+  font-family:var(--font-en);letter-spacing:-0.3px;line-height:1.5;
+}
+.sent-en .highlight{color:var(--accent);}
+.sent-ko{font-size:12px;color:var(--text2);margin-top:5px;line-height:1.5;}
+.sent-actions{display:flex;gap:8px;margin-top:10px;}
+.sent-play{
+  flex:1;padding:9px;border-radius:var(--radius-sm);
+  font-size:12px;font-weight:700;
+  background:var(--accent-dim);color:var(--accent);border:none;
+  box-shadow:0 5px 14px rgba(140,168,122,0.28),inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.sent-play.playing{
+  background:var(--accent);color:#000;
+  animation:pulse-btn 1s ease-in-out infinite;
+}
+.sent-slow{
+  padding:9px 14px;border-radius:var(--radius-sm);
+  font-size:11px;font-weight:700;
+  background:var(--card2);color:var(--text2);border:1.5px solid var(--border);
+}
+
+/* ─── Toast ─── */
+#toast{
+  position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--text);color:var(--bg);
+  padding:9px 20px;border-radius:999px;
+  font-size:13px;font-weight:700;
+  opacity:0;transition:all 0.25s;pointer-events:none;
+  z-index:9999;white-space:nowrap;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ─── Empty ─── */
+.empty-state{
+  text-align:center;padding:40px 20px;color:var(--sub);
+  font-size:14px;
+}
+
+/* Dark mode toggle */
+/* (다크모드는 body.dark로 처리됨) */
+</style>
+</head>
+<body>
+
+<div id="app-header">
+  <div>
+    <div class="app-title">🎧 PRON TRAINER</div>
+    <div class="app-subtitle">한국인을 위한 영어 발음 훈련</div>
+  </div>
+  <div class="header-actions">
+    <button class="icon-btn" onclick="toggleTheme()" id="themeBtn" title="테마">🌙</button>
+    <button class="icon-btn" onclick="resetStats()" title="통계 초기화">🔄</button>
+  </div>
+</div>
+
+<!-- Level tabs -->
+<div id="levelBar">
+  <button class="level-tab active" data-level="beginner" onclick="switchLevel('beginner')">
+    🌱 초급 <span class="lv-badge">Beginner</span>
+  </button>
+  <button class="level-tab" data-level="intermediate" onclick="switchLevel('intermediate')">
+    🌿 중급 <span class="lv-badge">Mid</span>
+  </button>
+  <button class="level-tab" data-level="advanced" onclick="switchLevel('advanced')">
+    🌳 고급 <span class="lv-badge">Adv</span>
+  </button>
+</div>
+
+<!-- Stats -->
+<div id="statsBar">
+  <div class="stat-item">
+    <span class="stat-label">맞음</span>
+    <span class="stat-value green" id="statCorrect">0</span>
+  </div>
+  <div class="stat-sep"></div>
+  <div class="stat-item">
+    <span class="stat-label">틀림</span>
+    <span class="stat-value red" id="statWrong">0</span>
+  </div>
+  <div class="stat-sep"></div>
+  <div class="stat-item">
+    <span class="stat-label">정확도</span>
+    <span class="stat-value gold" id="statAcc">—</span>
+  </div>
+  <div class="streak-badge" id="streakBadge">🔥 0 연속</div>
+</div>
+
+<!-- Mode toggle -->
+<div id="modeToggle">
+  <button class="mode-btn active" data-mode="learn" onclick="switchMode('learn')">📖 학습</button>
+  <button class="mode-btn" data-mode="quiz" onclick="switchMode('quiz')">🎯 퀴즈</button>
+  <button class="mode-btn" data-mode="sentence" onclick="switchMode('sentence')">💬 문장</button>
+</div>
+
+<!-- Category pills -->
+<div id="catScroll"></div>
+
+<!-- Learn mode -->
+<div id="learnArea" style="overflow-y:auto;flex:1;padding:0 14px 80px;">
+  <div id="levelIntro"></div>
+  <div id="phonoList"></div>
+</div>
+
+<!-- Quiz mode -->
+<div id="quizArea" style="display:none;">
+  <div class="quiz-progress" id="quizProgressWrap">
+    <div class="q-prog-bar"><div class="q-prog-fill" id="quizProgFill" style="width:0%"></div></div>
+    <span class="q-prog-label" id="quizProgLabel">0 / 0</span>
+  </div>
+  <div class="quiz-card" id="quizCard">
+    <div class="quiz-prompt">🔊 소리를 듣고 맞춰보세요</div>
+    <button class="quiz-listen-btn" id="quizListenBtn" onclick="playQuizSound()">🔊</button>
+    <div class="quiz-hint" id="quizHint">버튼을 눌러 소리를 들으세요</div>
+    <div class="quiz-choices" id="quizChoices"></div>
+    <div class="quiz-result" id="quizResult"></div>
+    <button class="quiz-next-btn" id="quizNextBtn" onclick="nextQuestion()">다음 문제 →</button>
+  </div>
+</div>
+
+<!-- Sentence mode -->
+<div id="sentenceArea" style="display:none;overflow-y:auto;flex:1;padding:0 14px 80px;">
+  <div id="sentenceList"></div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ──────────────────────────────────────────────
+// 데이터: 발음 훈련 콘텐츠
+// ──────────────────────────────────────────────
+const DATA = window.DATA = {
+  beginner: {
+    name:"초급", icon:"🌱",
+    desc:"한국어에 없는 기초 자음과 모음부터 시작합니다. R/L, F/V, TH 등 가장 자주 틀리는 소리를 집중 훈련합니다.",
+    categories:[
+      {
+        id:"rl", name:"R vs L", color:"accent",
+        tip:"한국어에는 R과 L의 구분이 없어 가장 많이 틀리는 소리입니다.",
+        mouth:"R: 혀를 입안 중간에 띄우고 어디에도 닿지 않게 하세요. 혀끝이 위로 살짝 말립니다.\nL: 혀끝이 윗니 바로 뒤 볼록한 부분(치경)에 딱 붙어야 합니다.",
+        diff:"R은 혀가 '공중에 뜨고', L은 혀가 '위에 붙습니다'",
+        pairs:[
+          {en1:"right",ipa1:"/raɪt/",ko1:"오른쪽", en2:"light",ipa2:"/laɪt/",ko2:"빛"},
+          {en1:"rice",ipa1:"/raɪs/",ko1:"쌀", en2:"lice",ipa2:"/laɪs/",ko2:"이(벌레)"},
+          {en1:"read",ipa1:"/riːd/",ko1:"읽다", en2:"lead",ipa2:"/liːd/",ko2:"이끌다"},
+          {en1:"rock",ipa1:"/rɒk/",ko1:"바위", en2:"lock",ipa2:"/lɒk/",ko2:"자물쇠"},
+          {en1:"run",ipa1:"/rʌn/",ko1:"달리다", en2:"lung",ipa2:"/lʌŋ/",ko2:"폐"},
+        ],
+        sentences:[
+          {en:"The <b>r</b>abbit <b>r</b>an to the <b>l</b>eft.",ko:"토끼가 왼쪽으로 달려갔다.",focus:"R vs L"},
+          {en:"I <b>r</b>ead the <b>l</b>etter <b>r</b>ight now.",ko:"나는 지금 편지를 읽었다.",focus:"R vs L"},
+          {en:"The <b>l</b>arge <b>r</b>ed <b>r</b>ock is on the <b>l</b>eft.",ko:"큰 빨간 바위가 왼쪽에 있다.",focus:"R vs L"},
+          {en:"<b>R</b>ose <b>l</b>ikes <b>r</b>ight <b>l</b>iving.",ko:"로즈는 올바른 생활을 좋아한다.",focus:"R vs L"},
+          {en:"The <b>r</b>ow of <b>l</b>ights <b>r</b>uns <b>l</b>ong.",ko:"불 줄이 길게 뻗어있다.",focus:"R vs L"},
+          {en:"Please <b>r</b>eturn the <b>l</b>oan <b>r</b>eal soon.",ko:"실제로 곧 대출금을 반환해주세요.",focus:"R vs L"},
+          {en:"The <b>r</b>ed <b>l</b>ower is <b>r</b>ight <b>l</b>ovely.",ko:"빨간 꽃이 정말 사랑스럽다.",focus:"R vs L"},
+          {en:"<b>L</b>isten to the <b>r</b>adio <b>l</b>ate at night.",ko:"밤 늦게 라디오를 들어.",focus:"R vs L"},
+          {en:"The <b>r</b>ing and <b>l</b>ocket are <b>r</b>are <b>l</b>uxury.",ko:"반지와 로켓은 드문 럭셔리다.",focus:"R vs L"},
+          {en:"She <b>r</b>an <b>l</b>eft <b>r</b>ather <b>l</b>ately.",ko:"그녀는 왼쪽으로 상당히 늦게 달렸다.",focus:"R vs L"},
+          {en:"The <b>r</b>old <b>l</b>egal <b>r</b>ight is <b>l</b>ost.",ko:"역할 법적 권리가 잃어버려졌다.",focus:"R vs L"},
+          {en:"<b>R</b>ural <b>l</b>ife is <b>r</b>ich with <b>l</b>earning.",ko:"농촌 생활은 풍부한 학습으로 가득하다.",focus:"R vs L"},
+          {en:"The <b>l</b>onger <b>r</b>ow is <b>r</b>ather <b>l</b>arge.",ko:"더 긴 줄은 상당히 크다.",focus:"R vs L"},
+          {en:"<b>R</b>eal <b>l</b>ove <b>r</b>equires <b>l</b>ong <b>r</b>elations.",ko:"진정한 사랑은 오래 지속되는 관계를 필요로 한다.",focus:"R vs L"},
+          {en:"The <b>l</b>ower <b>r</b>ight <b>l</b>eg <b>r</b>ank <b>l</b>ow.",ko:"오른쪽 아래 다리가 낮게 순위가 매겨졌다.",focus:"R vs L"},
+          {en:"She <b>r</b>egularly <b>l</b>ooks <b>l</b>eft and <b>r</b>ight.",ko:"그녀는 정기적으로 왼쪽과 오른쪽을 본다.",focus:"R vs L"},
+          {en:"The <b>r</b>eward for <b>l</b>ong <b>r</b>un is <b>l</b>arge.",ko:"오래 달린 보상은 크다.",focus:"R vs L"},
+          {en:"<b>L</b>isten <b>l</b>ong to the <b>r</b>ecord <b>r</b>eplay.",ko:"기록 재생에 오래 귀기울여.",focus:"R vs L"},
+          {en:"The <b>r</b>oyal <b>l</b>aws <b>r</b>ule the <b>l</b>and <b>r</b>ight.",ko:"왕실 법칙이 그 땅을 올바르게 통치한다.",focus:"R vs L"},
+          {en:"<b>R</b>oy and <b>L</b>ily <b>r</b>an <b>l</b>ike <b>r</b>eally <b>l</b>ight.",ko:"로이와 릴리는 정말 가볍게 달렸다.",focus:"R vs L"}
+        ]
+      },
+      {
+        id:"fv", name:"F vs V", color:"blue",
+        tip:"F와 V는 한국어에 없는 마찰음입니다. '흐'나 '브'로 발음하면 틀립니다.",
+        mouth:"F/V: 윗니를 아랫입술에 살짝 대고 공기를 밀어냅니다.\nF는 무성음(성대 안울림), V는 유성음(성대 울림).",
+        diff:"<strong>윗니 → 아랫입술</strong>이 핵심! '프'나 '브'가 아닙니다",
+        pairs:[
+          {en1:"fan",ipa1:"/fæn/",ko1:"선풍기", en2:"van",ipa2:"/væn/",ko2:"밴"},
+          {en1:"fat",ipa1:"/fæt/",ko1:"지방", en2:"vat",ipa2:"/væt/",ko2:"큰 통"},
+          {en1:"fast",ipa1:"/fæst/",ko1:"빠른", en2:"vast",ipa2:"/væst/",ko2:"광대한"},
+          {en1:"fine",ipa1:"/faɪn/",ko1:"좋은", en2:"vine",ipa2:"/vaɪn/",ko2:"덩굴"},
+          {en1:"feel",ipa1:"/fiːl/",ko1:"느끼다", en2:"veal",ipa2:"/viːl/",ko2:"송아지고기"},
+        ],
+        sentences:[
+          {en:"The <b>f</b>an is <b>v</b>ery <b>f</b>ast and <b>v</b>iolet.",ko:"선풍기는 매우 빠르고 보라색이다.",focus:"F vs V"},
+          {en:"I <b>f</b>eel a <b>v</b>ery <b>f</b>aint <b>v</b>ibration.",ko:"나는 아주 미약한 진동을 느낀다.",focus:"F vs V"},
+          {en:"She <b>f</b>ound a <b>v</b>ery <b>f</b>ine <b>v</b>ase.",ko:"그녀는 아주 멋진 꽃병을 발견했다.",focus:"F vs V"},
+          {en:"The <b>f</b>at <b>v</b>an is <b>f</b>ar away.",ko:"뚱뚱한 밴은 멀리 있다.",focus:"F vs V"},
+          {en:"<b>V</b>alue the <b>f</b>aithful and <b>v</b>aliant <b>f</b>amily.",ko:"충실하고 용감한 가족을 소중히 여겨.",focus:"F vs V"},
+          {en:"The <b>v</b>iny <b>f</b>lower is <b>v</b>ery <b>f</b>ragrant.",ko:"덩굴 같은 꽃은 매우 향기롭다.",focus:"F vs V"},
+          {en:"<b>F</b>eeling <b>v</b>alid and <b>v</b>ictorious is <b>f</b>antastic.",ko:"유효하고 승리한 기분을 느끼는 것은 환상적이다.",focus:"F vs V"},
+          {en:"The <b>v</b>ast <b>f</b>ield is <b>f</b>ull of <b>v</b>iolets.",ko:"광대한 들판이 제비꽃으로 가득하다.",focus:"F vs V"},
+          {en:"<b>F</b>orget the <b>v</b>ulgar <b>f</b>alse <b>v</b>alues.",ko:"저속한 거짓 가치를 잊어.",focus:"F vs V"},
+          {en:"This <b>v</b>iolet <b>f</b>abric is <b>v</b>ery <b>f</b>ine.",ko:"이 보라색 천은 매우 좋다.",focus:"F vs V"},
+          {en:"The <b>f</b>arm has a <b>v</b>ast <b>f</b>uture and <b>v</b>ision.",ko:"농장은 광대한 미래와 비전을 가지고 있다.",focus:"F vs V"},
+          {en:"<b>V</b>anity and <b>f</b>alsehood are <b>f</b>oolish <b>v</b>ices.",ko:"허영과 거짓은 어리석은 악습이다.",focus:"F vs V"},
+          {en:"The <b>v</b>ivid <b>f</b>lower's <b>v</b>alue is <b>f</b>aith.",ko:"생생한 꽃의 가치는 믿음이다.",focus:"F vs V"},
+          {en:"<b>F</b>ollow the <b>v</b>aliant <b>v</b>eteran with <b>f</b>aith.",ko:"용감한 재향 군인을 신앙을 가지고 따라.",focus:"F vs V"},
+          {en:"Her <b>v</b>oice is <b>f</b>irm and <b>v</b>ital with <b>f</b>ervor.",ko:"그녀의 목소리는 열정으로 굳건하고 생명력 있다.",focus:"F vs V"},
+          {en:"The <b>f</b>etch of the <b>v</b>ehicle is <b>v</b>astly <b>f</b>unctional.",ko:"차량의 가져오기는 매우 기능적이다.",focus:"F vs V"},
+          {en:"<b>F</b>avor the <b>v</b>alue of <b>v</b>irtue over <b>f</b>ame.",ko:"명성보다 덕의 가치를 선호하세요.",focus:"F vs V"},
+          {en:"The <b>v</b>ery <b>f</b>ew <b>f</b>acts about <b>v</b>amires are <b>f</b>alse.",ko:"흡혈귀에 대한 매우 적은 사실들은 거짓이다.",focus:"F vs V"},
+          {en:"This <b>v</b>est is <b>f</b>aded but <b>v</b>aluable and <b>f</b>ine.",ko:"이 조끼는 바래지만 귀하고 좋다.",focus:"F vs V"},
+          {en:"<b>V</b>ariety in <b>f</b>lavor makes the <b>f</b>east <b>v</b>aried and <b>f</b>estive.",ko:"맛의 다양성은 잔치를 다양하고 축제적으로 만든다.",focus:"F vs V"}
+        ]
+      },
+      {
+        id:"th", name:"TH 발음", color:"gold",
+        tip:"TH는 한국어에 전혀 없는 소리입니다. '스', '드', '쓰'로 발음하면 안 됩니다!",
+        mouth:"혀를 윗니와 아랫니 사이에 살짝 내밀고 공기를 흘립니다.\n/θ/: 무성음 (think, three)\n/ð/: 유성음 (this, the, that)",
+        diff:"혀를 <strong>치아 사이에 내밀어야</strong> 합니다. 많이 낯설지만 핵심!",
+        pairs:[
+          {en1:"think",ipa1:"/θɪŋk/",ko1:"생각하다", en2:"sink",ipa2:"/sɪŋk/",ko2:"싱크대"},
+          {en1:"three",ipa1:"/θriː/",ko1:"셋", en2:"tree",ipa2:"/triː/",ko2:"나무"},
+          {en1:"bath",ipa1:"/bæθ/",ko1:"목욕", en2:"bat",ipa2:"/bæt/",ko2:"방망이"},
+          {en1:"this",ipa1:"/ðɪs/",ko1:"이것", en2:"dis",ipa2:"/dɪs/",ko2:"무시하다"},
+          {en1:"they",ipa1:"/ðeɪ/",ko1:"그들", en2:"day",ipa2:"/deɪ/",ko2:"날"},
+        ],
+        sentences:[
+          {en:"<b>Th</b>ink about <b>th</b>is <b>th</b>ing.",ko:"이것에 대해 생각해봐.",focus:"TH 발음"},
+          {en:"<b>Th</b>ey <b>th</b>ank <b>th</b>e <b>th</b>ief <b>th</b>ough.",ko:"그들은 그 도둑을 감사해하긴 했다.",focus:"TH 발음"},
+          {en:"<b>Th</b>at <b>th</b>ick <b>th</b>ing is <b>th</b>ere.",ko:"그 두꺼운 것은 거기 있다.",focus:"TH 발음"},
+          {en:"<b>The</b> <b>th</b>ree <b>th</b>ings are <b>th</b>rough.",ko:"그 세 가지는 통과했다.",focus:"TH 발음"},
+          {en:"<b>Th</b>rough <b>th</b>e <b>th</b>atch, <b>th</b>ey <b>th</b>aw.",ko:"지붕을 통해 그들은 녹았다.",focus:"TH 발음"},
+          {en:"<b>Th</b>ose <b>th</b>orough <b>th</b>oughts are <b>th</b>eatrical.",ko:"그 철저한 생각들은 연극적이다.",focus:"TH 발음"},
+          {en:"<b>Th</b>is <b>th</b>eory <b>th</b>rives <b>th</b>rough <b>th</b>ought.",ko:"이 이론은 생각을 통해 번영한다.",focus:"TH 발음"},
+          {en:"<b>The</b> <b>th</b>oth on <b>th</b>at <b>th</b>orn is <b>th</b>in.",ko:"그 가시 위의 이빨은 얇다.",focus:"TH 발음"},
+          {en:"<b>Th</b>e <b>th</b>eme of <b>th</b>at <b>th</b>eatre is <b>th</b>rilling.",ko:"그 극장의 주제는 스릴 있다.",focus:"TH 발음"},
+          {en:"<b>Th</b>ink <b>th</b>anks <b>th</b>at <b>th</b>ose <b>th</b>ings <b>th</b>aw.",ko:"그것들이 녹는 것을 감사하며 생각해.",focus:"TH 발음"},
+          {en:"<b>The</b>ir <b>th</b>orn <b>th</b>rew <b>th</b>ose <b>th</b>ird <b>th</b>ings.",ko:"그들의 가시가 그 세 번째 것들을 던졌다.",focus:"TH 발음"},
+          {en:"<b>Th</b>en <b>th</b>e <b>th</b>ief <b>th</b>ought <b>th</b>rough.",ko:"그러면 그 도둑이 통과를 생각했다.",focus:"TH 발음"},
+          {en:"<b>Th</b>ink <b>th</b>is <b>th</b>ing <b>th</b>rough <b>th</b>oroughly.",ko:"이것을 철저히 생각해.",focus:"TH 발음"},
+          {en:"<b>Th</b>at <b>th</b>eatre <b>th</b>eme is <b>th</b>oughtful and <b>th</b>ree-fold.",ko:"그 극장 주제는 사려 깊고 세 가지이다.",focus:"TH 발음"},
+          {en:"<b>The</b> <b>th</b>ird <b>th</b>ank goes <b>th</b>rough <b>th</b>em.",ko:"세 번째 감사는 그들을 통과한다.",focus:"TH 발음"},
+          {en:"<b>Th</b>ose <b>th</b>ousand <b>th</b>ings <b>th</b>row <b>th</b>em.",ko:"그 수천 가지가 그들을 던진다.",focus:"TH 발음"},
+          {en:"<b>Th</b>ink <b>th</b>is <b>th</b>rough: <b>th</b>em, <b>th</b>en, <b>th</b>ere.",ko:"이것을 생각해: 그들, 그러면, 거기.",focus:"TH 발음"},
+          {en:"<b>The</b> <b>th</b>ird <b>th</b>atch is <b>th</b>in and <b>th</b>awed.",ko:"세 번째 지붕은 얇고 녹았다.",focus:"TH 발음"},
+          {en:"<b>Th</b>ose <b>th</b>ought-<b>th</b>ings <b>th</b>row <b>th</b>eir <b>th</b>ing.",ko:"그 생각-것들은 그들의 것을 던진다.",focus:"TH 발음"},
+          {en:"<b>Th</b>ink <b>th</b>rough <b>th</b>is <b>th</b>eory: <b>th</b>at's <b>th</b>e <b>th</b>ing.",ko:"이 이론을 생각해: 그것이 것이다.",focus:"TH 발음"}
+        ]
+      },
+      {
+        id:"shortlong", name:"단·장모음", color:"purple",
+        tip:"영어는 모음 길이가 의미를 구분합니다. ship과 sheep은 완전히 다른 단어!",
+        mouth:"/ɪ/ (짧게): 입을 조금만 벌리고 '이'\n/iː/ (길게): 입을 양쪽으로 쫙 펴고 '이이'\n긴 모음은 단순히 길기만 한 게 아니라 입 모양도 다릅니다.",
+        diff:"짧은 /ɪ/는 '긴장이 없는' 소리, 긴 /iː/는 입을 양옆으로 펴는 '긴장된' 소리",
+        pairs:[
+          {en1:"ship",ipa1:"/ʃɪp/",ko1:"배", en2:"sheep",ipa2:"/ʃiːp/",ko2:"양"},
+          {en1:"sit",ipa1:"/sɪt/",ko1:"앉다", en2:"seat",ipa2:"/siːt/",ko2:"좌석"},
+          {en1:"bit",ipa1:"/bɪt/",ko1:"조각", en2:"beat",ipa2:"/biːt/",ko2:"박자"},
+          {en1:"fill",ipa1:"/fɪl/",ko1:"채우다", en2:"feel",ipa2:"/fiːl/",ko2:"느끼다"},
+          {en1:"live",ipa1:"/lɪv/",ko1:"살다", en2:"leave",ipa2:"/liːv/",ko2:"떠나다"},
+        ],
+        sentences:[
+          {en:"The <b>sh</b>ip is full of <b>sh</b>eep.",ko:"배가 양으로 가득하다.",focus:"단장모음"},
+          {en:"S<b>i</b>t down on the <b>sea</b>t please.",ko:"좌석에 앉아주세요.",focus:"단장모음"},
+          {en:"A b<b>i</b>t of b<b>ea</b>t keeps the m<b>u</b>sic going.",ko:"약간의 박자가 음악을 계속하게 한다.",focus:"단장모음"},
+          {en:"F<b>i</b>ll the cup but don't f<b>ee</b>l rushed.",ko:"컵을 채우되 서두르지 마.",focus:"단장모음"},
+          {en:"L<b>i</b>ve life, don't l<b>ea</b>ve it empty.",ko:"삶을 살되, 비어있게 떠나지 마.",focus:"단장모음"},
+          {en:"His h<b>i</b>t songs are a gr<b>ea</b>t b<b>e</b>at.",ko:"그의 히트곡은 훌륭한 박자다.",focus:"단장모음"},
+          {en:"W<b>i</b>ll you s<b>i</b>t h<b>e</b>re f<b>ea</b>ring nothing?",ko:"여기 앉아서 아무것도 두려워하지 않을래?",focus:"단장모음"},
+          {en:"The sh<b>i</b>p's crew fed the sh<b>ee</b>p on d<b>e</b>ck.",ko:"배의 선원들은 갑판에서 양을 먹였다.",focus:"단장모음"},
+          {en:"M<b>i</b>ss the m<b>ea</b>ning and m<b>i</b>ss the whole p<b>i</b>cture.",ko:"의미를 놓치고 전체 그림을 놓친다.",focus:"단장모음"},
+          {en:"H<b>e</b> w<b>i</b>ll w<b>e</b>ar his n<b>ea</b>t sh<b>i</b>rt to the f<b>ea</b>st.",ko:"그는 연회에 깔끔한 셔츠를 입을 것이다.",focus:"단장모음"},
+          {en:"The qu<b>i</b>ck k<b>i</b>ng l<b>ea</b>d h<b>i</b>s te<b>a</b>m to v<b>i</b>ctory.",ko:"빠른 왕이 자신의 팀을 승리로 이끌었다.",focus:"단장모음"},
+          {en:"Th<b>i</b>s f<b>i</b>eld of wh<b>ea</b>t n<b>ee</b>ds careful fe<b>e</b>ding.",ko:"이 밀밭은 신중한 먹이를 필요로 한다.",focus:"단장모음"},
+          {en:"K<b>i</b>ck the b<b>a</b>ll to m<b>ea</b>sure the d<b>i</b>stance.",ko:"거리를 측정하기 위해 공을 찬다.",focus:"단장모음"},
+          {en:"L<b>i</b>ttle m<b>i</b>ce p<b>ea</b>ce fully and f<b>ee</b>l safe.",ko:"작은 쥐들이 완전히 평화롭고 안전하다고 느낀다.",focus:"단장모음"},
+          {en:"R<b>i</b>ch w<b>ea</b>lth is f<b>e</b>lt in s<b>o</b>ft th<b>i</b>ngs.",ko:"부의 부가 부드러운 것들에서 느껴진다.",focus:"단장모음"},
+          {en:"B<b>i</b>g d<b>i</b>fferences b<b>ea</b>tween h<b>i</b>m and h<b>e</b>r sp<b>i</b>n.",ko:"그와 그녀 사이의 큰 차이가 돈다.",focus:"단장모음"},
+          {en:"The p<b>i</b>ck and the pe<b>a</b>k of the h<b>i</b>ll look ne<b>a</b>r.",ko:"언덕의 선택과 봉우리가 가까워 보인다.",focus:"단장모음"},
+          {en:"W<b>i</b>ld b<b>ea</b>sts sk<b>i</b>p and f<b>e</b>ed when unw<b>i</b>se.",ko:"야생 짐승이 부주의할 때 스킵하고 먹는다.",focus:"단장모음"},
+          {en:"The r<b>i</b>ch p<b>e</b>ach tree l<b>ea</b>ves soft br<b>ea</b>d for the f<b>i</b>sh.",ko:"풍부한 복숭아나무가 물고기를 위해 부드러운 빵을 남긴다.",focus:"단장모음"},
+          {en:"Th<b>i</b>s wr<b>i</b>t will d<b>e</b>l<b>i</b>ver all the h<b>e</b>at we n<b>ee</b>d.",ko:"이 글이 우리가 필요한 모든 열을 전달할 것이다.",focus:"단장모음"}
+        ]
+      },
+    ],
+    sentences:[]  // 이제 각 카테고리가 문장을 포함하므로 비워둠
+  },
+  intermediate: {
+    name:"중급", icon:"🌿",
+    desc:"자음 군집, -ed/-s 어미 발음, 강세 패턴 등 중급 학습자가 자주 틀리는 규칙을 훈련합니다.",
+    categories:[
+      {
+        id:"ed", name:"-ed 어미", color:"accent",
+        tip:"과거형 -ed는 3가지 방법으로 발음됩니다. 규칙을 익히면 자연스러운 발음이 됩니다!",
+        mouth:"/t/: 무성음으로 끝나는 동사 뒤 → walked, talked, stopped\n/d/: 유성음으로 끝나는 동사 뒤 → played, called, moved\n/ɪd/: t나 d로 끝나는 동사 뒤 → wanted, needed, visited",
+        diff:"끝소리가 무성음이면 /t/, 유성음이면 /d/, t/d이면 /ɪd/",
+        pairs:[
+          {en1:"walked /t/",ipa1:"walk+t",ko1:"걸었다", en2:"played /d/",ipa2:"play+d",ko2:"놀았다"},
+          {en1:"stopped /t/",ipa1:"stop+t",ko1:"멈췄다", en2:"moved /d/",ipa2:"move+d",ko2:"이동했다"},
+          {en1:"talked /t/",ipa1:"talk+t",ko1:"말했다", en2:"called /d/",ipa2:"call+d",ko2:"불렀다"},
+          {en1:"wanted /ɪd/",ipa1:"want+ɪd",ko1:"원했다", en2:"needed /ɪd/",ipa2:"need+ɪd",ko2:"필요했다"},
+          {en1:"watched /t/",ipa1:"watch+t",ko1:"봤다", en2:"loved /d/",ipa2:"love+d",ko2:"사랑했다"},
+        ],
+        sentences:[
+          {en:"She <b>walk</b>ed and <b>talk</b>ed while he <b>listen</b>ed.",ko:"그녀가 걷고 이야기하는 동안 그는 들었다.",focus:"-ed 발음"},
+          {en:"He <b>stop</b>ped the <b>car</b> and <b>walk</b>ed away.",ko:"그는 차를 멈추고 걸어갔다.",focus:"-ed 발음"},
+          {en:"She <b>want</b>ed and <b>ask</b>ed for help.",ko:"그녀는 원했고 도움을 청했다.",focus:"-ed 발음"},
+          {en:"They <b>play</b>ed and <b>smile</b>d the whole day.",ko:"그들은 온종일 놀고 웃었다.",focus:"-ed 발음"},
+          {en:"I <b>call</b>ed and <b>wait</b>ed for your response.",ko:"나는 당신의 답변을 기다리며 전화했다.",focus:"-ed 발음"},
+          {en:"He <b>wash</b>ed his hands and <b>dry</b>ed them quickly.",ko:"그는 손을 씻고 빨리 말렸다.",focus:"-ed 발음"},
+          {en:"She <b>move</b>d and <b>unpack</b>ed her belongings.",ko:"그녀는 짐을 옮기고 꺼냈다.",focus:"-ed 발음"},
+          {en:"They <b>visit</b>ed and <b>hate</b>d the place.",ko:"그들은 방문했지만 그곳을 싫어했다.",focus:"-ed 발음"},
+          {en:"He <b>open</b>ed the door and <b>step</b>ped inside.",ko:"그는 문을 열고 안으로 들어갔다.",focus:"-ed 발음"},
+          {en:"She <b>study</b>ed hard and <b>pass</b>ed the test.",ko:"그녀는 열심히 공부했고 시험을 통과했다.",focus:"-ed 발음"},
+          {en:"They <b>arrive</b>d late but <b>enjoy</b>ed the party.",ko:"그들은 늦게 도착했지만 파티를 즐겼다.",focus:"-ed 발음"},
+          {en:"I <b>watch</b>ed the movie and <b>love</b>d every minute.",ko:"나는 영화를 봤고 매 순간을 사랑했다.",focus:"-ed 발음"},
+          {en:"He <b>work</b>ed hard and <b>earn</b>ed good money.",ko:"그는 열심히 일했고 좋은 돈을 벌었다.",focus:"-ed 발음"},
+          {en:"She <b>decide</b>d and <b>commit</b>ed to the plan.",ko:"그녀는 결정하고 계획에 약속했다.",focus:"-ed 발음"},
+          {en:"They <b>march</b>ed forward and <b>attack</b>ed the enemy.",ko:"그들은 전진했고 적을 공격했다.",focus:"-ed 발음"},
+          {en:"I <b>grab</b>ed the chance and <b>jump</b>ed at it.",ko:"나는 기회를 잡고 뛰어들었다.",focus:"-ed 발음"},
+          {en:"He <b>mix</b>ed the ingredients and <b>bake</b>d the cake.",ko:"그는 재료를 섞고 케이크를 구웠다.",focus:"-ed 발음"},
+          {en:"She <b>avoid</b>ed trouble and <b>escape</b>d safely.",ko:"그녀는 문제를 피했고 안전하게 탈출했다.",focus:"-ed 발음"},
+          {en:"They <b>permit</b>ted the event and <b>produce</b>d it successfully.",ko:"그들은 행사를 허가했고 성공적으로 제작했다.",focus:"-ed 발음"},
+          {en:"I <b>organize</b>d the meeting and <b>upload</b>ed the files.",ko:"나는 회의를 조직했고 파일을 업로드했다.",focus:"-ed 발음"}
+        ]
+      },
+      {
+        id:"clusters", name:"자음 군집", color:"blue",
+        tip:"영어에는 자음이 연속으로 오는 경우가 많습니다. 한국인은 자음 사이에 모음을 넣는 경향이 있습니다.",
+        mouth:"str-, spl-, scr- 등은 모음 없이 연속 발음합니다.\n'스트레스'가 아니라 /strɛs/처럼 자음들을 붙여서!",
+        diff:"자음 사이에 '으' 소리를 <strong>절대 넣지 마세요</strong>",
+        pairs:[
+          {en1:"stress",ipa1:"/strɛs/",ko1:"스트레스", en2:"express",ipa2:"/ɪksprɛs/",ko2:"표현하다"},
+          {en1:"street",ipa1:"/striːt/",ko1:"거리", en2:"spring",ipa2:"/sprɪŋ/",ko2:"봄"},
+          {en1:"strong",ipa1:"/strɒŋ/",ko1:"강한", en2:"splash",ipa2:"/splæʃ/",ko2:"튀기다"},
+          {en1:"scream",ipa1:"/skriːm/",ko1:"비명", en2:"split",ipa2:"/splɪt/",ko2:"나누다"},
+          {en1:"scratch",ipa1:"/skrætʃ/",ko1:"긁다", en2:"straight",ipa2:"/streɪt/",ko2:"직선"},
+        ],
+        sentences:[
+          {en:"The <b>str</b>ong <b>str</b>ess on the <b>str</b>eet.",ko:"거리의 강한 스트레스.",focus:"자음 군집"},
+          {en:"<b>Spr</b>ing brings fresh <b>str</b>awberries to the <b>str</b>eet.",ko:"봄은 거리에 신선한 딸기를 가져온다.",focus:"자음 군집"},
+          {en:"The <b>scr</b>eaming child <b>spl</b>ashed in the water.",ko:"비명을 지르는 아이가 물에 튀겼다.",focus:"자음 군집"},
+          {en:"They <b>str</b>uck a <b>str</b>ange object on the <b>str</b>eet.",ko:"그들은 거리에서 이상한 물체를 쳤다.",focus:"자음 군집"},
+          {en:"The <b>scr</b>atch and <b>spl</b>inter were <b>str</b>ong.",ko:"긁힘과 가시는 강했다.",focus:"자음 군집"},
+          {en:"<b>Spl</b>end<b>id</b> <b>str</b>ucturesstand <b>str</b>aight on the <b>spr</b>awl.",ko:"멋진 구조물이 펼쳐진 곳에 곧게 선다.",focus:"자음 군집"},
+          {en:"The <b>str</b>ategist <b>str</b>ew <b>str</b>ategies <b>str</b>ateegically.",ko:"전략가가 전략적으로 전략을 펼쳤다.",focus:"자음 군집"},
+          {en:"<b>Scr</b>ambling up <b>str</b>eaks of <b>str</b>ong light.",ko:"강한 빛의 줄무늬를 올라간다.",focus:"자음 군집"},
+          {en:"The <b>str</b>ift <b>str</b>ide <b>str</b>uck <b>str</b>ongly.",ko:"빠른 걸음이 강하게 쳤다.",focus:"자음 군집"},
+          {en:"<b>Spr</b>ing's <b>str</b>eam had <b>spl</b>endid <b>str</b>eaks.",ko:"봄의 개울에는 멋진 줄무늬가 있었다.",focus:"자음 군집"},
+          {en:"The <b>scr</b>ibbled <b>str</b>okes <b>str</b>ained the <b>str</b>etch.",ko:"낙서된 획이 늘음을 긴장하게 했다.",focus:"자음 군집"},
+          {en:"<b>Str</b>iving with <b>str</b>ength, she <b>str</b>ode <b>str</b>aight.",ko:"힘을 다해 노력하며, 그녀는 곧게 걸었다.",focus:"자음 군집"},
+          {en:"The <b>str</b>ucture <b>str</b>ains from <b>str</b>ong <b>str</b>esses.",ko:"구조가 강한 응력으로부터 긴장한다.",focus:"자음 군집"},
+          {en:"<b>Spl</b>endour and <b>scr</b>aps of <b>str</b>ategic <b>str</b>awing.",ko:"화려함과 전략적 그리기의 조각.",focus:"자음 군집"},
+          {en:"The <b>spr</b>ay of <b>spl</b>inters <b>str</b>ewn <b>str</b>aight.",ko:"가시 조각의 분무가 곧게 흩어져 있다.",focus:"자음 군집"},
+          {en:"<b>Str</b>eaming <b>str</b>eaks of <b>str</b>ife in <b>spr</b>awled space.",ko:"펼쳐진 공간에서 투쟁의 흐르는 줄무늬.",focus:"자음 군집"},
+          {en:"The <b>scr</b>eamingly <b>str</b>ong <b>str</b>ides <b>str</b>ained.",ko:"비명을 지르듯 강한 걸음이 긴장했다.",focus:"자음 군집"},
+          {en:"<b>Spl</b>ashing through <b>str</b>eat <b>str</b>ivals and <b>str</b>awing.",ko:"거리 경쟁을 통해 튀기며 그리기.",focus:"자음 군집"},
+          {en:"The <b>str</b>aight <b>str</b>okes <b>str</b>ained the <b>scr</b>ap.",ko:"곧은 획이 조각을 긴장하게 했다.",focus:"자음 군집"},
+          {en:"<b>Str</b>iving <b>str</b>aight through <b>str</b>ess and <b>spl</b>endid <b>str</b>eaks.",ko:"스트레스와 멋진 줄무늬를 통해 곧게 노력한다.",focus:"자음 군집"}
+        ]
+      },
+      {
+        id:"stress", name:"단어 강세", color:"gold",
+        tip:"영어는 강세(stress)가 의미를 바꿉니다. 같은 철자라도 강세 위치에 따라 명사/동사가 달라집니다!",
+        mouth:"강세 있는 음절: 더 크게, 더 길게, 더 높게\n강세 없는 음절: 짧고 약하게, 슈와(ə)로 약화",
+        diff:"명사는 앞 강세, 동사는 뒤 강세인 경우가 많습니다",
+        pairs:[
+          {en1:"PREsent (n.)",ipa1:"선물/현재",ko1:"명사", en2:"preSENT (v.)",ipa2:"발표하다",ko2:"동사"},
+          {en1:"REcord (n.)",ipa1:"기록",ko1:"명사", en2:"reCORD (v.)",ipa2:"녹음하다",ko2:"동사"},
+          {en1:"PROtest (n.)",ipa1:"항의",ko1:"명사", en2:"proTEST (v.)",ipa2:"항의하다",ko2:"동사"},
+          {en1:"OBject (n.)",ipa1:"물체",ko1:"명사", en2:"obJECT (v.)",ipa2:"반대하다",ko2:"동사"},
+          {en1:"PERmit (n.)",ipa1:"허가증",ko1:"명사", en2:"perMIT (v.)",ipa2:"허락하다",ko2:"동사"},
+        ],
+        sentences:[
+          {en:"Can you <b>pre</b>sent the <b>pre</b>sent to him?",ko:"그에게 선물을 발표해줄 수 있나요?",focus:"단어 강세"},
+          {en:"I need to <b>rec</b>ord this new <b>rec</b>ord.",ko:"나는 이 새 기록을 녹음해야 한다.",focus:"단어 강세"},
+          {en:"The <b>pro</b>test against the <b>pro</b>test is growing.",ko:"시위에 대한 시위가 커지고 있다.",focus:"단어 강세"},
+          {en:"The <b>ob</b>ject of his <b>ob</b>jection is unclear.",ko:"그의 반대의 목적이 불명확하다.",focus:"단어 강세"},
+          {en:"I'll <b>per</b>mit this only if you have a <b>per</b>mit.",ko:"나는 허가증이 있을 때만 이것을 허락할 것이다.",focus:"단어 강세"},
+          {en:"The <b>sub</b>ject of the <b>sub</b>jective study varies.",ko:"주관적 연구의 주제가 다양하다.",focus:"단어 강세"},
+          {en:"Your <b>con</b>test entry shows <b>con</b>tested skills.",ko:"당신의 경쟁 항목이 논쟁이 된 기술을 보여준다.",focus:"단어 강세"},
+          {en:"The <b>im</b>port of goods <b>im</b>ports change.",ko:"상품의 수입이 변화를 수입한다.",focus:"단어 강세"},
+          {en:"A <b>trans</b>port worker needs a <b>trans</b>port pass.",ko:"운송 근로자는 운송 통행증이 필요하다.",focus:"단어 강세"},
+          {en:"The <b>dis</b>count store offers <b>dis</b>counted prices.",ko:"할인점이 할인된 가격을 제공한다.",focus:"단어 강세"},
+          {en:"They <b>re</b>ject any <b>re</b>jection of their proposal.",ko:"그들은 자신의 제안 거부를 거부한다.",focus:"단어 강세"},
+          {en:"The <b>in</b>crease will <b>in</b>crease productivity.",ko:"증가가 생산성을 증가할 것이다.",focus:"단어 강세"},
+          {en:"His <b>con</b>duct shows bad <b>con</b>duct.",ko:"그의 행동은 나쁜 행동을 보여준다.",focus:"단어 강세"},
+          {en:"A <b>con</b>flict zone has <b>con</b>flicting opinions.",ko:"분쟁 지역은 상충되는 의견을 가지고 있다.",focus:"단어 강세"},
+          {en:"The <b>pro</b>duce market sells fresh <b>pro</b>duce.",ko:"산물 시장이 신선한 산물을 판매한다.",focus:"단어 강세"},
+          {en:"A <b>re</b>bel group started to <b>re</b>bel.",ko:"반란 집단이 반란을 시작했다.",focus:"단어 강세"},
+          {en:"The <b>com</b>pound has a <b>com</b>pounded problem.",ko:"혼합물이 복합된 문제를 가지고 있다.",focus:"단어 강세"},
+          {en:"Her <b>pre</b>sent shows a <b>pre</b>sented gift.",ko:"그녀의 선물이 제시된 선물을 보여준다.",focus:"단어 강세"},
+          {en:"The <b>in</b>sult caused an <b>in</b>sulted reaction.",ko:"모욕이 모욕받은 반응을 일으켰다.",focus:"단어 강세"},
+          {en:"His <b>per</b>fect <b>per</b>formance earned praise.",ko:"그의 완벽한 공연이 칭찬을 받았다.",focus:"단어 강세"}
+        ]
+      },
+      {
+        id:"schwas", name:"슈와 /ə/", color:"purple",
+        tip:"영어에서 가장 많이 쓰이는 소리! 강세 없는 모음은 대부분 슈와 /ə/로 약화됩니다.",
+        mouth:"/ə/: 입을 살짝 벌리고 힘 빼고 '어'처럼 발음. 매우 짧고 약합니다.\nabout /əˈbaʊt/ → 첫 a는 /ə/\nagenda /əˈdʒɛndə/ → 첫·끝 a는 /ə/",
+        diff:"강세 없는 모음 = 항상 약하게. 철자에 속지 마세요!",
+        pairs:[
+          {en1:"about",ipa1:"/ə'baʊt/",ko1:"약", en2:"sofa",ipa2:"/'soʊfə/",ko2:"소파"},
+          {en1:"banana",ipa1:"/bə'nænə/",ko1:"바나나", en2:"camera",ipa2:"/'kæmərə/",ko2:"카메라"},
+          {en1:"ago",ipa1:"/ə'goʊ/",ko1:"전에", en2:"system",ipa2:"/'sɪstəm/",ko2:"시스템"},
+          {en1:"the",ipa1:"/ðə/",ko1:"그(관사)", en2:"a",ipa2:"/ə/",ko2:"하나의"},
+          {en1:"teacher",ipa1:"/'tiːtʃər/",ko1:"교사", en2:"doctor",ipa2:"/'dɒktər/",ko2:"의사"},
+        ],
+        sentences:[
+          {en:"I learned <b>a</b>bout <b>a</b> banana long <b>a</b>go.",ko:"나는 오래 전에 바나나에 대해 배웠다.",focus:"슈와"},
+          {en:"The <b>camera</b> showed <b>the</b> <b>sofa</b> clearly.",ko:"카메라가 소파를 명확하게 보였다.",focus:"슈와"},
+          {en:"<b>A</b> <b>system</b> helps <b>the</b> <b>teacher</b> organize.",ko:"시스템이 교사가 정리하도록 돕는다.",focus:"슈와"},
+          {en:"The <b>doctor</b> is <b>a</b>bout <b>the</b> <b>agenda</b>.",ko:"의사가 의제에 대해 이야기한다.",focus:"슈와"},
+          {en:"<b>A</b>gain, I saw <b>the</b> <b>cinema</b> <b>a</b>head.",ko:"다시, 나는 앞의 영화관을 봤다.",focus:"슈와"},
+          {en:"The <b>computer</b> <b>system</b> needs <b>a</b> fix.",ko:"컴퓨터 시스템이 수리가 필요하다.",focus:"슈와"},
+          {en:"She <b>a</b>voided <b>the</b> <b>tomato</b> market <b>a</b>gain.",ko:"그녀는 다시 토마토 시장을 피했다.",focus:"슈와"},
+          {en:"The <b>potato</b> and <b>tomato</b> need <b>a</b> <b>moment</b>.",ko:"감자와 토마토가 잠시가 필요하다.",focus:"슈와"},
+          {en:"<b>A</b> <b>comma</b> in <b>the</b> sentence helps <b>a</b> <b>lot</b>.",ko:"문장의 쉼표가 많이 도움이 된다.",focus:"슈와"},
+          {en:"The <b>diploma</b> <b>a</b>nd <b>the</b> <b>data</b> are here.",ko:"졸업장과 데이터가 여기 있다.",focus:"슈와"},
+          {en:"I learned <b>a</b>bout <b>the</b> <b>panda</b> <b>a</b>nd <b>koala</b>.",ko:"나는 판다와 코알라에 대해 배웠다.",focus:"슈와"},
+          {en:"The <b>agenda</b> for <b>the</b> <b>zebra</b> project is set.",ko:"얼룩말 프로젝트의 의제가 설정되었다.",focus:"슈와"},
+          {en:"<b>A</b> <b>drama</b> about <b>the</b> <b>chakra</b> begins.",ko:"차크라에 대한 드라마가 시작된다.",focus:"슈와"},
+          {en:"The <b>umbrella</b> and <b>the</b> <b>gorilla</b> are <b>a</b> sight.",ko:"우산과 고릴라가 광경이다.",focus:"슈와"},
+          {en:"She told <b>the</b> <b>story</b> about <b>a</b> <b>pizza</b> place.",ko:"그녀는 피자 가게에 대한 이야기를 말했다.",focus:"슈와"},
+          {en:"The <b>idea</b> <b>a</b>nd <b>the</b> <b>formula</b> are useful.",ko:"아이디어와 공식이 유용하다.",focus:"슈와"},
+          {en:"<b>A</b> <b>trivia</b> night at <b>the</b> <b>arena</b> was fun.",ko:"경기장의 트리비아 밤이 재미있었다.",focus:"슈와"},
+          {en:"The <b>canada</b> team and <b>the</b> <b>villa</b> group met.",ko:"캐나다 팀과 빌라 그룹이 만났다.",focus:"슈와"},
+          {en:"She bought <b>a</b> <b>sauna</b> for <b>the</b> <b>area</b>.",ko:"그녀는 그 지역을 위해 사우나를 샀다.",focus:"슈와"},
+          {en:"The <b>opera</b> and <b>the</b> <b>quota</b> system <b>a</b>re flexible.",ko:"오페라와 할당 시스템은 유연하다.",focus:"슈와"}
+        ]
+      },
+    ],
+    sentences:[]  // 이제 각 카테고리가 문장을 포함하므로 비워둠
+  },
+  advanced: {
+    name:"고급", icon:"🌳",
+    desc:"연음, 약화, 억양 패턴 등 원어민처럼 들리기 위한 고급 발화 규칙을 훈련합니다.",
+    categories:[
+      {
+        id:"linking", name:"연음 (Linking)", color:"accent",
+        tip:"원어민은 단어들을 붙여서 발음합니다. 이것이 '빠르게 말하는 것처럼' 들리는 이유입니다.",
+        mouth:"자음+모음: 자음이 다음 단어 모음과 연결됨\n'an apple' → /ə'næpəl/처럼 연결!\n'pick it up' → /pɪ.kɪ.tʌp/",
+        diff:"단어 경계를 잊고, 소리의 흐름을 따라가세요",
+        pairs:[
+          {en1:"an apple",ipa1:"/ə'næpəl/",ko1:"사과 하나", en2:"an orange",ipa2:"/ə'nɒrɪndʒ/",ko2:"오렌지 하나"},
+          {en1:"pick it up",ipa1:"/pɪ.kɪ.tʌp/",ko1:"집어올려", en2:"turn it on",ipa2:"/tɜː.nɪ.tɒn/",ko2:"켜"},
+          {en1:"not at all",ipa1:"/nɒ.tæ.tɔːl/",ko1:"전혀 아니야", en2:"come on in",ipa2:"/kʌ.mɒ.nɪn/",ko2:"어서 들어와"},
+          {en1:"hold on",ipa1:"/hoʊl.dɒn/",ko1:"잠깐만", en2:"give up",ipa2:"/gɪ.vʌp/",ko2:"포기해"},
+          {en1:"take off",ipa1:"/teɪ.kɒf/",ko1:"이륙하다", en2:"put on",ipa2:"/pʊ.tɒn/",ko2:"착용하다"},
+        ],
+        sentences:[
+          {en:"I'd like <b>an apple</b> and <b>an orange</b> please.",ko:"제발 사과 하나와 오렌지 하나 주세요.",focus:"연음"},
+          {en:"Can you <b>pick it up</b> and <b>turn it on</b>?",ko:"그것을 집어올리고 켜줄 수 있나요?",focus:"연음"},
+          {en:"It's <b>not at all</b> what I wanted.",ko:"전혀 내가 원하던 게 아니다.",focus:"연음"},
+          {en:"Please <b>come on in</b> and <b>hold on</b> a moment.",ko:"제발 들어오고 잠깐만.",focus:"연음"},
+          {en:"We need <b>to</b> <b>all</b> <b>agree on it</b>.",ko:"우리는 모두 그것에 동의해야 한다.",focus:"연음"},
+          {en:"<b>Let</b> <b>it</b> <b>go</b> and <b>move on</b>.",ko:"그것을 놓고 앞으로 나아가.",focus:"연음"},
+          {en:"She'll <b>take off</b> her <b>coat</b> <b>and</b> <b>put on</b> her shoes.",ko:"그녀는 코트를 벗고 신발을 신을 것이다.",focus:"연음"},
+          {en:"You <b>should</b> <b>all</b> <b>ask</b> <b>about</b> the price.",ko:"너희는 모두 가격에 대해 물어봐야 한다.",focus:"연음"},
+          {en:"I'll <b>pull</b> <b>out</b> the drawer <b>and give</b> it to you.",ko:"나는 서랍을 꺼내서 너에게 줄 것이다.",focus:"연음"},
+          {en:"They'll <b>work</b> <b>on</b> it <b>and</b> <b>deliver</b> <b>it</b>.",ko:"그들은 그것을 작업하고 배달할 것이다.",focus:"연음"},
+          {en:"We <b>need</b> <b>an</b> <b>extra</b> item for <b>the</b> event.",ko:"우리는 행사를 위해 추가 항목이 필요하다.",focus:"연음"},
+          {en:"<b>Put</b> <b>it</b> <b>away</b> and <b>come</b> <b>out</b>.",ko:"그것을 치우고 나와.",focus:"연음"},
+          {en:"Can I <b>get</b> <b>a</b> glass <b>of</b> water?",ko:"물 한 잔을 얻을 수 있나요?",focus:"연음"},
+          {en:"She'll <b>look</b> <b>at</b> <b>it</b> and <b>decide</b>.",ko:"그녀는 그것을 보고 결정할 것이다.",focus:"연음"},
+          {en:"We should <b>speak</b> <b>in</b> <b>a</b> lower voice.",ko:"우리는 더 낮은 목소리로 말해야 한다.",focus:"연음"},
+          {en:"He'll <b>rush</b> <b>in</b> here <b>and</b> <b>ask</b> questions.",ko:"그는 여기로 서둘러 들어와서 질문할 것이다.",focus:"연음"},
+          {en:"I want <b>to</b> <b>add</b> <b>an</b> <b>extra</b> <b>option</b>.",ko:"나는 추가 옵션을 추가하고 싶다.",focus:"연음"},
+          {en:"They need <b>to</b> <b>all</b> <b>stay</b> <b>alert</b> <b>and</b> <b>active</b>.",ko:"그들은 모두 주의 깊고 활동적으로 있어야 한다.",focus:"연음"},
+          {en:"Please <b>tell</b> <b>her</b> to <b>pack</b> <b>up</b> everything.",ko:"제발 그녀에게 모든 것을 싸도록 말해.",focus:"연음"},
+          {en:"We'll <b>break</b> <b>it</b> <b>up</b> <b>into</b> small pieces.",ko:"우리는 그것을 작은 조각으로 나눌 것이다.",focus:"연음"}
+        ]
+      },
+      {
+        id:"reduction", name:"단어 약화", color:"blue",
+        tip:"빠른 영어에서 조동사, 전치사 등 기능어는 크게 약화됩니다. 이것이 청취가 어려운 진짜 이유!",
+        mouth:"going to → gonna /ˈgɒnə/\nwant to → wanna /ˈwɒnə/\nhave to → hafta /ˈhæftə/\nkind of → kinda /ˈkaɪndə/",
+        diff:"격식체에서는 약화 없이, 구어체에서는 대부분 약화됨",
+        pairs:[
+          {en1:"going to",ipa1:"→ gonna",ko1:"~할 것이다", en2:"want to",ipa2:"→ wanna",ko2:"~하고 싶다"},
+          {en1:"have to",ipa1:"→ hafta",ko1:"~해야 한다", en2:"has to",ipa2:"→ hasta",ko2:"~해야 한다"},
+          {en1:"out of",ipa1:"→ outta",ko1:"~밖으로", en2:"kind of",ipa2:"→ kinda",ko2:"일종의"},
+          {en1:"could have",ipa1:"→ coulda",ko1:"~할 수 있었다", en2:"would have",ipa2:"→ woulda",ko2:"~했을 것이다"},
+          {en1:"them",ipa1:"→ 'em",ko1:"그들을", en2:"him",ipa2:"→ 'im",ko2:"그를"},
+        ],
+        sentences:[
+          {en:"I'm <b>gonna</b> go there tomorrow.",ko:"나는 내일 거기 갈 것이다.",focus:"단어 약화"},
+          {en:"Do you <b>wanna</b> come with me?",ko:"너 나랑 오고 싶어?",focus:"단어 약화"},
+          {en:"You <b>hafta</b> finish your homework.",ko:"너는 숙제를 끝내야 한다.",focus:"단어 약화"},
+          {en:"She <b>hasta</b> work late today.",ko:"그녀는 오늘 늦게까지 일해야 한다.",focus:"단어 약화"},
+          {en:"I'm <b>outta</b> here right now.",ko:"나는 지금 여기서 나가.",focus:"단어 약화"},
+          {en:"It's <b>kinda</b> difficult for me.",ko:"그것은 나에게 일종의 어렵다.",focus:"단어 약화"},
+          {en:"I <b>coulda</b> done it better.",ko:"나는 그것을 더 잘 할 수 있었다.",focus:"단어 약화"},
+          {en:"You <b>woulda</b> loved it there.",ko:"넌 거기서 그것을 좋아했을 것이다.",focus:"단어 약화"},
+          {en:"Give <b>'em</b> the message immediately.",ko:"그들에게 즉시 메시지를 줘.",focus:"단어 약화"},
+          {en:"Tell <b>'im</b> to call me.",ko:"그에게 나에게 전화하라고 말해.",focus:"단어 약화"},
+          {en:"We're <b>gonna</b> have fun tonight.",ko:"우리는 오늘 밤 재미있을 것이다.",focus:"단어 약화"},
+          {en:"Does he <b>wanna</b> stay here?",ko:"그는 여기 머물고 싶어?",focus:"단어 약화"},
+          {en:"I <b>hafta</b> leave now.",ko:"나는 지금 떠나야 한다.",focus:"단어 약화"},
+          {en:"He <b>hasta</b> fix the car.",ko:"그는 차를 수리해야 한다.",focus:"단어 약화"},
+          {en:"Get <b>outta</b> my way!",ko:"내 길을 비워!",focus:"단어 약화"},
+          {en:"That's <b>kinda</b> nice, isn't it?",ko:"그것은 일종의 좋지 않아?",focus:"단어 약화"},
+          {en:"I <b>shoulda</b> known better.",ko:"나는 더 잘 알았어야 했다.",focus:"단어 약화"},
+          {en:"You <b>musta</b> been tired.",ko:"너는 피곤했을 것이다.",focus:"단어 약화"},
+          {en:"Send it to <b>'em</b> right away.",ko:"즉시 그들에게 보내.",focus:"단어 약화"},
+          {en:"Ask <b>'im</b> about the plan.",ko:"그에게 계획에 대해 물어봐.",focus:"단어 약화"}
+        ]
+      },
+      {
+        id:"intonation", name:"억양 패턴", color:"gold",
+        tip:"영어 억양은 감정과 의미를 전달합니다. 같은 문장도 억양에 따라 전혀 다른 의미가 됩니다.",
+        mouth:"하강 억양 (↘): 평서문, WH 의문문, 명령문\n상승 억양 (↗): Yes/No 의문문, 불확실\n상승-하강: 목록 나열 마지막 제외",
+        diff:"문장 끝에서 올라가면 의문/불확실, 내려가면 단정/완결",
+        pairs:[
+          {en1:"You're coming.↘",ipa1:"단정/명령",ko1:"너 올 거잖아.", en2:"You're coming?↗",ipa2:"의문",ko2:"너 오는 거야?"},
+          {en1:"Really.↘",ipa1:"무관심",ko1:"그래.", en2:"Really?↗",ipa2:"놀람/의심",ko2:"진짜?"},
+          {en1:"I know.↘",ipa1:"확신",ko1:"나도 알아.", en2:"I know...↗",ipa2:"불확실",ko2:"알긴 아는데..."},
+          {en1:"Great.↘",ipa1:"진심/끝냄",ko1:"좋아.", en2:"Great.↗",ipa2:"반어",ko2:"(좋지 않음을 암시)"},
+          {en1:"Coffee, tea↗, or water↘?",ipa1:"열거",ko1:"커피, 차, 또는 물?", en2:"A or B↗?",ipa2:"2지선다",ko2:"A야 B야?"},
+        ],
+        sentences:[
+          {en:"You're coming tonight↘.",ko:"넌 오늘밤 올 거야.",focus:"억양 패턴"},
+          {en:"You're coming tonight?↗",ko:"넌 오늘밤 오는 거야?",focus:"억양 패턴"},
+          {en:"That's great↘!",ko:"그건 좋아!",focus:"억양 패턴"},
+          {en:"That's great↗?",ko:"그게 좋다고? (반어)",focus:"억양 패턴"},
+          {en:"I like it↘.",ko:"나는 그것을 좋아해.",focus:"억양 패턴"},
+          {en:"I like it↗?",ko:"나는 그것을 좋아하는 거야?",focus:"억양 패턴"},
+          {en:"She'll be here soon↘.",ko:"그녀는 곧 여기 올 거야.",focus:"억양 패턴"},
+          {en:"She'll be here soon↗?",ko:"그녀가 곧 여기 올 거야?",focus:"억양 패턴"},
+          {en:"Do it now↘!",ko:"지금 해!",focus:"억양 패턴"},
+          {en:"Do it now↗?",ko:"지금 해도 돼?",focus:"억양 패턴"},
+          {en:"Coffee↗, tea↗, or milk↘?",ko:"커피, 차, 아니면 우유?",focus:"억양 패턴"},
+          {en:"You know↘.",ko:"넌 알아.",focus:"억양 패턴"},
+          {en:"You know↗?",ko:"넌 알아?",focus:"억양 패턴"},
+          {en:"Really↘.",ko:"정말.",focus:"억양 패턴"},
+          {en:"Really↗?",ko:"정말?",focus:"억양 패턴"},
+          {en:"I understand↘.",ko:"나는 이해해.",focus:"억양 패턴"},
+          {en:"I understand↗?",ko:"내가 이해하는 게 맞아?",focus:"억양 패턴"},
+          {en:"It's fine↘.",ko:"괜찮아.",focus:"억양 패턴"},
+          {en:"It's fine↗?",ko:"괜찮다고?",focus:"억양 패턴"},
+          {en:"We'll go tomorrow↘.",ko:"우리는 내일 갈 거야.",focus:"억양 패턴"}
+        ]
+      },
+      {
+        id:"flap", name:"플랩 T", color:"purple",
+        tip:"미국 영어에서 t는 모음 사이에 오면 'ㄹ'처럼 발음됩니다. 영국식과 다른 미국식 특징!",
+        mouth:"water /ˈwɔːtər/ → '워러'\nbetter /ˈbɛtər/ → '베러'\ncity /ˈsɪti/ → '시리'\n모음 사이 t는 빠른 혀 탁음으로 발음",
+        diff:"미국식에서 모음 사이 t = 한국어 'ㄹ' 비슷한 소리",
+        pairs:[
+          {en1:"water",ipa1:"/ˈwɔːɾər/",ko1:"물 → '워러'", en2:"butter",ipa2:"/ˈbʌɾər/",ko2:"버터 → '버러'"},
+          {en1:"better",ipa1:"/ˈbɛɾər/",ko1:"더 좋은 → '베러'", en2:"little",ipa2:"/ˈlɪɾəl/",ko2:"작은 → '리를'"},
+          {en1:"city",ipa1:"/ˈsɪɾi/",ko1:"도시 → '시리'", en2:"pretty",ipa2:"/ˈprɪɾi/",ko2:"예쁜 → '프리리'"},
+          {en1:"matter",ipa1:"/ˈmæɾər/",ko1:"문제 → '매러'", en2:"letter",ipa2:"/ˈlɛɾər/",ko2:"편지 → '레러'"},
+          {en1:"atom",ipa1:"/ˈæɾəm/",ko1:"원자 → '애럼'", en2:"total",ipa2:"/ˈtoʊɾəl/",ko2:"전체 → '토를'"},
+        ],
+        sentences:[
+          {en:"Please get me some <b>wa</b>ter.",ko:"제발 나에게 물을 가져다줘.",focus:"플랩 T"},
+          {en:"The <b>but</b>ter is on the <b>ta</b>ble.",ko:"버터가 테이블 위에 있다.",focus:"플랩 T"},
+          {en:"This city is much <b>bet</b>ter than before.",ko:"이 도시는 이전보다 훨씬 낫다.",focus:"플랩 T"},
+          {en:"A <b>lit</b>tle dog is very <b>pret</b>ty.",ko:"작은 개는 매우 예쁘다.",focus:"플랩 T"},
+          {en:"The <b>ma</b>tter is between me and you.",ko:"문제는 나와 너 사이의 일이다.",focus:"플랩 T"},
+          {en:"I got a <b>let</b>ter from the <b>cit</b>y.",ko:"나는 도시에서 편지를 받았다.",focus:"플랩 T"},
+          {en:"The <b>atom</b> has a <b>to</b>tal weight.",ko:"원자는 총 무게를 가지고 있다.",focus:"플랩 T"},
+          {en:"<b>Pity</b> and <b>pity</b> don't <b>fit</b> together.",ko:"불쌍함은 함께 맞지 않다.",focus:"플랩 T"},
+          {en:"The <b>cot</b>tage is very <b>pret</b>ty.",ko:"오두막은 매우 예쁘다.",focus:"플랩 T"},
+          {en:"I need <b>wa</b>ter urgently.",ko:"나는 긴급히 물이 필요하다.",focus:"플랩 T"},
+          {en:"<b>Gat</b>eway to the <b>cit</b>y is <b>bet</b>ter now.",ko:"도시로의 입구가 이제 낫다.",focus:"플랩 T"},
+          {en:"The <b>kit</b>ten is very <b>pret</b>ty and <b>lit</b>tle.",ko:"새끼 고양이는 매우 예쁘고 작다.",focus:"플랩 T"},
+          {en:"A <b>bit</b>ter <b>ta</b>ste but <b>bet</b>ter quality.",ko:"쓴맛이지만 더 좋은 품질이다.",focus:"플랩 T"},
+          {en:"<b>Met</b>al in the <b>tot</b>al weight <b>mat</b>ters.",ko:"총 무게의 금속이 중요하다.",focus:"플랩 T"},
+          {en:"The <b>sat</b>ellite is in <b>orbit</b> today.",ko:"위성이 오늘 궤도에 있다.",focus:"플랩 T"},
+          {en:"<b>Kat</b>ie brought a <b>lot</b> of <b>wat</b>er.",ko:"케이티가 많은 물을 가져왔다.",focus:"플랩 T"},
+          {en:"<b>Quet</b>ie and <b>Pret</b>tie <b>fit</b> well.",ko:"조용함과 예쁨이 잘 맞다.",focus:"플랩 T"},
+          {en:"The <b>rat</b>ing and <b>tot</b>al score <b>mat</b>ter.",ko:"평점과 총점이 중요하다.",focus:"플랩 T"},
+          {en:"<b>Cit</b>izens in the <b>cit</b>y need <b>wa</b>ter.",ko:"도시의 시민들은 물이 필요하다.",focus:"플랩 T"},
+          {en:"The <b>hot</b>el is <b>pret</b>tier than I <b>thought</b>.",ko:"호텔이 내가 생각한 것보다 더 예쁘다.",focus:"플랩 T"}
+        ]
+      },
+    ],
+    sentences:[]  // 이제 각 카테고리가 문장을 포함하므로 비워둠
+  }
+};
+
+// ──────────────────────────────────────────────
+// 상태
+// ──────────────────────────────────────────────
+let currentLevel = 'beginner';
+let currentMode = 'learn';
+let currentCat = null;
+let stats = JSON.parse(localStorage.getItem('pronStats')||'{"correct":0,"wrong":0,"streak":0}');
+let quiz = { questions:[], idx:0, answered:false, word:null, correct:null };
+let speechSynth = window.speechSynthesis;
+let currentPlayBtn = null;
+
+// ──────────────────────────────────────────────
+// 다크/라이트 토글
+// ──────────────────────────────────────────────
+function toggleTheme(){
+  const isDark = !document.body.classList.contains('dark');
+  document.body.classList.toggle('dark', isDark);
+  const btn = document.getElementById('themeBtn');
+  if(btn) btn.textContent = isDark ? '☀️' : '🌙';
+  localStorage.setItem('pronTheme', isDark ? 'dark' : 'light');
+}
+(function(){
+  const t = localStorage.getItem('pronTheme') || localStorage.getItem('darkMode') || 'light';
+  const isDark = t === 'dark' || t === 'true';
+  if(isDark){
+    document.body.classList.add('dark');
+    setTimeout(()=>{ const b=document.getElementById('themeBtn'); if(b)b.textContent='☀️'; },50);
+  }
+})();
+
+// ──────────────────────────────────────────────
+// Stats
+// ──────────────────────────────────────────────
+function saveStats(){ localStorage.setItem('pronStats', JSON.stringify(stats)); }
+function updateStatsUI(){
+  document.getElementById('statCorrect').textContent = stats.correct;
+  document.getElementById('statWrong').textContent = stats.wrong;
+  const total = stats.correct + stats.wrong;
+  document.getElementById('statAcc').textContent = total > 0 ? Math.round(stats.correct/total*100)+'%' : '—';
+  document.getElementById('streakBadge').textContent = '🔥 '+ stats.streak +' 연속';
+}
+function resetStats(){
+  if(!confirm('통계를 초기화할까요?')) return;
+  stats = {correct:0, wrong:0, streak:0};
+  saveStats(); updateStatsUI();
+  showToast('통계가 초기화되었습니다');
+}
+
+// ──────────────────────────────────────────────
+// TTS
+// ──────────────────────────────────────────────
+function speak(text, rate=0.85, btn=null){
+  if(speechSynth.speaking) speechSynth.cancel();
+  // clean text
+  let clean = text.replace(/\s*\/[^/]*\//g,'').replace(/\s*→.*/,'').replace(/↘|↗/g,'').trim();
+  // remove pronunciation hints in parentheses
+  clean = clean.split(' ')[0];
+  const utt = new SpeechSynthesisUtterance(clean);
+  utt.lang = 'en-US';
+  utt.rate = rate;
+  utt.pitch = 1;
+  if(btn){
+    btn.classList.add('playing');
+    utt.onend = ()=>{ btn.classList.remove('playing'); };
+    utt.onerror = ()=>{ btn.classList.remove('playing'); };
+  }
+  speechSynth.speak(utt);
+}
+
+let sentencePlayState = {};  // 문장별 재생 상태
+
+function speakSentence(text, rate=0.85, btn=null){
+  // 토글 기능
+  const sentenceId = text.substring(0, 30) + rate; // 문장과 속도로 고유 ID 생성
+  
+  if(!sentencePlayState[sentenceId]){
+    sentencePlayState[sentenceId] = { isPlaying: false, text: text, rate: rate };
+  }
+
+  const state = sentencePlayState[sentenceId];
+
+  if(state.isPlaying){
+    // 재생 중이면 중지
+    speechSynth.cancel();
+    state.isPlaying = false;
+    if(btn){
+      btn.classList.remove('playing');
+      // 원래 텍스트로 복원
+      btn.textContent = rate === 0.5 ? '🐢 천천히' : '▶ 듣기';
+    }
+    return;
+  }
+
+  // 재생 시작
+  state.isPlaying = true;
+  if(btn){
+    btn.classList.add('playing');
+    // 재생 중 표시
+    btn.textContent = '⏸ 중단';
+  }
+
+  function playRepeat(){
+    if(!state.isPlaying) return;
+    
+    let clean = text.replace(/<[^>]*>/g,'');
+    const utt = new SpeechSynthesisUtterance(clean);
+    utt.lang='en-US'; 
+    utt.rate=rate; 
+    utt.pitch=1;
+    utt.onend=()=>{
+      if(state.isPlaying){
+        // 문장 재생 완료 후 다시 재생
+        setTimeout(playRepeat, 1000);
+      }
+    };
+    utt.onerror=()=>{
+      if(state.isPlaying){
+        setTimeout(playRepeat, 1000);
+      }
+    };
+    speechSynth.speak(utt);
+  }
+
+  speechSynth.cancel();
+  playRepeat();
+}
+
+// ──────────────────────────────────────────────
+// Level switch
+// ──────────────────────────────────────────────
+function switchLevel(level){
+  currentLevel = level;
+  currentCat = null;
+  document.querySelectorAll('.level-tab').forEach(t=>t.classList.toggle('active', t.dataset.level===level));
+  renderCats();
+  renderContent();
+}
+
+// ──────────────────────────────────────────────
+// Mode switch
+// ──────────────────────────────────────────────
+function switchMode(mode){
+  currentMode = mode;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active', b.dataset.mode===mode));
+  document.getElementById('learnArea').style.display = mode==='learn' ? '' : 'none';
+  document.getElementById('quizArea').style.display = mode==='quiz' ? 'flex' : 'none';
+  document.getElementById('sentenceArea').style.display = mode==='sentence' ? '' : 'none';
+  document.getElementById('catScroll').style.display = mode==='sentence' ? 'none' : '';
+  if(mode==='quiz') startQuiz();
+  if(mode==='sentence') renderSentences();
+}
+
+// ──────────────────────────────────────────────
+// Category
+// ──────────────────────────────────────────────
+function renderCats(){
+  const lvData = DATA[currentLevel];
+  const bar = document.getElementById('catScroll');
+  bar.innerHTML = '<button class="cat-pill'+(currentCat===null?' active':'')+'" onclick="selectCat(null)">전체</button>';
+  lvData.categories.forEach(c=>{
+    bar.innerHTML += `<button class="cat-pill${currentCat===c.id?' active':''}" onclick="selectCat('${c.id}')">${c.name}</button>`;
+  });
+}
+function selectCat(id){
+  currentCat = id;
+  renderCats();
+  renderContent();
+}
+
+// ──────────────────────────────────────────────
+// Learn mode render
+// ──────────────────────────────────────────────
+function renderContent(){
+  const lvData = DATA[currentLevel];
+  // intro
+  document.getElementById('levelIntro').innerHTML = `
+    <div class="level-intro">
+      <div class="lv-icon">${lvData.icon}</div>
+      <div>
+        <div class="lv-intro-name">${lvData.name} — ${lvData.name==='초급'?'Beginner':lvData.name==='중급'?'Intermediate':'Advanced'}</div>
+        <div class="lv-intro-desc">${lvData.desc}</div>
+      </div>
+    </div>
+  `;
+  // phono cards
+  const cats = currentCat ? lvData.categories.filter(c=>c.id===currentCat) : lvData.categories;
+  let html = '';
+  cats.forEach(c=>{
+    html += `
+    <div class="section-header">${c.name}</div>
+    <div class="phono-card" id="pcard-${c.id}">
+      <div class="phono-card-head" onclick="toggleCard('${c.id}')">
+        <div class="phono-tag">${c.id==='rl'?'R·L':c.id==='fv'?'F·V':c.id==='th'?'TH':c.id==='shortlong'?'i·iː':c.id==='ed'?'-ed':c.id==='clusters'?'str':c.id==='stress'?'ˈ':c.id==='schwas'?'/ə/':c.id==='linking'?'~':c.id==='reduction'?'⇒':c.id==='intonation'?'↗↘':c.id==='flap'?'ɾ':c.id}</div>
+        <div class="phono-info">
+          <div class="phono-name">${c.name}</div>
+          <div class="phono-tip">${c.tip}</div>
+        </div>
+        <span class="phono-expand">▾</span>
+      </div>
+      <div class="phono-body">
+        <div class="diff-box">💡 <strong>핵심:</strong> ${c.diff}</div>
+        <div class="mouth-tip"><div class="mouth-tip-title">👄 발음 방법</div>${c.mouth.replace(/\n/g,'<br>')}</div>
+        <div style="margin-top:12px;margin-bottom:6px;" class="section-header">최소 대립쌍 훈련</div>
+        ${c.pairs.map((p,i)=>`
+          <div class="pair-row">
+            <div class="pair-word" id="pw-${c.id}-${i}-1" onclick="playWord('${p.en1}', 'pw-${c.id}-${i}-1')">
+              <span class="play-hint">▶</span>
+              <span class="pw-en">${p.en1}</span>
+              <span class="pw-ipa">${p.ipa1}</span>
+              <span class="pw-ko">${p.ko1}</span>
+            </div>
+            <div class="pair-sep">VS</div>
+            <div class="pair-word" id="pw-${c.id}-${i}-2" onclick="playWord('${p.en2}', 'pw-${c.id}-${i}-2')">
+              <span class="play-hint">▶</span>
+              <span class="pw-en">${p.en2}</span>
+              <span class="pw-ipa">${p.ipa2}</span>
+              <span class="pw-ko">${p.ko2}</span>
+            </div>
+          </div>
+        `).join('')}
+        <button class="play-all-btn" onclick="playAll('${c.id}')">▶▶ 전체 연속 듣기</button>
+      </div>
+    </div>
+    `;
+  });
+  document.getElementById('phonoList').innerHTML = html;
+}
+
+function toggleCard(id){
+  const card = document.getElementById('pcard-'+id);
+  card.classList.toggle('expanded');
+}
+
+function playWord(text, btnId){
+  const btn = document.getElementById(btnId);
+  speak(text, 0.8, btn);
+}
+
+let playAllState = {};  // 각 카테고리의 재생 상태 저장
+
+function playAll(catId){
+  const btn = event.target;
+  const lvData = DATA[currentLevel];
+  const cat = lvData.categories.find(c=>c.id===catId);
+  if(!cat) return;
+
+  if(!playAllState[catId]){
+    playAllState[catId] = { isPlaying: false, idx: 0 };
+  }
+
+  const state = playAllState[catId];
+  
+  if(state.isPlaying){
+    // 재생 중이면 중지
+    speechSynth.cancel();
+    state.isPlaying = false;
+    btn.classList.remove('playing');
+    btn.textContent = '▶▶ 전체 연속 듣기';
+    showToast('재생 중지됨 ⏹️');
+    return;
+  }
+
+  // 재생 시작
+  state.isPlaying = true;
+  state.idx = 0;
+  btn.classList.add('playing');
+  btn.textContent = '⏸ 재생 중단';
+  showToast('반복 재생 시작... 🔊');
+
+  function playNext(){
+    if(!state.isPlaying) return;
+    
+    if(state.idx >= cat.pairs.length*2){
+      // 한 사이클 완료, 처음부터 다시
+      state.idx = 0;
+    }
+
+    const pairIdx = Math.floor(state.idx/2);
+    const side = state.idx%2;
+    const word = side===0 ? cat.pairs[pairIdx].en1 : cat.pairs[pairIdx].en2;
+    const wordText = word.split(' ')[0];
+    
+    const utt = new SpeechSynthesisUtterance(wordText);
+    utt.lang='en-US'; 
+    utt.rate=0.8;
+    utt.onend=()=>{ 
+      if(state.isPlaying){
+        state.idx++; 
+        setTimeout(playNext, 400);
+      }
+    };
+    utt.onerror=()=>{
+      if(state.isPlaying){
+        state.idx++; 
+        setTimeout(playNext, 400);
+      }
+    };
+    
+    speechSynth.speak(utt);
+  }
+
+  speechSynth.cancel();
+  playNext();
+}
+
+// ──────────────────────────────────────────────
+// Quiz mode
+// ──────────────────────────────────────────────
+function buildQuizQuestions(){
+  const lvData = DATA[currentLevel];
+  const cats = currentCat ? lvData.categories.filter(c=>c.id===currentCat) : lvData.categories;
+  let qs = [];
+  cats.forEach(cat=>{
+    cat.pairs.forEach(p=>{
+      // type: which sound is this?
+      qs.push({ word:p.en1, ipa:p.ipa1, choices:[p.en1, p.en2], correctIdx:0, cat:cat.name });
+      qs.push({ word:p.en2, ipa:p.ipa2, choices:[p.en1, p.en2], correctIdx:1, cat:cat.name });
+    });
+  });
+  // shuffle
+  for(let i=qs.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [qs[i],qs[j]]=[qs[j],qs[i]];
+  }
+  return qs.slice(0,10);
+}
+
+function startQuiz(){
+  quiz.questions = buildQuizQuestions();
+  quiz.idx = 0;
+  quiz.answered = false;
+  renderQuestion();
+}
+
+function renderQuestion(){
+  if(quiz.idx >= quiz.questions.length){
+    showQuizComplete(); return;
+  }
+  const q = quiz.questions[quiz.idx];
+  quiz.answered = false;
+  quiz.word = q.word;
+  quiz.correct = q.correctIdx;
+
+  const prog = (quiz.idx/quiz.questions.length)*100;
+  document.getElementById('quizProgFill').style.width = prog+'%';
+  document.getElementById('quizProgLabel').textContent = (quiz.idx+1)+' / '+quiz.questions.length;
+
+  document.getElementById('quizListenBtn').classList.remove('playing');
+  document.getElementById('quizHint').textContent = '버튼을 눌러 소리를 들으세요';
+  document.getElementById('quizResult').className='quiz-result';
+  document.getElementById('quizResult').textContent='';
+  document.getElementById('quizNextBtn').className='quiz-next-btn';
+
+  // choices
+  const choicesEl = document.getElementById('quizChoices');
+  choicesEl.innerHTML = '';
+  // shuffle choices for display
+  const indices = [0,1];
+  const shuf = [...indices].sort(()=>Math.random()-0.5);
+  shuf.forEach(ci=>{
+    const btn = document.createElement('button');
+    btn.className='quiz-choice';
+    btn.textContent = q.choices[ci];
+    btn.dataset.idx = ci;
+    btn.onclick = ()=>answerQuiz(ci, btn, q);
+    choicesEl.appendChild(btn);
+  });
+}
+
+function playQuizSound(){
+  if(!quiz.questions.length) return;
+  const q = quiz.questions[quiz.idx];
+  const btn = document.getElementById('quizListenBtn');
+  btn.classList.add('playing');
+  const utt = new SpeechSynthesisUtterance(q.word.split(' ')[0]);
+  utt.lang='en-US'; utt.rate=0.75;
+  utt.onend=()=>btn.classList.remove('playing');
+  utt.onerror=()=>btn.classList.remove('playing');
+  speechSynth.cancel();
+  speechSynth.speak(utt);
+  document.getElementById('quizHint').textContent = '들었나요? 아래에서 선택하세요';
+}
+
+function answerQuiz(selectedIdx, btn, q){
+  if(quiz.answered) return;
+  quiz.answered = true;
+  const isCorrect = selectedIdx === quiz.correct;
+
+  // disable all choices
+  document.querySelectorAll('.quiz-choice').forEach(b=>{
+    b.disabled = true;
+    if(parseInt(b.dataset.idx) === quiz.correct) b.classList.add('correct');
+  });
+  if(!isCorrect) btn.classList.add('wrong');
+
+  // update stats
+  if(isCorrect){
+    stats.correct++; stats.streak++;
+    showToast('✅ 정답!');
+  } else {
+    stats.wrong++; stats.streak=0;
+    showToast('❌ 틀렸어요');
+  }
+  saveStats(); updateStatsUI();
+
+  // result message
+  const resultEl = document.getElementById('quizResult');
+  resultEl.className = 'quiz-result show ' + (isCorrect?'ok':'fail');
+  resultEl.innerHTML = isCorrect
+    ? `✅ 맞았습니다! <b>${q.word}</b> [${q.ipa}]`
+    : `❌ 정답은 <b>${q.choices[quiz.correct]}</b> [${q.ipa}] 입니다`;
+
+  document.getElementById('quizNextBtn').className='quiz-next-btn show';
+}
+
+function nextQuestion(){
+  quiz.idx++;
+  renderQuestion();
+}
+
+function showQuizComplete(){
+  const total = quiz.questions.length;
+  const correct = stats.correct;
+  document.getElementById('quizCard').innerHTML = `
+    <div style="text-align:center;padding:20px 0;">
+      <div style="font-size:48px;margin-bottom:12px;">🎉</div>
+      <div style="font-size:20px;font-weight:800;color:var(--accent);margin-bottom:6px;">퀴즈 완료!</div>
+      <div style="font-size:14px;color:var(--text2);margin-bottom:20px;">${total}문제 완료</div>
+      <button onclick="startQuiz()" style="width:100%;padding:14px;border-radius:12px;font-size:15px;font-weight:800;background:var(--accent);color:#000;border:none;cursor:pointer;">
+        🔄 다시 시작
+      </button>
+    </div>
+  `;
+}
+
+// ──────────────────────────────────────────────
+// Sentence mode
+// ──────────────────────────────────────────────
+function renderSentences(){
+  const lvData = DATA[currentLevel];
+  
+  // 현재 선택된 카테고리가 없으면 첫 번째 카테고리 선택
+  if(!currentCat && lvData.categories.length > 0){
+    currentCat = lvData.categories[0].id;
+  }
+  
+  const cat = lvData.categories.find(c=>c.id===currentCat);
+  if(!cat || !cat.sentences) return;
+  
+  let html = `<div style="padding:10px 0 6px;" class="section-header">📝 ${cat.name} 훈련 문장 (${cat.sentences.length}개)</div>`;
+  cat.sentences.forEach((s,i)=>{
+    html += `
+    <div class="sent-card">
+      <div style="font-size:10px;font-weight:700;background:var(--accent-dim);color:var(--accent);padding:2px 8px;border-radius:999px;display:inline-block;margin-bottom:8px;">${s.focus}</div>
+      <div class="sent-en">${s.en}</div>
+      <div class="sent-ko">${s.ko}</div>
+      <div class="sent-actions">
+        <button class="sent-play" id="sbtn-${i}" onclick="speakSentence('${s.en.replace(/'/g,"\\'")}', 0.8, document.getElementById('sbtn-${i}'))">▶ 듣기</button>
+        <button class="sent-slow" onclick="speakSentence('${s.en.replace(/'/g,"\\'")}', 0.5, this)">🐢 천천히</button>
+      </div>
+    </div>
+    `;
+  });
+  document.getElementById('sentenceList').innerHTML = html;
+}
+
+// ──────────────────────────────────────────────
+// Toast
+// ──────────────────────────────────────────────
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 1800);
+}
+
+// ──────────────────────────────────────────────
+// Init
+// ──────────────────────────────────────────────
+function init(){
+  updateStatsUI();
+  renderCats();
+  renderContent();
+}
+init();
+
+/* ═══════════════════════════════════════ 
+   부모 앱에서 다크모드 메시지 받기
+═══════════════════════════════════════ */
+window.addEventListener('message', (e) => {
+  if(e.data && e.data.type === 'theme-toggle'){
+    const isDark = e.data.dark;
+    document.body.classList.toggle('dark', isDark);
+    const btn = document.getElementById('themeBtn');
+    if(btn) btn.textContent = isDark ? '☀️' : '🌙';
+    localStorage.setItem('pronTheme', isDark ? 'dark' : 'light');
+  }
+}, false);
+</script>
+</body>
+</html>

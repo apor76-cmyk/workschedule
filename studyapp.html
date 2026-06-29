@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>주간 학습 트래커</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<style>
+:root{
+  --bg:#F0F7EE;
+  --surface:#F7FAF5;
+  --card:#F7FAF5;
+  --card2:#EBF4E7;
+  --text:#2C2418;
+  --text2:#7A7060;
+  --sub:#ADA89E;
+  --border:#C8E0C0;
+  --accent:#52A869;
+  --accent2:#3A8A50;
+  --accent-light:#D8F0DC;
+  --ok:#3DAB6A;
+  --ok-light:#D4F0E0;
+  --no:#B05858;
+  --no-light:#EFE6E6;
+  --warn:#B87840;
+  --shadow:0 2px 16px rgba(80,70,50,0.10);
+  --shadow-lg:0 8px 36px rgba(80,70,50,0.18);
+  --shadow-3d:0 6px 16px rgba(80,70,50,0.14), inset 0 1px 0 rgba(255,255,255,0.55);
+  --shadow-3d-lg:0 10px 26px rgba(80,70,50,0.20), inset 0 1px 0 rgba(255,255,255,0.60);
+  --shadow-3d-pressed:inset 0 3px 8px rgba(0,0,0,0.13);
+  --shadow-inset:inset 0 2px 8px rgba(0,0,0,0.09);
+  --radius:16px;
+  --today-bg:#E8E0CC;
+  --today-text:#7A6030;
+  --cat-bg:#E4F0E0;
+  --cat-border:#A8D0A0;
+  --cat-text:#3A6A30;
+}
+body.dark{
+  --bg:#0E1A10;
+  --surface:#141F14;
+  --card:#1A2A1A;
+  --card2:#1F321F;
+  --text:#EDE8DE;
+  --text2:#9E9890;
+  --sub:#6A6460;
+  --border:#2A4030;
+  --accent:#5EC87A;
+  --accent2:#7AD894;
+  --accent-light:#142814;
+  --ok:#4DC878;
+  --ok-light:#0A2012;
+  --no:#C07070;
+  --no-light:#2A1818;
+  --warn:#C0905A;
+  --shadow:0 2px 16px rgba(0,0,0,0.5);
+  --shadow-lg:0 8px 36px rgba(0,0,0,0.6);
+  --shadow-3d:0 6px 16px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.10);
+  --shadow-3d-lg:0 10px 26px rgba(0,0,0,0.60), inset 0 1px 0 rgba(255,255,255,0.13);
+  --shadow-3d-pressed:inset 0 3px 8px rgba(0,0,0,0.35);
+  --shadow-inset:inset 0 2px 8px rgba(0,0,0,0.30);
+  --today-bg:#2A2818;
+  --today-text:#8CA87A;
+  --cat-bg:#1A2A1A;
+  --cat-border:#2A4A2A;
+  --cat-text:#7AD894;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.5;}
+
+/* ── Header ── */
+header{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:none;padding:8px 20px;min-height:52px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;box-shadow:0 4px 16px rgba(80,70,50,0.12), inset 0 -1px 0 rgba(0,0,0,0.05);}
+.logo{font-size:15px;font-weight:700;color:var(--accent);letter-spacing:-0.3px;margin-right:4px;white-space:nowrap;}
+.header-sep{width:1px;height:20px;background:var(--border);margin:0 2px;}
+.header-group{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+
+/* ── Buttons & Inputs ── */
+button{padding:6px 13px;border:none;border-radius:8px;background:var(--card2);color:var(--text2);font-family:inherit;font-size:12.5px;font-weight:500;cursor:pointer;transition:all 0.15s;white-space:nowrap;box-shadow:var(--shadow-3d);}
+button:hover{color:var(--accent);background:var(--accent-light);box-shadow:var(--shadow-3d-lg);transform:translateY(-1px);}
+button:active{box-shadow:var(--shadow-3d-pressed);transform:translateY(1px);}
+.btn-primary{background:var(--accent);color:#1A1614!important;border:none;font-weight:600;box-shadow:0 6px 18px rgba(122,140,110,0.45),inset 0 1px 0 rgba(255,255,255,0.30);}
+.btn-primary:hover{background:var(--accent2);color:#fff!important;box-shadow:0 10px 24px rgba(90,110,80,0.50);transform:translateY(-1px);}
+.btn-danger{background:#fee2e2;color:#dc2626!important;border:none;box-shadow:0 6px 16px rgba(220,38,38,0.25),inset 0 1px 0 rgba(255,255,255,0.40);}
+.btn-danger:hover{background:#dc2626;color:#fff!important;box-shadow:0 8px 20px rgba(220,38,38,0.45);}
+input,select{padding:6px 11px;border:none;border-radius:8px;background:var(--surface);color:var(--text);font-family:inherit;font-size:13px;outline:none;transition:box-shadow 0.15s;box-shadow:var(--shadow-3d);}
+input:focus,select:focus{box-shadow:var(--shadow-3d-lg), 0 0 0 3px var(--accent-light);}
+
+/* ── Manage Panel ── */
+.manage-panel{background:var(--card);border-bottom:none;overflow:hidden;max-height:0;opacity:0;transition:max-height 0.35s ease,opacity 0.25s,padding 0.2s;padding:0 20px;box-shadow:0 4px 14px rgba(80,70,50,0.10);}
+.manage-panel.open{max-height:600px;opacity:1;padding:16px 20px;}
+.manage-inner{display:flex;flex-direction:column;gap:14px;}
+.manage-label{font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:0.07em;}
+.manage-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+
+/* ── Category section in manage panel ── */
+.manage-section{background:var(--surface);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow-inset);}
+.manage-section-title{font-size:11.5px;font-weight:700;color:var(--accent2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;}
+.cat-chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:6px;}
+.cat-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11.5px;font-weight:600;cursor:pointer;transition:all 0.15s;border:1.5px solid transparent;}
+.cat-chip.active{border-color:var(--accent);background:var(--accent-light);color:var(--accent2);}
+.cat-chip:not(.active){background:var(--card2);color:var(--text2);}
+.cat-chip:hover:not(.active){background:var(--accent-light);color:var(--accent);}
+.cat-chip-del{font-size:12px;opacity:0.5;font-weight:700;background:none!important;box-shadow:none!important;color:inherit!important;min-width:0;height:auto;padding:0!important;transform:none!important;}
+.cat-chip-del:hover{opacity:1;color:var(--no)!important;background:none!important;transform:none!important;box-shadow:none!important;}
+.cat-chip-drag{font-size:11px;opacity:0.35;cursor:grab;background:none!important;box-shadow:none!important;color:inherit!important;min-width:0;height:auto;padding:0 2px!important;transform:none!important;user-select:none;}
+.cat-chip-drag:active{cursor:grabbing;}
+.cat-chip-drag:hover{opacity:0.7;background:none!important;transform:none!important;box-shadow:none!important;}
+.cat-chip.drag-over{outline:2px dashed var(--accent);outline-offset:2px;background:var(--accent-light)!important;}
+.cat-chip.dragging{opacity:0.35;transform:scale(0.95);}
+
+/* ── Habit link icon ── */
+.habit-link-btn{opacity:0;width:18px;height:18px;padding:0!important;border-radius:4px;font-size:11px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent-light)!important;border:none;color:var(--accent2)!important;margin-left:5px;flex-shrink:0;transition:opacity 0.15s;box-shadow:none!important;text-decoration:none;vertical-align:middle;line-height:1;}
+tr:hover .habit-link-btn{opacity:1;}
+.habit-link-btn:hover{background:var(--accent)!important;color:#fff!important;opacity:1;transform:none!important;box-shadow:none!important;}
+
+/* ── Main Layout ── */
+.container{max-width:1100px;margin:0 auto;padding:20px;display:flex;flex-direction:column;gap:20px;}
+.section-card{background:var(--card);border:none;border-radius:var(--radius);box-shadow:var(--shadow-3d);overflow:hidden;}
+.section-header{padding:13px 18px;border-bottom:none;box-shadow:0 2px 6px rgba(0,0,0,0.06),inset 0 1px 0 rgba(255,255,255,0.35);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.section-title{font-size:13px;font-weight:700;color:var(--text);}
+.section-body{overflow-x:auto;}
+
+/* ── Category filter tabs ── */
+.cat-filter-bar{padding:8px 18px 0;display:flex;gap:6px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--border);}
+.cat-filter-btn{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid transparent;box-shadow:none;background:none;transition:all 0.15s;}
+.cat-filter-btn.active{background:var(--accent);color:#fff!important;border-color:var(--accent);}
+.cat-filter-btn:not(.active){background:var(--card2);color:var(--text2);border-color:var(--border);}
+.cat-filter-btn:hover:not(.active){background:var(--accent-light);color:var(--accent2);border-color:var(--accent);}
+
+/* ── Category row in table ── */
+.cat-group-header td{background:var(--cat-bg)!important;color:var(--cat-text)!important;font-size:11px!important;font-weight:700!important;text-transform:uppercase;letter-spacing:0.08em;padding:5px 18px!important;border-bottom:1px solid var(--cat-border)!important;}
+
+/* ── Table ── */
+table{border-collapse:collapse;width:100%;min-width:660px;font-size:13px;}
+th{padding:10px 12px;text-align:center;background:var(--surface);color:var(--sub);font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid var(--border);white-space:nowrap;}
+th:first-child{text-align:left;padding-left:18px;min-width:150px;position:sticky;left:0;z-index:10;background:var(--surface);box-shadow:2px 0 6px -2px rgba(0,0,0,0.08);}
+td{padding:9px 12px;text-align:center;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:middle;}
+td:first-child{text-align:left;padding-left:18px;font-weight:500;color:var(--text);position:sticky;left:0;z-index:2;background:var(--card);box-shadow:2px 0 6px -2px rgba(0,0,0,0.08);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--surface);}
+tr:hover td:first-child{background:var(--surface);}
+td.day-cell{cursor:pointer;font-size:14px;font-weight:700;transition:background 0.1s,transform 0.1s;user-select:none;border-radius:0;}
+td.day-cell:hover{filter:brightness(0.93);}
+td.day-cell.checked{background:#dcfce7;color:#16a34a;}
+td.day-cell.checked.is-today{background:#86efac;color:#15803d;}
+td.day-cell.is-today:not(.checked){background:var(--today-bg);color:var(--today-text);}
+td.day-cell.future{cursor:not-allowed;opacity:0.35;pointer-events:none;}
+td.day-cell.review-star{background:#fef9c3;color:#b45309;font-size:16px;cursor:pointer;}
+td.day-cell.review-star.future{cursor:not-allowed;pointer-events:none;opacity:0.45;}
+td.day-cell.review-star.is-today{background:#fde68a;color:#92400e;}
+th.is-today{color:var(--today-text)!important;background:var(--today-bg)!important;}
+/* ── Cumulative columns ── */
+.th-cumul{min-width:42px;font-size:10.5px!important;}
+.td-cumul{font-size:12px;font-weight:700;min-width:42px;color:var(--text2);}
+.td-cumul.week{color:var(--accent2);}
+.td-cumul.month{color:#3b82f6;}
+.td-cumul.year{color:#8b5cf6;}
+/* cumul separator */
+.th-sep{width:1px;padding:0!important;background:var(--border);opacity:.6;}
+.td-sep{width:1px;padding:0!important;background:var(--border);opacity:.5;}
+
+/* ── Week Nav ── */
+.week-nav{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.week-nav-btn{width:30px;height:30px;padding:0;display:flex;align-items:center;justify-content:center;font-size:12px;border-radius:8px;flex-shrink:0;box-shadow:var(--shadow-3d);}
+#weekLabel{font-size:13px;font-weight:600;color:var(--text2);white-space:nowrap;min-width:140px;text-align:center;}
+
+/* ── Stats grid ── */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;padding:16px 18px;}
+.stat-card{background:var(--surface);border:none;border-radius:12px;padding:12px 14px;box-shadow:var(--shadow-3d);}
+.stat-label{font-size:11px;font-weight:600;color:var(--sub);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
+.stat-value{font-size:22px;font-weight:700;color:var(--accent2);}
+.stat-sub{font-size:11px;color:var(--sub);margin-top:2px;}
+
+/* ── Per-habit bars ── */
+.habit-bars{padding:14px 18px;display:flex;flex-direction:column;gap:12px;}
+.habit-bar-row{display:flex;flex-direction:column;gap:5px;}
+.habit-bar-meta{display:flex;justify-content:space-between;align-items:center;}
+.habit-bar-name{font-size:13px;font-weight:500;color:var(--text);}
+.habit-bar-pct{font-size:12px;font-weight:700;}
+.habit-bar-track{height:7px;background:var(--card2);border-radius:99px;overflow:hidden;box-shadow:var(--shadow-inset);}
+.habit-bar-fill{height:100%;border-radius:99px;transition:width 0.4s ease;}
+
+/* ── Lock btn ── */
+.btn-lock{display:flex;align-items:center;gap:5px;font-size:12.5px;padding:5px 13px;border-radius:8px;}
+.btn-lock.locked{background:#fee2e2;color:#dc2626!important;border:none;box-shadow:0 5px 14px rgba(220,38,38,0.28),inset 0 1px 0 rgba(255,255,255,0.40);}
+.btn-lock.locked:hover{background:#dc2626;color:#fff!important;box-shadow:0 7px 18px rgba(220,38,38,0.45);}
+.btn-lock.unlocked{background:var(--ok-light);color:var(--ok)!important;border:none;box-shadow:0 5px 14px rgba(60,168,90,0.28),inset 0 1px 0 rgba(255,255,255,0.40);}
+.btn-lock.unlocked:hover{background:var(--ok);color:#fff!important;box-shadow:0 7px 18px rgba(60,168,90,0.45);}
+#habitTable.check-locked td.day-cell{cursor:not-allowed;opacity:0.55;pointer-events:none;}
+
+/* ── Delete row btn ── */
+.del-habit-btn{opacity:0;width:20px;height:20px;padding:0;border-radius:50%;font-size:12px;display:inline-flex;align-items:center;justify-content:center;background:var(--no-light);border:none;color:var(--no)!important;margin-right:6px;flex-shrink:0;transition:opacity 0.15s;box-shadow:0 2px 6px rgba(176,88,88,0.25);}
+tr:hover .del-habit-btn{opacity:1;}
+
+/* ── Toast badge ── */
+#toast{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:9999;font-size:12px;font-weight:600;padding:5px 14px;border-radius:20px;background:rgba(30,30,30,0.82);color:#fff;pointer-events:none;opacity:0;transition:opacity 0.35s;white-space:nowrap;}
+
+/* ── Divider ── */
+.section-divider{height:1px;background:var(--border);margin:0 18px;}
+
+/* ── Modal ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:500;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--card);border-radius:var(--radius);padding:22px 24px;min-width:300px;max-width:90vw;box-shadow:var(--shadow-lg);display:flex;flex-direction:column;gap:14px;}
+.modal-title{font-size:15px;font-weight:700;color:var(--text);}
+.modal-row{display:flex;gap:8px;align-items:center;}
+.modal-row input{flex:1;}
+.modal-footer{display:flex;gap:8px;justify-content:flex-end;}
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<header>
+  <span class="logo">📋 학습 트래커</span>
+  <div class="header-sep"></div>
+  <div class="header-group">
+    <button onclick="goToday()">오늘</button>
+    <input type="date" id="weekPicker" style="min-width:140px;">
+  </div>
+  <div class="header-sep" style="margin-left:auto;"></div>
+  <div class="header-group">
+    <button onclick="document.querySelector('.manage-panel').classList.toggle('open')">⚙ 항목 관리</button>
+  </div>
+  <input type="email" id="emailInput" style="display:none;">
+  <input type="password" id="passwordInput" style="display:none;">
+  <button id="authBtn" style="display:none;"></button>
+  <button id="logoutBtn" style="display:none;"></button>
+  <span id="userInfo" style="display:none;"></span>
+  <span id="fbStatus" style="display:none;"></span>
+</header>
+
+<!-- Manage Panel -->
+<div class="manage-panel">
+  <div class="manage-inner">
+
+    <!-- 카테고리 관리 -->
+    <div class="manage-section">
+      <div class="manage-section-title">🗂 카테고리 관리</div>
+      <div class="manage-row">
+        <span class="manage-label">추가</span>
+        <input id="newCatInput" placeholder="새 카테고리 이름" style="width:180px;" onkeydown="if(event.key==='Enter')addCategory()">
+        <button class="btn-primary" onclick="addCategory()">+ 추가</button>
+        <div style="width:1px;height:20px;background:var(--border);margin:0 2px;"></div>
+        <span class="manage-label">수정/삭제</span>
+        <select id="catSelect" style="width:150px;"></select>
+        <input id="editCatInput" placeholder="새 이름" style="width:130px;" onkeydown="if(event.key==='Enter')updateCategory()">
+        <button onclick="updateCategory()">수정</button>
+        <button class="btn-danger" onclick="deleteCategory()">삭제</button>
+      </div>
+      <div class="cat-chips" id="catChips"></div>
+    </div>
+
+    <!-- 학습 관리 -->
+    <div class="manage-section">
+      <div class="manage-section-title">📚 학습 관리</div>
+      <div class="manage-row" style="margin-bottom:6px;">
+        <span class="manage-label">추가</span>
+        <input id="newHabitInput" placeholder="학습 이름" style="width:150px;" onkeydown="if(event.key==='Enter')addHabit()">
+        <input id="newHabitLinkInput" placeholder="링크 (선택, https://…)" style="width:195px;" onkeydown="if(event.key==='Enter')addHabit()">
+        <select id="newHabitCatSelect" style="width:130px;">
+          <option value="">카테고리 없음</option>
+        </select>
+        <button class="btn-primary" onclick="addHabit()">+ 추가</button>
+      </div>
+      <div class="manage-row">
+        <span class="manage-label">수정/삭제</span>
+        <select id="habitSelect" style="width:140px;" onchange="syncEditHabit()"></select>
+        <input id="editHabitInput" placeholder="새 이름" style="width:130px;" onkeydown="if(event.key==='Enter')updateHabit()">
+        <input id="editHabitLinkInput" placeholder="링크 (선택)" style="width:185px;" onkeydown="if(event.key==='Enter')updateHabit()">
+        <select id="editHabitCatSelect" style="width:120px;">
+          <option value="">카테고리 없음</option>
+        </select>
+        <button onclick="updateHabit()">수정</button>
+        <button class="btn-danger" onclick="deleteHabit()">삭제</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Weekly Grid -->
+  <div class="section-card">
+    <div class="section-header">
+      <span class="section-title">📅 주간 기록</span>
+      <button id="lockBtn" class="btn-lock unlocked" onclick="toggleLock()">🔓 해제</button>
+      <div class="week-nav">
+        <button class="week-nav-btn" onclick="prevWeek()">◀</button>
+        <span id="weekLabel"></span>
+        <button class="week-nav-btn" onclick="nextWeek()">▶</button>
+      </div>
+    </div>
+    <!-- 카테고리 필터 탭 -->
+    <div class="cat-filter-bar" id="catFilterBar"></div>
+    <div class="section-body">
+      <table id="habitTable"></table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ══════════════════════ 데이터 ══════════════════════ */
+const STORE_KEY = 'habit_tracker_v1';
+const DAY_LABELS = ['월','화','수','목','금','토','일'];
+let habits = [], checks = {}, categories = [], currentDate = new Date();
+let checkLocked = false;
+let activeCatFilter = 'all'; // 'all' or category id
+
+/* 복습 주기 (처음 체크일 기준 +1, +3, +7, +30일) */
+const REVIEW_DAYS = [1, 3, 7, 30];
+
+function todayStr(){ return fmtDate(new Date()); }
+function fmtDate(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+function pad(n){ return String(n).padStart(2,'0'); }
+function getWeekDates(d){
+  const date = new Date(d), day = date.getDay();
+  const monday = new Date(date); monday.setDate(date.getDate() - ((day+6)%7));
+  return Array.from({length:7},(_,i)=>{ const nd=new Date(monday); nd.setDate(monday.getDate()+i); return nd; });
+}
+
+/* 날짜 문자열에 N일 더하기 */
+function addDays(ds, n){
+  const d = new Date(ds+'T12:00:00');
+  d.setDate(d.getDate()+n);
+  return fmtDate(d);
+}
+
+/* 특정 학습의 첫 체크일 반환 */
+function getFirstCheckDate(habitId){
+  const prefix = habitId+'_';
+  let first = null;
+  Object.keys(checks).forEach(k=>{
+    if(k.startsWith(prefix)){
+      const ds = k.slice(prefix.length);
+      if(!first || ds < first) first = ds;
+    }
+  });
+  return first;
+}
+
+/* 특정 학습의 복습 별표 날짜 집합 반환 */
+function getReviewDates(habitId){
+  const first = getFirstCheckDate(habitId);
+  if(!first) return new Set();
+  const set = new Set();
+  REVIEW_DAYS.forEach(n => set.add(addDays(first, n)));
+  return set;
+}
+
+function loadLocal(){
+  try{
+    const raw = localStorage.getItem(STORE_KEY);
+    if(raw){
+      const d=JSON.parse(raw);
+      habits=d.habits||[];
+      checks=d.checks||{};
+      categories=d.categories||[];
+    }
+  }catch(e){}
+}
+function saveLocal(){
+  localStorage.setItem(STORE_KEY, JSON.stringify({habits, checks, categories}));
+}
+
+/* ══════════════════════ 카테고리 ══════════════════════ */
+function addCategory(){
+  const inp = document.getElementById('newCatInput');
+  const name = inp.value.trim(); if(!name) return;
+  if(categories.some(c=>c.name===name)){ toast('이미 같은 이름의 카테고리가 있습니다','#92400e'); return; }
+  categories.push({id:'c'+Date.now(), name});
+  inp.value=''; saveLocal(); renderCategoryUI(); renderHabitCatSelects(); autoCloudSave();
+  toast('카테고리 추가됨: '+name,'#065f46');
+}
+function updateCategory(){
+  const idx = document.getElementById('catSelect').value;
+  const name = document.getElementById('editCatInput').value.trim(); if(!name || idx==='') return;
+  if(categories.some((c,i)=>c.name===name && i!=idx)){ toast('이미 같은 이름의 카테고리가 있습니다','#92400e'); return; }
+  categories[idx].name = name;
+  document.getElementById('editCatInput').value='';
+  saveLocal(); renderCategoryUI(); renderHabitCatSelects(); renderTable(); autoCloudSave();
+  toast('카테고리 수정됨','#065f46');
+}
+function deleteCategory(){
+  const idx = parseInt(document.getElementById('catSelect').value);
+  if(isNaN(idx)||categories.length===0) return;
+  const cat = categories[idx];
+  if(!confirm(`"${cat.name}" 카테고리를 삭제할까요?\n해당 카테고리의 학습들은 카테고리 없음으로 변경됩니다.`)) return;
+  // 소속 학습의 카테고리 해제
+  habits.forEach(h=>{ if(h.catId===cat.id) h.catId=''; });
+  categories.splice(idx,1);
+  if(activeCatFilter===cat.id) activeCatFilter='all';
+  saveLocal(); renderCategoryUI(); renderHabitCatSelects(); render(); autoCloudSave();
+  toast('카테고리 삭제됨','#92400e');
+}
+
+function renderCategoryUI(){
+  // catSelect (수정/삭제용)
+  const cs = document.getElementById('catSelect');
+  cs.innerHTML = categories.map((c,i)=>`<option value="${i}">${c.name}</option>`).join('');
+
+  // cat chips (미리보기)
+  const chips = document.getElementById('catChips');
+  if(categories.length===0){
+    chips.innerHTML = '<span style="font-size:12px;color:var(--sub);">카테고리 없음</span>';
+  } else {
+    chips.innerHTML = categories.map((c,i)=>`
+      <span class="cat-chip" draggable="true" data-ci="${i}"
+        ondragstart="catDragStart(event,${i})"
+        ondragover="catDragOver(event,${i})"
+        ondragleave="catDragLeave(event)"
+        ondrop="catDrop(event,${i})"
+        ondragend="catDragEnd()">
+        <span class="cat-chip-drag" title="드래그하여 순서 변경">⠿</span>
+        ${c.name}
+        <button class="cat-chip-del" onclick="deleteCategoryDirect(${i})" title="삭제">×</button>
+      </span>`).join('');
+  }
+
+  // filter bar
+  const fb = document.getElementById('catFilterBar');
+  let html = `<button class="cat-filter-btn ${activeCatFilter==='all'?'active':''}" onclick="setCatFilter('all')">전체</button>`;
+  html += `<button class="cat-filter-btn ${activeCatFilter==='none'?'active':''}" onclick="setCatFilter('none')">미분류</button>`;
+  categories.forEach(c=>{
+    html += `<button class="cat-filter-btn ${activeCatFilter===c.id?'active':''}" onclick="setCatFilter('${c.id}')">${c.name}</button>`;
+  });
+  fb.innerHTML = html;
+}
+
+function deleteCategoryDirect(idx){
+  const cat = categories[idx];
+  if(!confirm(`"${cat.name}" 카테고리를 삭제할까요?`)) return;
+  habits.forEach(h=>{ if(h.catId===cat.id) h.catId=''; });
+  categories.splice(idx,1);
+  if(activeCatFilter===cat.id) activeCatFilter='all';
+  saveLocal(); renderCategoryUI(); renderHabitCatSelects(); render(); autoCloudSave();
+  toast('카테고리 삭제됨','#92400e');
+}
+
+function setCatFilter(id){
+  activeCatFilter = id;
+  renderCategoryUI();
+  renderTable();
+}
+
+/* ── 카테고리 드래그 순서 변경 ── */
+let _catDragIdx = null;
+function catDragStart(e, idx){
+  _catDragIdx = idx;
+  e.dataTransfer.effectAllowed = 'move';
+  setTimeout(()=>{ const chip=document.querySelectorAll('.cat-chip')[idx]; if(chip) chip.classList.add('dragging'); },0);
+}
+function catDragOver(e, idx){
+  e.preventDefault(); e.dataTransfer.dropEffect='move';
+  document.querySelectorAll('.cat-chip').forEach((c,i)=>c.classList.toggle('drag-over', i===idx && i!==_catDragIdx));
+}
+function catDragLeave(e){ document.querySelectorAll('.cat-chip').forEach(c=>c.classList.remove('drag-over')); }
+function catDrop(e, toIdx){
+  e.preventDefault();
+  if(_catDragIdx===null||_catDragIdx===toIdx) return;
+  const moved = categories.splice(_catDragIdx, 1)[0];
+  categories.splice(toIdx, 0, moved);
+  _catDragIdx = null;
+  saveLocal(); renderCategoryUI(); renderHabitCatSelects(); renderTable(); autoCloudSave();
+  toast('카테고리 순서가 변경됐습니다','#065f46');
+}
+function catDragEnd(){
+  _catDragIdx = null;
+  document.querySelectorAll('.cat-chip').forEach(c=>{ c.classList.remove('dragging','drag-over'); });
+}
+
+function renderHabitCatSelects(){
+  const opts = `<option value="">카테고리 없음</option>` + categories.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+  document.getElementById('newHabitCatSelect').innerHTML = opts;
+  document.getElementById('editHabitCatSelect').innerHTML = opts;
+}
+
+/* ══════════════════════ 렌더 ══════════════════════ */
+function render(){ renderTable(); renderHabitSelect(); renderCategoryUI(); renderHabitCatSelects(); }
+
+function habitWeekCount(habitId, week){
+  return week.filter(d=>checks[`${habitId}_${fmtDate(d)}`]).length;
+}
+function habitMonthCount(habitId, year, month){
+  let count=0;
+  const days=new Date(year,month,0).getDate();
+  for(let d=1;d<=days;d++){
+    if(checks[`${habitId}_${year}-${pad(month)}-${pad(d)}`]) count++;
+  }
+  return count;
+}
+function habitYearCount(habitId, year){
+  let count=0;
+  for(let m=1;m<=12;m++) count+=habitMonthCount(habitId,year,m);
+  return count;
+}
+
+function getFilteredHabits(){
+  if(activeCatFilter==='all') return habits;
+  if(activeCatFilter==='none') return habits.filter(h=>!h.catId);
+  return habits.filter(h=>h.catId===activeCatFilter);
+}
+
+function renderTable(){
+  const week = getWeekDates(currentDate);
+  const today = todayStr();
+  const first = week[0], last = week[6];
+  const yr = currentDate.getFullYear(), mo = currentDate.getMonth()+1;
+  document.getElementById('weekLabel').textContent =
+    (first.getMonth()+1)+'월 '+first.getDate()+'일 – '+(last.getMonth()+1)+'월 '+last.getDate()+'일';
+  document.getElementById('weekPicker').value = fmtDate(currentDate);
+
+  let html = '<thead><tr><th>학습</th>';
+  html += `<th class="th-cumul week" title="이번 주 누계">주간</th>`;
+  html += `<th class="th-cumul month" title="${mo}월 누계">월간</th>`;
+  html += `<th class="th-cumul year" title="${yr}년 누계">연간</th>`;
+  html += `<th class="th-sep"></th>`;
+  week.forEach((d,i)=>{
+    const ds=fmtDate(d), isT=(ds===today);
+    html += `<th class="${isT?'is-today':''}">${DAY_LABELS[i]}<br><span style="font-size:10px;font-weight:500;opacity:.75;">${d.getMonth()+1}/${d.getDate()}</span></th>`;
+  });
+  html += '</tr></thead><tbody>';
+
+  const filtered = getFilteredHabits();
+
+  if(habits.length===0){
+    html += `<tr><td colspan="12" style="text-align:center;padding:2rem;color:var(--sub);">위 ⚙ 항목 관리에서 학습을 추가해보세요</td></tr>`;
+  } else if(filtered.length===0){
+    html += `<tr><td colspan="12" style="text-align:center;padding:2rem;color:var(--sub);">해당 카테고리에 학습이 없습니다</td></tr>`;
+  } else {
+    // 카테고리별로 그룹핑하여 렌더
+    if(activeCatFilter==='all'){
+      // 카테고리 없는 것 먼저
+      const noCat = filtered.filter(h=>!h.catId);
+      if(noCat.length>0){
+        html += renderHabitRows(noCat, week, today, yr, mo, null);
+      }
+      // 카테고리별 그룹
+      categories.forEach(cat=>{
+        const catHabits = filtered.filter(h=>h.catId===cat.id);
+        if(catHabits.length>0){
+          html += `<tr class="cat-group-header"><td colspan="12">🗂 ${cat.name}</td></tr>`;
+          html += renderHabitRows(catHabits, week, today, yr, mo, cat);
+        }
+      });
+    } else {
+      html += renderHabitRows(filtered, week, today, yr, mo, null);
+    }
+  }
+  html += '</tbody>';
+  document.getElementById('habitTable').innerHTML = html;
+  applyLockUI();
+}
+
+function renderHabitRows(habitList, week, today, yr, mo, cat){
+  let html = '';
+  habitList.forEach(h=>{
+    const hi = habits.indexOf(h);
+    const wk = habitWeekCount(h.id, week);
+    const mk = habitMonthCount(h.id, yr, mo);
+    const yk = habitYearCount(h.id, yr);
+    const reviewDates = getReviewDates(h.id);
+
+    const linkBtn = h.link ? `<a class="habit-link-btn" href="${h.link}" target="_blank" rel="noopener" title="${h.link}" onclick="event.stopPropagation()">🔗</a>` : '';
+    html += `<tr><td><button class="del-habit-btn" onclick="deleteHabitByIdx(${hi})" title="삭제">×</button>${h.name}${linkBtn}</td>`;
+    html += `<td class="td-cumul week">${wk}<span style="font-size:10px;font-weight:400;opacity:.6;">/7</span></td>`;
+    html += `<td class="td-cumul month">${mk}</td>`;
+    html += `<td class="td-cumul year">${yk}</td>`;
+    html += `<td class="td-sep"></td>`;
+    week.forEach((d,di)=>{
+      const ds = fmtDate(d);
+      const isToday = ds===today, isFuture = ds>today;
+      const checked = !!checks[`${h.id}_${ds}`];
+      const isReview = reviewDates.has(ds) && !checked; // 복습 별표 (미체크인 경우에만)
+      let cls = 'day-cell';
+      if(isFuture && !isReview) cls += ' future';
+      if(isFuture && isReview) cls += ' future'; // 미래 복습일도 future 클래스 추가 (CSS로 스타일 별도 처리)
+      if(checked){ cls += ' checked'; if(isToday) cls += ' is-today'; }
+      else if(isReview){ cls += ' review-star'; if(isToday) cls += ' is-today'; }
+      else if(isToday) cls += ' is-today';
+
+      let content = '';
+      if(checked) content = '✓';
+      else if(isReview) content = '★'; // 미래 복습일도 별표 표시
+
+      const isFutureReview = isReview && isFuture;
+      const cellClick = isFutureReview ? '' : `onclick="toggleCheck('${h.id}','${ds}')"`;
+      const cellTitle = isFutureReview ? '★ 복습 권장일 (미래)' : isReview ? '★ 복습 권장일' : '';
+      html += `<td class="${cls}" ${cellClick} title="${cellTitle}">`;
+      html += content;
+      html += `</td>`;
+    });
+    html += '</tr>';
+  });
+  return html;
+}
+
+function renderStats(){
+  const week = getWeekDates(currentDate);
+  const today = todayStr();
+  const passedDays = week.filter(d=>fmtDate(d)<=today).length;
+  const totalPoss = habits.length * passedDays;
+  const totalDone = habits.reduce((a,h)=> a + week.filter(d=>checks[`${h.id}_${fmtDate(d)}`]).length, 0);
+  const weekPct = totalPoss>0 ? Math.round((totalDone/totalPoss)*100) : 0;
+
+  let maxCur=0, maxBest=0;
+  habits.forEach(h=>{
+    const {cur,best} = calcStreak(h.id);
+    maxCur = Math.max(maxCur, cur);
+    maxBest = Math.max(maxBest, best);
+  });
+  const totalAll = Object.keys(checks).filter(k=>habits.some(h=>k.startsWith(h.id+'_'))).length;
+
+  document.getElementById('statsGrid').innerHTML = [
+    {label:'이번 주 달성률', value: weekPct+'%', sub: totalDone+'/'+totalPoss+' 완료'},
+    {label:'현재 스트릭', value: maxCur+'일', sub: '연속 체크 중'},
+    {label:'최고 스트릭', value: maxBest+'일', sub: '역대 최고'},
+    {label:'누적 체크', value: totalAll+'회', sub: '전체 기간'},
+    {label:'학습 수', value: habits.length+'개', sub: '등록된 학습'},
+  ].map(s=>`
+    <div class="stat-card">
+      <div class="stat-label">${s.label}</div>
+      <div class="stat-value">${s.value}</div>
+      <div class="stat-sub">${s.sub}</div>
+    </div>`).join('');
+
+  const barColor = weekPct>=80?'#22c55e':weekPct>=50?'#F5C518':'#f97316';
+
+  let barsHtml = `<div style="font-size:12px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;">학습별 전체 달성률</div>`;
+  if(habits.length===0){
+    barsHtml += `<div style="color:var(--sub);font-size:13px;">학습을 추가하면 달성률이 표시됩니다.</div>`;
+  } else {
+    habits.forEach(h=>{
+      const pct = habitPct(h.id, h.createdAt);
+      const fc = pct>=80?'#22c55e':pct>=50?'#3b82f6':'#f97316';
+      const pctColor = pct>=80?'#16a34a':pct>=50?'#1d4ed8':'#c2410c';
+      barsHtml += `
+        <div class="habit-bar-row">
+          <div class="habit-bar-meta">
+            <span class="habit-bar-name">${h.name}</span>
+            <span class="habit-bar-pct" style="color:${pctColor}">${pct}%</span>
+          </div>
+          <div class="habit-bar-track">
+            <div class="habit-bar-fill" style="width:${pct}%;background:${fc};"></div>
+          </div>
+        </div>`;
+    });
+  }
+  document.getElementById('habitBars').innerHTML = barsHtml;
+}
+
+function calcStreak(habitId){
+  let cur=0, best=0, streak=0;
+  const today = todayStr();
+  const d = new Date(); d.setHours(12,0,0,0);
+  const dates=[];
+  for(let i=0;i<365;i++){ dates.unshift(fmtDate(d)); d.setDate(d.getDate()-1); }
+  for(const ds of dates){
+    if(checks[`${habitId}_${ds}`]){ streak++; best=Math.max(best,streak); }
+    else streak=0;
+  }
+  return {cur:streak, best};
+}
+
+function habitPct(habitId, createdAt){
+  const start = new Date(createdAt+'T12:00:00'), end = new Date();
+  end.setHours(12,0,0,0);
+  const d = new Date(start); let tot=0, done=0;
+  while(d<=end){ const ds=fmtDate(d); tot++; if(checks[`${habitId}_${ds}`]) done++; d.setDate(d.getDate()+1); }
+  return tot>0 ? Math.round((done/tot)*100) : 0;
+}
+
+function renderHabitSelect(){
+  const sel = document.getElementById('habitSelect');
+  sel.innerHTML = habits.map((h,i)=>`<option value="${i}">${h.name}</option>`).join('');
+  syncEditHabit();
+}
+
+/* ══════════════════════ 액션 ══════════════════════ */
+function toggleCheck(habitId, ds){
+  if(checkLockedState) return;
+  const key = `${habitId}_${ds}`;
+  const wasChecked = !!checks[key];
+  if(wasChecked){
+    delete checks[key];
+  } else {
+    checks[key]=true;
+    // 이 학습의 이전 체크가 없으면 → 첫 체크 → 복습 날짜 자동 생성 (UI에 반영됨)
+    // 별도 저장 불필요, getReviewDates()가 동적으로 계산
+  }
+  saveLocal(); renderTable();
+  autoCloudSave();
+}
+
+function addHabit(){
+  const inp = document.getElementById('newHabitInput');
+  const name = inp.value.trim(); if(!name) return;
+  const catId = document.getElementById('newHabitCatSelect').value;
+  const linkRaw = document.getElementById('newHabitLinkInput').value.trim();
+  const link = linkRaw && !linkRaw.startsWith('http') ? 'https://'+linkRaw : linkRaw;
+  habits.push({id:'h'+Date.now(), name, catId: catId||'', link: link||'', createdAt: todayStr()});
+  inp.value=''; document.getElementById('newHabitLinkInput').value='';
+  saveLocal(); render(); autoCloudSave();
+}
+function syncEditHabit(){
+  const idx = document.getElementById('habitSelect').value;
+  if(idx===''||!habits[idx]) return;
+  const h = habits[idx];
+  document.getElementById('editHabitInput').value = h.name;
+  document.getElementById('editHabitLinkInput').value = h.link||'';
+  const cs = document.getElementById('editHabitCatSelect');
+  cs.value = h.catId||'';
+}
+function updateHabit(){
+  const idx = document.getElementById('habitSelect').value;
+  const name = document.getElementById('editHabitInput').value.trim(); if(!name) return;
+  const catId = document.getElementById('editHabitCatSelect').value;
+  const linkRaw = document.getElementById('editHabitLinkInput').value.trim();
+  const link = linkRaw && !linkRaw.startsWith('http') ? 'https://'+linkRaw : linkRaw;
+  habits[idx].name = name;
+  habits[idx].catId = catId||'';
+  habits[idx].link = link||'';
+  document.getElementById('editHabitInput').value='';
+  document.getElementById('editHabitLinkInput').value='';
+  saveLocal(); render(); autoCloudSave();
+}
+function deleteHabit(){
+  const idx = parseInt(document.getElementById('habitSelect').value);
+  if(isNaN(idx)||habits.length===0) return;
+  if(!confirm('삭제할까요? 기록도 함께 삭제됩니다.')) return;
+  deleteHabitByIdx(idx);
+}
+function deleteHabitByIdx(idx){
+  const h = habits[idx];
+  Object.keys(checks).forEach(k=>{ if(k.startsWith(h.id+'_')) delete checks[k]; });
+  habits.splice(idx,1);
+  saveLocal(); render(); autoCloudSave();
+}
+
+/* ── Week nav ── */
+function goToday(){ currentDate=new Date(); render(); }
+function prevWeek(){ currentDate=new Date(currentDate); currentDate.setDate(currentDate.getDate()-7); render(); }
+function nextWeek(){ currentDate=new Date(currentDate); currentDate.setDate(currentDate.getDate()+7); render(); }
+document.getElementById('weekPicker').addEventListener('change', e=>{ if(e.target.value){ currentDate=new Date(e.target.value+'T12:00:00'); render(); } });
+
+/* ── Lock ── */
+let checkLockedState = localStorage.getItem('ht_locked')==='1';
+function toggleLock(){
+  checkLockedState = !checkLockedState;
+  localStorage.setItem('ht_locked', checkLockedState?'1':'0');
+  applyLockUI();
+}
+function applyLockUI(){
+  const btn=document.getElementById('lockBtn'), tbl=document.getElementById('habitTable');
+  if(checkLockedState){
+    btn.textContent='🔒 잠금'; btn.className='btn-lock locked';
+    tbl.classList.add('check-locked');
+  } else {
+    btn.textContent='🔓 해제'; btn.className='btn-lock unlocked';
+    tbl.classList.remove('check-locked');
+  }
+}
+
+/* ── Dark mode ── */
+function toggleDark(val){
+  const isDark = (val !== undefined) ? !!val : !document.body.classList.contains('dark');
+  document.body.classList.toggle('dark', isDark);
+  localStorage.setItem('ht_dark',   isDark ? '1'    : '0');
+  localStorage.setItem('darkMode',  isDark ? 'true' : 'false');
+  localStorage.setItem('lmTheme',   isDark ? 'dark' : 'light');
+}
+
+/* ══════════════════════ Firebase 동기화 ══════════════════════ */
+const FIREBASE_CONFIG = {
+  apiKey:"AIzaSyA7ots3eKmIasUH4GW7nw797cdvEVP-Dk8",
+  authDomain:"studyapp-58a1c.firebaseapp.com",
+  projectId:"studyapp-58a1c",
+  storageBucket:"studyapp-58a1c.firebasestorage.app",
+  messagingSenderId:"481582276002",
+  appId:"1:481582276002:web:4bebfca49c51cb8607e6fb"
+};
+let _fbInit = false;
+
+function showFbStatus(msg, color='#8b909a'){
+  const el=document.getElementById('fbStatus');
+  if(el){ el.textContent=msg; el.style.color=color; }
+}
+function updateAuthUI(){}
+function waitForFirebase(){
+  return new Promise(resolve=>{
+    const check=()=>{ if(typeof firebase!=='undefined'&&firebase.initializeApp){ resolve(); clearInterval(t); } };
+    const t=setInterval(check,100); check();
+  });
+}
+async function initFirebase(){
+  if(_fbInit) return;
+  try{
+    await waitForFirebase();
+    if(!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+    window._fbDb = firebase.firestore();
+    window._fbAuth = firebase.auth();
+    _fbInit = true;
+    firebase.auth().onAuthStateChanged(user=>{
+      if(user){
+        localStorage.setItem('ht_uid', user.uid);
+        localStorage.setItem('uid',    user.uid);
+      } else {
+        localStorage.removeItem('ht_uid');
+      }
+      updateAuthUI();
+    });
+    window.addEventListener('storage', async e=>{
+      if(e.key==='uid' && e.newValue && e.newValue !== localStorage.getItem('ht_uid')){
+        localStorage.setItem('ht_uid', e.newValue);
+        await downloadFromFirebase(true);
+      }
+    });
+  } catch(e){ console.error(e); }
+}
+async function toggleAuth(){
+  const email=document.getElementById('emailInput').value.trim();
+  const pw=document.getElementById('passwordInput').value.trim();
+  if(!email||!pw){ alert('이메일과 비밀번호를 입력해주세요'); return; }
+  try{
+    showFbStatus('⏳ 로그인 중…','#3a5bd9');
+    await initFirebase();
+    try{
+      await firebase.auth().signInWithEmailAndPassword(email,pw);
+      localStorage.setItem('ht_email',email);
+      document.getElementById('emailInput').value='';
+      document.getElementById('passwordInput').value='';
+      showFbStatus('✅ 로그인 성공','#16a34a');
+      updateAuthUI();
+    } catch(e){
+      if(e.code==='auth/user-not-found'||e.code==='auth/invalid-credential'){
+        showFbStatus('⚠️ 가입 중…','#3a5bd9');
+        await firebase.auth().createUserWithEmailAndPassword(email,pw);
+        localStorage.setItem('ht_email',email);
+        document.getElementById('emailInput').value='';
+        document.getElementById('passwordInput').value='';
+        showFbStatus('✅ 가입 완료','#16a34a');
+        updateAuthUI();
+      } else throw e;
+    }
+  } catch(e){ console.error(e); showFbStatus('❌ 실패','#dc2626'); alert('로그인 실패: '+e.message); }
+}
+function logout(){
+  try{ firebase.auth().signOut(); localStorage.removeItem('ht_uid'); localStorage.removeItem('ht_email'); showFbStatus('⚠️ 로그아웃','#92400e'); updateAuthUI(); }
+  catch(e){ console.error(e); }
+}
+async function uploadToFirebase(silent=false){
+  try{
+    await initFirebase();
+    const uid=localStorage.getItem('uid')||localStorage.getItem('ht_uid');
+    if(!uid){ if(!silent) alert('로그인이 필요합니다'); return; }
+    await firebase.firestore().collection('users').doc(uid).set({ habit_tracker: {habits,checks,categories} },{merge:true});
+    if(!silent) toast('✅ Firebase에 저장됐습니다','#065f46');
+  } catch(e){ console.error(e); if(!silent) alert('저장 실패: '+e.message); else throw e; }
+}
+async function downloadFromFirebase(silent=false){
+  try{
+    await initFirebase();
+    const uid=localStorage.getItem('uid')||localStorage.getItem('ht_uid');
+    if(!uid){ if(!silent) alert('로그인이 필요합니다'); return; }
+    const snap=await firebase.firestore().collection('users').doc(uid).get();
+    if(snap.exists&&snap.data().habit_tracker){
+      const d=snap.data().habit_tracker;
+      habits=d.habits||[]; checks=d.checks||{}; categories=d.categories||[];
+      saveLocal(); render();
+      if(!silent) toast('✅ Firebase에서 불러왔습니다','#065f46');
+    } else {
+      if(!silent) alert('저장된 데이터가 없습니다');
+    }
+  } catch(e){ console.error(e); if(!silent) alert('불러오기 실패: '+e.message); }
+}
+window.FirebaseSync = { upload: uploadToFirebase, download: downloadFromFirebase };
+window.fbUpload   = uploadToFirebase;
+window.fbDownload = downloadFromFirebase;
+
+let _autoTimer=null;
+function autoCloudSave(){
+  const uid=localStorage.getItem('uid')||localStorage.getItem('ht_uid'); if(!uid) return;
+  clearTimeout(_autoTimer);
+  toast('✏️ 변경 감지 — 45초 후 자동 저장','#92400e');
+  _autoTimer=setTimeout(async()=>{
+    toast('☁ 자동 저장 중…','#1d4ed8');
+    try{ await uploadToFirebase(true); toast('✅ 자동 저장 완료','#065f46'); }
+    catch(e){ toast('❌ 자동 저장 실패','#991b1b'); }
+  },45000);
+}
+
+function toast(msg, bg){
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.style.background=bg||'rgba(30,30,30,.82)';
+  el.style.opacity='1'; clearTimeout(el._t);
+  el._t=setTimeout(()=>el.style.opacity='0',3500);
+}
+
+window.addEventListener('message', function(e){
+  if(!e.data||typeof e.data!=='object') return;
+  if(e.data.type==='wc-theme'){
+    toggleDark(!!e.data.dark);
+  } else if(e.data.type==='wc-sync'){
+    if(e.data.dir==='push') uploadToFirebase(true);
+    else if(e.data.dir==='pull') downloadFromFirebase(true);
+  }
+});
+
+/* ══════════════════════ Init ══════════════════════ */
+window.onload = async ()=>{
+  const isDark = localStorage.getItem('darkMode')==='true'
+    || localStorage.getItem('lmTheme')==='dark'
+    || localStorage.getItem('ht_dark')==='1';
+  if(isDark) document.body.classList.add('dark');
+  checkLockedState = localStorage.getItem('ht_locked')==='1';
+  loadLocal();
+  render();
+  goToday();
+  updateAuthUI();
+  await initFirebase();
+  if(localStorage.getItem('uid')||localStorage.getItem('ht_uid')) await downloadFromFirebase(true);
+};
+</script>
+</body>
+</html>
