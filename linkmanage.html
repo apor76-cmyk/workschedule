@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Link Manager</title>
 <!-- ★ 깜빡임 방지: CSS/렌더링 전에 다크모드 즉시 적용 -->
-<script src="https://apis.google.com/_/scs/abc-static/_/js/k=gapi.lb.ko.4XlE21lAHZg.O/m=gapi_iframes/rt=j/sv=1/d=1/ed=1/rs=AHpOoo87KNXmV5OeSd-Dt__Wtv736527Nw/cb=gapi.loaded_0?le=scs,fedcm_migration_mod" async=""></script><script src="https://apis.google.com/_/scs/abc-static/_/js/k=gapi.lb.ko.4XlE21lAHZg.O/m=gapi_iframes/rt=j/sv=1/d=1/ed=1/rs=AHpOoo87KNXmV5OeSd-Dt__Wtv736527Nw/cb=gapi.loaded_0?le=scs,fedcm_migration_mod" async=""></script><script src="https://apis.google.com/_/scs/abc-static/_/js/k=gapi.lb.ko.Mrvmj7G-jDg.O/m=gapi_iframes/rt=j/sv=1/d=1/ed=1/rs=AHpOoo-OIiCBSoDYGTfHuGb2acpp8-6YBg/cb=gapi.loaded_0?le=scs" async=""></script><script>
+<script src="https://apis.google.com/_/scs/abc-static/_/js/k=gapi.lb.ko.4XlE21lAHZg.O/m=gapi_iframes/rt=j/sv=1/d=1/ed=1/rs=AHpOoo87KNXmV5OeSd-Dt__Wtv736527Nw/cb=gapi.loaded_0?le=scs,fedcm_migration_mod" async=""></script><script src="https://apis.google.com/_/scs/abc-static/_/js/k=gapi.lb.ko.4XlE21lAHZg.O/m=gapi_iframes/rt=j/sv=1/d=1/ed=1/rs=AHpOoo87KNXmV5OeSd-Dt__Wtv736527Nw/cb=gapi.loaded_0?le=scs,fedcm_migration_mod" async=""></script><script src="https://apis.google.com/_/scs/abc-static/_/js/k=gapi.lb.ko.4XlE21lAHZg.O/m=gapi_iframes/rt=j/sv=1/d=1/ed=1/rs=AHpOoo87KNXmV5OeSd-Dt__Wtv736527Nw/cb=gapi.loaded_0?le=scs,fedcm_migration_mod" async=""></script><script src="https://apis.google.com/_/scs/abc-static/_/js/k=gapi.lb.ko.Mrvmj7G-jDg.O/m=gapi_iframes/rt=j/sv=1/d=1/ed=1/rs=AHpOoo-OIiCBSoDYGTfHuGb2acpp8-6YBg/cb=gapi.loaded_0?le=scs" async=""></script><script>
 (function(){
   var d = localStorage.getItem('lmTheme') || localStorage.getItem('darkMode');
   if(d === 'dark' || d === 'true'){
@@ -1011,7 +1011,7 @@ body.hide-mode .link-list {
 </style>
 <script src="https://apis.google.com/js/api.js?onload=__iframefcb443968" type="text/javascript" charset="UTF-8" gapi_processed="true"></script><style id="lmUiColorStyle">:root{ --accent:#52A869; --accent2:#3A8A50; --bg:#F0F7EE; --card:#F7FAF5; --text:#2C2418; --border:#C8E0C0; }
 .dark{ --accent:#5EC87A; --accent2:#7AD894; --bg:#0E1A10; --card:#1A2A1A; --text:#EDE8DE; --border:#2A4030; }</style></head>
-<body class="dark sb-hidden hide-mode">
+<body class="dark sb-hidden">
 
 <!-- ══════════════════════════════════════
      ① 최상단 고정 메뉴바 (항상 표시)
@@ -1067,7 +1067,7 @@ body.hide-mode .link-list {
 ══════════════════════════════════════ -->
 <div id="lmPanel">
 
-<header id="topbar" style="display: none;">
+<header id="topbar" style="display: flex;">
   <span style="font-size:14px;font-weight:700;color:var(--accent);margin-right:4px;letter-spacing:-0.3px;">StudyLink</span>
   <div id="lmCustomBtnBar" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;"><button type="button" style="background: var(--accent); color: rgb(255, 255, 255); border: medium; font-weight: 600;">+ 분류</button><button type="button" class="primary">+ 카테고리</button><button type="button">⚙ 관리</button><button type="button" style="background: rgb(255, 157, 0); color: rgb(255, 255, 255); border: medium;">숨김</button></div>
   <button onclick="lmOpenCustomizer()" title="화면 커스터마이징 (색상/버튼)" style="margin-left:2px;">🎨</button>
@@ -1076,7 +1076,7 @@ body.hide-mode .link-list {
 </header>
 
   <!-- 입력 폼 -->
-  <div class="card" id="inputBox" style="padding: 14px 18px; display: none;">
+  <div class="card" id="inputBox" style="padding: 14px 18px; display: block;">
     <p class="section-title" style="margin-bottom:10px;">새 항목 추가</p>
     <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start;">
       <select id="type" style="min-width:100px;" onchange="onTypeChange()">
@@ -1196,6 +1196,8 @@ body.hide-mode .link-list {
       <path d="M12 1L1 12M12 5L5 12M12 9L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
     </svg></div><div class="panel-resize-handle" title="드래그: 크기 조절"><svg width="13" height="13" viewBox="0 0 13 13" fill="none">
       <path d="M12 1L1 12M12 5L5 12M12 9L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg></div><div class="panel-resize-handle" title="드래그: 크기 조절"><svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+      <path d="M12 1L1 12M12 5L5 12M12 9L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
     </svg></div></div>
 
 <!-- 달력 패널 -->
@@ -1224,6 +1226,8 @@ body.hide-mode .link-list {
     </button>
   </div>
 <div class="panel-resize-handle" title="드래그: 크기 조절"><svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+      <path d="M12 1L1 12M12 5L5 12M12 9L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg></div><div class="panel-resize-handle" title="드래그: 크기 조절"><svg width="13" height="13" viewBox="0 0 13 13" fill="none">
       <path d="M12 1L1 12M12 5L5 12M12 9L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
     </svg></div><div class="panel-resize-handle" title="드래그: 크기 조절"><svg width="13" height="13" viewBox="0 0 13 13" fill="none">
       <path d="M12 1L1 12M12 5L5 12M12 9L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
@@ -1284,6 +1288,8 @@ body.hide-mode .link-list {
   </div>
 
 <div class="panel-resize-handle" title="드래그: 크기 조절"><svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+      <path d="M12 1L1 12M12 5L5 12M12 9L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg></div><div class="panel-resize-handle" title="드래그: 크기 조절"><svg width="13" height="13" viewBox="0 0 13 13" fill="none">
       <path d="M12 1L1 12M12 5L5 12M12 9L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
     </svg></div><div class="panel-resize-handle" title="드래그: 크기 조절"><svg width="13" height="13" viewBox="0 0 13 13" fill="none">
       <path d="M12 1L1 12M12 5L5 12M12 9L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
@@ -1764,7 +1770,6 @@ const pcSync = (function(){
   }
   } // end __lmAutoSyncHooked
 })()
-
 
 /* ══════════════════════════════════════════
    로컬 날짜 헬퍼
@@ -2788,7 +2793,6 @@ function renderLinks(){
         card.style.transform=""
       }
     }
-
 
     let thumb=""
     if(item.type==="youtube"){
@@ -4584,7 +4588,6 @@ function openScrapReader(){
 function openPronTrainer(){
     openInDock("pronunciation.html","🎧 발음 훈련","link")
 }
-
 
 /* ══════════════════════════════════════════
    인앱 뽀모도로 타이머
@@ -6441,10 +6444,6 @@ function bulkSetTheme(isDark) {
 })();
 </script>
 
-
-<div id="autoSyncBadge" style="position: fixed; top: 92px; left: 50%; transform: translateX(-50%); z-index: 99999; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: rgba(0, 0, 0, 0.65); color: rgb(255, 255, 255); pointer-events: none; opacity: 0; transition: opacity 0.4s; white-space: nowrap;"></div><iframe ng-non-bindable="" frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" tabindex="-1" vspace="0" width="100%" aria-hidden="true" id="I0_1778748405008" name="I0_1778748405008" src="https://studyapp-58a1c.firebaseapp.com/__/auth/iframe?apiKey=AIzaSyA7ots3eKmIasUH4GW7nw797cdvEVP-Dk8&amp;appName=%5BDEFAULT%5D&amp;v=10.12.2&amp;eid=p&amp;usegapi=1&amp;jsh=m%3B%2F_%2Fscs%2Fabc-static%2F_%2Fjs%2Fk%3Dgapi.lb.ko.4XlE21lAHZg.O%2Fd%3D1%2Frs%3DAHpOoo87KNXmV5OeSd-Dt__Wtv736527Nw%2Fm%3D__features__#id=I0_1778748405008&amp;_gfid=I0_1778748405008&amp;parent=file%3A%2F%2F&amp;pfname=&amp;rpctoken=16529424" style="position: absolute; top: -100px; width: 1px; height: 1px;"></iframe>
-<div id="autoSyncBadge" style="position: fixed; top: 92px; left: 50%; transform: translateX(-50%); z-index: 99999; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: rgba(0, 0, 0, 0.65); color: rgb(255, 255, 255); pointer-events: none; opacity: 0; transition: opacity 0.4s; white-space: nowrap;"></div><iframe ng-non-bindable="" frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" tabindex="-1" vspace="0" width="100%" aria-hidden="true" id="I0_1779090438313" name="I0_1779090438313" src="https://studyapp-58a1c.firebaseapp.com/__/auth/iframe?apiKey=AIzaSyA7ots3eKmIasUH4GW7nw797cdvEVP-Dk8&amp;appName=%5BDEFAULT%5D&amp;v=10.12.2&amp;eid=p&amp;usegapi=1&amp;jsh=m%3B%2F_%2Fscs%2Fabc-static%2F_%2Fjs%2Fk%3Dgapi.lb.ko.Mrvmj7G-jDg.O%2Fd%3D1%2Frs%3DAHpOoo-OIiCBSoDYGTfHuGb2acpp8-6YBg%2Fm%3D__features__#id=I0_1779090438313&amp;_gfid=I0_1779090438313&amp;parent=file%3A%2F%2F&amp;pfname=&amp;rpctoken=13298777" style="position: absolute; top: -100px; width: 1px; height: 1px;"></iframe>
-<div id="autoSyncBadge" style="position: fixed; top: 92px; left: 50%; transform: translateX(-50%); z-index: 99999; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: rgba(0, 0, 0, 0.65); color: rgb(255, 255, 255); pointer-events: none; opacity: 0; transition: opacity 0.4s; white-space: nowrap;"></div><iframe ng-non-bindable="" frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" tabindex="-1" vspace="0" width="100%" aria-hidden="true" id="I0_1780995552604" name="I0_1780995552604" src="https://studyapp-58a1c.firebaseapp.com/__/auth/iframe?apiKey=AIzaSyA7ots3eKmIasUH4GW7nw797cdvEVP-Dk8&amp;appName=%5BDEFAULT%5D&amp;v=10.12.2&amp;eid=p&amp;usegapi=1&amp;jsh=m%3B%2F_%2Fscs%2Fabc-static%2F_%2Fjs%2Fk%3Dgapi.lb.ko.4XlE21lAHZg.O%2Fd%3D1%2Frs%3DAHpOoo87KNXmV5OeSd-Dt__Wtv736527Nw%2Fm%3D__features__#id=I0_1780995552604&amp;_gfid=I0_1780995552604&amp;parent=file%3A%2F%2F&amp;pfname=&amp;rpctoken=39452028" style="position: absolute; top: -100px; width: 1px; height: 1px;"></iframe>
 <!-- ══════════════════════════════════════════════════════════
      화면 커스터마이징 (색상 / 상단 버튼 / 사이드바)
      - lmUiCustom 키에 저장 → LM_SYNC_KEYS 에 포함되어 있어
@@ -6840,4 +6839,4 @@ window.lmApplyUiCustom();
 })();
 </script>
 
-<div id="autoSyncBadge" style="position: fixed; top: 92px; left: 50%; transform: translateX(-50%); z-index: 99999; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: rgba(0, 0, 0, 0.65); color: rgb(255, 255, 255); pointer-events: none; opacity: 0; transition: opacity 0.4s; white-space: nowrap;"></div><button id="restoreBtn" style="position: fixed; top: 40px; right: 0px; z-index: 9999; background: rgb(255, 157, 0); color: rgb(255, 255, 255); border: medium; padding: 6px 13px; border-radius: 8px; font-weight: 500; cursor: pointer;">기능</button><iframe ng-non-bindable="" frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" tabindex="-1" vspace="0" width="100%" aria-hidden="true" id="I0_1783311375543" name="I0_1783311375543" src="https://studyapp-58a1c.firebaseapp.com/__/auth/iframe?apiKey=AIzaSyA7ots3eKmIasUH4GW7nw797cdvEVP-Dk8&amp;appName=%5BDEFAULT%5D&amp;v=10.12.2&amp;eid=p&amp;usegapi=1&amp;jsh=m%3B%2F_%2Fscs%2Fabc-static%2F_%2Fjs%2Fk%3Dgapi.lb.ko.4XlE21lAHZg.O%2Fd%3D1%2Frs%3DAHpOoo87KNXmV5OeSd-Dt__Wtv736527Nw%2Fm%3D__features__#id=I0_1783311375543&amp;_gfid=I0_1783311375543&amp;parent=file%3A%2F%2F&amp;pfname=&amp;rpctoken=50489882" style="position: absolute; top: -100px; width: 1px; height: 1px;"></iframe></body></html>
+<div id="autoSyncBadge" style="position: fixed; top: 92px; left: 50%; transform: translateX(-50%); z-index: 99999; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: rgba(0, 0, 0, 0.65); color: rgb(255, 255, 255); pointer-events: none; opacity: 0; transition: opacity 0.4s; white-space: nowrap;"></div><iframe ng-non-bindable="" frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" tabindex="-1" vspace="0" width="100%" aria-hidden="true" id="I0_1783313053416" name="I0_1783313053416" src="https://studyapp-58a1c.firebaseapp.com/__/auth/iframe?apiKey=AIzaSyA7ots3eKmIasUH4GW7nw797cdvEVP-Dk8&amp;appName=%5BDEFAULT%5D&amp;v=10.12.2&amp;eid=p&amp;usegapi=1&amp;jsh=m%3B%2F_%2Fscs%2Fabc-static%2F_%2Fjs%2Fk%3Dgapi.lb.ko.4XlE21lAHZg.O%2Fd%3D1%2Frs%3DAHpOoo87KNXmV5OeSd-Dt__Wtv736527Nw%2Fm%3D__features__#id=I0_1783313053416&amp;_gfid=I0_1783313053416&amp;parent=file%3A%2F%2F&amp;pfname=&amp;rpctoken=16885831" style="position: absolute; top: -100px; width: 1px; height: 1px;"></iframe></body></html>
