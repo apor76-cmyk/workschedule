@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Link Manager</title>
 <!-- ★ 깜빡임 방지: CSS/렌더링 전에 다크모드 즉시 적용 -->
-<script src="https://apis.google.com/_/scs/abc-static/_/js/k=gapi.lb.ko.4XlE21lAHZg.O/m=gapi_iframes/rt=j/sv=1/d=1/ed=1/rs=AHpOoo87KNXmV5OeSd-Dt__Wtv736527Nw/cb=gapi.loaded_0?le=scs,fedcm_migration_mod" async=""></script><script src="https://apis.google.com/_/scs/abc-static/_/js/k=gapi.lb.ko.Mrvmj7G-jDg.O/m=gapi_iframes/rt=j/sv=1/d=1/ed=1/rs=AHpOoo-OIiCBSoDYGTfHuGb2acpp8-6YBg/cb=gapi.loaded_0?le=scs" async=""></script><script>
+<script src="https://apis.google.com/_/scs/abc-static/_/js/k=gapi.lb.ko.4XlE21lAHZg.O/m=gapi_iframes/rt=j/sv=1/d=1/ed=1/rs=AHpOoo87KNXmV5OeSd-Dt__Wtv736527Nw/cb=gapi.loaded_0?le=scs,fedcm_migration_mod" async=""></script><script src="https://apis.google.com/_/scs/abc-static/_/js/k=gapi.lb.ko.4XlE21lAHZg.O/m=gapi_iframes/rt=j/sv=1/d=1/ed=1/rs=AHpOoo87KNXmV5OeSd-Dt__Wtv736527Nw/cb=gapi.loaded_0?le=scs,fedcm_migration_mod" async=""></script><script src="https://apis.google.com/_/scs/abc-static/_/js/k=gapi.lb.ko.Mrvmj7G-jDg.O/m=gapi_iframes/rt=j/sv=1/d=1/ed=1/rs=AHpOoo-OIiCBSoDYGTfHuGb2acpp8-6YBg/cb=gapi.loaded_0?le=scs" async=""></script><script>
 (function(){
   var d = localStorage.getItem('lmTheme') || localStorage.getItem('darkMode');
   if(d === 'dark' || d === 'true'){
@@ -1009,8 +1009,9 @@ body.hide-mode .link-list {
 }
 
 </style>
-<script src="https://apis.google.com/js/api.js?onload=__iframefcb443968" type="text/javascript" charset="UTF-8" gapi_processed="true"></script></head>
-<body class="dark sb-hidden">
+<script src="https://apis.google.com/js/api.js?onload=__iframefcb443968" type="text/javascript" charset="UTF-8" gapi_processed="true"></script><style id="lmUiColorStyle">:root{ --accent:#52A869; --accent2:#3A8A50; --bg:#F0F7EE; --card:#F7FAF5; --text:#2C2418; --border:#C8E0C0; }
+.dark{ --accent:#5EC87A; --accent2:#7AD894; --bg:#0E1A10; --card:#1A2A1A; --text:#EDE8DE; --border:#2A4030; }</style></head>
+<body class="dark sb-hidden hide-mode">
 
 <!-- ══════════════════════════════════════
      ① 최상단 고정 메뉴바 (항상 표시)
@@ -1023,108 +1024,7 @@ body.hide-mode .link-list {
 
   <div class="sb-divider"></div>
 
-  <div class="sb-divider"></div>
-
-  <!-- 링크체크 -->
-  <button onclick="openWeekcheck()" title="링크체크" style="background:#FFC107;color:#fff;border:none;">
-    <span class="sb-icon">📅</span>
-    <span class="sb-label">링크체크</span>
-  </button>
- <!-- 카드체크 -->
-  <button onclick="openPracticecheck()" title="카드체크" style="background:#FFC107;color:#fff;border:none;">
-    <span class="sb-icon">📋</span>
-    <span class="sb-label">카드체크</span>
-  </button>
-  <!-- 학습카드 -->
-  <button onclick="openMemorycard()" title="학습카드" style="background:#4CAF50;color:#fff;border:none;">
-    <span class="sb-icon">🔡</span>
-    <span class="sb-label">학습카드</span>
-  </button>
-
-  <!-- 루틴 (링크매니저 루틴 분류로 이동) -->
-  <button onclick="goToRoutineGroup()" title="루틴" style="background:#4CAF50;color:#fff;border:none;">
-    <span class="sb-icon">🔄</span>
-    <span class="sb-label">루틴</span>
-  </button>
-
-  <!-- 그림단어 (imagevoca) -->
-  <button onclick="openImageVoca()" title="그림단어" style="background:#4CAF50;color:#fff;border:none;">
-    <span class="sb-icon">🎨</span>
-    <span class="sb-label">그림단어</span>
-  </button>
-
-  <!-- 영어리더 (scrapreader) -->
-  <button onclick="openScrapReader()" title="영어리더" style="background:#4CAF50;color:#fff;border:none;">
-    <span class="sb-icon">📖</span>
-    <span class="sb-label">영어리더</span>
-  </button>
-
-  <!-- 발음 훈련 -->
-  <button onclick="openPronTrainer()" title="발음 훈련" style="background:#4CAF50;color:#fff;border:none;">
-    <span class="sb-icon">🎧</span>
-    <span class="sb-label" style="color:#fff;">S발음</span>
-  </button>
-
-  <div class="sb-divider"></div>
-
- 
-
-  <!-- 스케줄 -->
-  <button onclick="openSchedule()" title="스케줄" style="background:#FFC107;color:#fff;border:none;">
-    <span class="sb-icon">📅</span>
-    <span class="sb-label">스케줄</span>
-  </button>
-
-  <!-- 달력 -->
-  <div id="calBadge" class="badge-item" onclick="toggleCalPanel()" title="달력" style="background:#FFC107;color:#fff;">
-    <span>📆</span>
-    <span>달력</span>
-  </div>
-
-  <!-- 할일 -->
-  <div id="todoBadgeBtn" class="badge-item" onclick="toggleTodoPanel()" title="할일" style="background:#FFC107;color:#fff;">
-    <span>✅</span>
-    <span>할일</span>
-  </div>
-
-  <div class="sb-divider"></div>
-
-  <!-- 뽀모도로 -->
-  <div id="pomoBadge" class="badge-item" onclick="togglePomoPanel()" title="뽀모도로 타이머" style="background:#9E9E9E;color:#fff;">
-    <span>⏱</span>
-    <span id="pomoText" style="font-size:9px;font-weight:600;color:#fff;">0🍅</span>
-  </div>
-
-  <!-- 오늘 클릭 통계 -->
-  <div id="clickStatBadge" class="badge-item" onclick="openClickStat()" title="오늘 클릭 통계" style="background:#9E9E9E;color:#fff;">
-    <span>📊</span>
-    <span id="clickStatText" style="font-size:9px;font-weight:600;color:#fff;">오늘 0회</span>
-  </div>
-
-
-  <div class="sb-divider" style="margin-top:auto;"></div>
-
-  <button onclick="changeGrid(-1)" title="열 늘리기" style="padding:6px 10px;background:#9E9E9E;color:#fff;border:none;">+</button>
-  <button onclick="changeGrid(1)" title="열 줄이기" style="padding:6px 10px;background:#9E9E9E;color:#fff;border:none;">−</button>
-
-
-  <div class="sb-divider"></div>
-
-  <!-- 연결 앱 일괄 설정 -->
-  <div style="position:relative;" id="bulkCtrlWrap">
-    <button id="bulkCtrlBtn" onclick="toggleBulkPanel()" title="연결 앱 일괄 설정" style="background:#6366f1;color:#fff;border:none;touch-action:manipulation;">
-      <span class="sb-icon">🌐</span>
-      <span class="sb-label" style="color:#fff;">앱관리</span>
-    </button>
-  </div>
-
-  <div class="sb-divider"></div>
-
-  <!-- 전체화면 -->
-  <button id="browserFsBtn" onclick="toggleBrowserFullscreen()" title="브라우저 전체화면" style="background:#ff9d00;color:#fff;border:none;">
-    <span class="sb-icon">⛶</span>
-    <span class="sb-label" style="color:#fff;">전체</span>
-  </button>
+  <div id="lmSbCustomBar" style="display:flex;flex-direction:column;align-items:center;gap:2px;width:100%;"><button title="링크체크" style="background: rgb(255, 193, 7) !important; color: rgb(255, 255, 255) !important;"><span class="sb-icon">📅</span><span class="sb-label">링크체크</span></button><button title="카드체크" style="background: rgb(255, 193, 7) !important; color: rgb(255, 255, 255) !important;"><span class="sb-icon">📋</span><span class="sb-label">카드체크</span></button><button title="학습카드" style="background: rgb(76, 175, 80) !important; color: rgb(255, 255, 255) !important;"><span class="sb-icon">🔡</span><span class="sb-label">학습카드</span></button><button title="루틴" style="background: rgb(76, 175, 80) !important; color: rgb(255, 255, 255) !important;"><span class="sb-icon">🔄</span><span class="sb-label">루틴</span></button><button title="그림단어" style="background: rgb(76, 175, 80) !important; color: rgb(255, 255, 255) !important;"><span class="sb-icon">🎨</span><span class="sb-label">그림단어</span></button><button title="영어리더" style="background: rgb(76, 175, 80) !important; color: rgb(255, 255, 255) !important;"><span class="sb-icon">📖</span><span class="sb-label">영어리더</span></button><button title="S발음" style="background: rgb(76, 175, 80) !important; color: rgb(255, 255, 255) !important;"><span class="sb-icon">🎧</span><span class="sb-label">S발음</span></button><button title="스케줄" style="background: rgb(255, 193, 7) !important; color: rgb(255, 255, 255) !important;"><span class="sb-icon">📅</span><span class="sb-label">스케줄</span></button><div class="badge-item" id="calBadge" title="달력" style="background: rgb(255, 193, 7) !important; color: rgb(255, 255, 255) !important;"><span>📆</span><span>달력</span></div><div class="badge-item" id="todoBadgeBtn" title="할일" style="background: rgb(255, 193, 7) !important; color: rgb(255, 255, 255) !important;"><span>✅</span><span>할일</span></div><div class="badge-item" id="pomoBadge" title="0🍅" style="background: rgb(158, 158, 158) !important; color: rgb(255, 255, 255) !important;"><span>⏱</span><span id="pomoText">0🍅</span></div><div class="badge-item" id="clickStatBadge" title="오늘 0회" style="background: rgb(158, 158, 158) !important; color: rgb(255, 255, 255) !important;"><span>📊</span><span id="clickStatText">오늘 0회</span></div><button title="gridplus" style="background: rgb(158, 158, 158) !important; color: rgb(255, 255, 255) !important;"><span class="sb-icon">+</span></button><button title="gridminus" style="background: rgb(158, 158, 158) !important; color: rgb(255, 255, 255) !important;"><span class="sb-icon">−</span></button><div id="bulkCtrlWrap" style="position: relative;"><button id="bulkCtrlBtn" title="앱관리" style="background: rgb(99, 102, 241) !important; color: rgb(255, 255, 255) !important;"><span class="sb-icon">🌐</span><span class="sb-label">앱관리</span></button></div><button id="browserFsBtn" title="전체" style="background: rgb(255, 157, 0) !important; color: rgb(255, 255, 255) !important;"><span class="sb-icon">⛶</span><span class="sb-label">전체</span></button></div>
 </div>
 
 <!-- 앱관리 패널 (iOS Safari에서 overflow 클리핑 방지를 위해 사이드바 밖에 배치) -->
@@ -1167,18 +1067,16 @@ body.hide-mode .link-list {
 ══════════════════════════════════════ -->
 <div id="lmPanel">
 
-<header id="topbar" style="display: flex;">
+<header id="topbar" style="display: none;">
   <span style="font-size:14px;font-weight:700;color:var(--accent);margin-right:4px;letter-spacing:-0.3px;">StudyLink</span>
-  <button style="background:var(--accent);color:#fff;border:none;font-weight:600;" onclick="addGroup()">+ 분류</button>
-  <button class="primary" onclick="addCategory()">+ 카테고리</button>
-  <button onclick="toggleManage()">⚙ 관리</button>
-  <button onclick="toggleHide()" style="background:#ff9d00;color:#fff;border:none;">숨김</button>
+  <div id="lmCustomBtnBar" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;"><button type="button" style="background: var(--accent); color: rgb(255, 255, 255); border: medium; font-weight: 600;">+ 분류</button><button type="button" class="primary">+ 카테고리</button><button type="button">⚙ 관리</button><button type="button" style="background: rgb(255, 157, 0); color: rgb(255, 255, 255); border: medium;">숨김</button></div>
+  <button onclick="lmOpenCustomizer()" title="화면 커스터마이징 (색상/버튼)" style="margin-left:2px;">🎨</button>
   <span id="lmLastSyncLabel" style="font-size:10px;color:var(--sub);white-space:nowrap;display:none;"></span>
   <input id="searchInput" placeholder="🔍 검색..." oninput="renderLinks()" style="margin-left:auto;min-width:180px;">
 </header>
 
   <!-- 입력 폼 -->
-  <div class="card" id="inputBox" style="padding: 14px 18px; display: block;">
+  <div class="card" id="inputBox" style="padding: 14px 18px; display: none;">
     <p class="section-title" style="margin-bottom:10px;">새 항목 추가</p>
     <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start;">
       <select id="type" style="min-width:100px;" onchange="onTypeChange()">
@@ -1296,6 +1194,8 @@ body.hide-mode .link-list {
       <path d="M12 1L1 12M12 5L5 12M12 9L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
     </svg></div><div class="panel-resize-handle" title="드래그: 크기 조절"><svg width="13" height="13" viewBox="0 0 13 13" fill="none">
       <path d="M12 1L1 12M12 5L5 12M12 9L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg></div><div class="panel-resize-handle" title="드래그: 크기 조절"><svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+      <path d="M12 1L1 12M12 5L5 12M12 9L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
     </svg></div></div>
 
 <!-- 달력 패널 -->
@@ -1303,12 +1203,12 @@ body.hide-mode .link-list {
   <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; cursor: grab;" title="드래그: 이동 | 더블클릭: 원위치">
     <div style="display:flex;align-items:center;gap:6px;">
       <button onclick="calMove(-1)" style="min-height:24px;padding:0 8px;font-size:12px;border-radius:6px;">◀</button>
-      <div id="calTitle" style="font-size:13px;font-weight:700;min-width:80px;text-align:center;">2026.06</div>
+      <div id="calTitle" style="font-size:13px;font-weight:700;min-width:80px;text-align:center;">2026.07</div>
       <button onclick="calMove(1)" style="min-height:24px;padding:0 8px;font-size:12px;border-radius:6px;">▶</button>
     </div>
     <button onclick="toggleCalPanel()" style="min-height:22px;padding:0 8px;font-size:12px;border-radius:6px;color:var(--sub);background:transparent;border:none;">✕</button>
   </div>
-  <div id="calGrid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;font-size:12px;"><div style="font-weight: 700; font-size: 11px; padding: 4px 0px; color: rgb(229, 83, 83);">일</div><div style="font-weight: 700; font-size: 11px; padding: 4px 0px; color: var(--sub);">월</div><div style="font-weight: 700; font-size: 11px; padding: 4px 0px; color: var(--sub);">화</div><div style="font-weight: 700; font-size: 11px; padding: 4px 0px; color: var(--sub);">수</div><div style="font-weight: 700; font-size: 11px; padding: 4px 0px; color: var(--sub);">목</div><div style="font-weight: 700; font-size: 11px; padding: 4px 0px; color: var(--sub);">금</div><div style="font-weight: 700; font-size: 11px; padding: 4px 0px; color: rgb(37, 99, 235);">토</div><div></div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">1</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">2</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">3</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">4</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">5</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: rgb(37, 99, 235); background: none;">6</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: rgb(229, 83, 83); background: none;">7</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">8</div><div class="cal-day" data-today="1" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700; color: rgb(255, 255, 255); background: var(--accent,#2d6a4f);">9</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">10</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">11</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">12</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: rgb(37, 99, 235); background: none;">13</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: rgb(229, 83, 83); background: none;">14</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">15</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">16</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">17</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">18</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">19</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: rgb(37, 99, 235); background: none;">20</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: rgb(229, 83, 83); background: none;">21</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">22</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">23</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">24</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">25</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">26</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: rgb(37, 99, 235); background: none;">27</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: rgb(229, 83, 83); background: none;">28</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">29</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">30</div></div>
+  <div id="calGrid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;font-size:12px;"><div style="font-weight: 700; font-size: 11px; padding: 4px 0px; color: rgb(229, 83, 83);">일</div><div style="font-weight: 700; font-size: 11px; padding: 4px 0px; color: var(--sub);">월</div><div style="font-weight: 700; font-size: 11px; padding: 4px 0px; color: var(--sub);">화</div><div style="font-weight: 700; font-size: 11px; padding: 4px 0px; color: var(--sub);">수</div><div style="font-weight: 700; font-size: 11px; padding: 4px 0px; color: var(--sub);">목</div><div style="font-weight: 700; font-size: 11px; padding: 4px 0px; color: var(--sub);">금</div><div style="font-weight: 700; font-size: 11px; padding: 4px 0px; color: rgb(37, 99, 235);">토</div><div></div><div></div><div></div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">1</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">2</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">3</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: rgb(37, 99, 235); background: none;">4</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: rgb(229, 83, 83); background: none;">5</div><div class="cal-day" data-today="1" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700; color: rgb(255, 255, 255); background: var(--accent,#2d6a4f);">6</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">7</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">8</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">9</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">10</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: rgb(37, 99, 235); background: none;">11</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: rgb(229, 83, 83); background: none;">12</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">13</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">14</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">15</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">16</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">17</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: rgb(37, 99, 235); background: none;">18</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: rgb(229, 83, 83); background: none;">19</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">20</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">21</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">22</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">23</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">24</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: rgb(37, 99, 235); background: none;">25</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: rgb(229, 83, 83); background: none;">26</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">27</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">28</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">29</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">30</div><div class="cal-day" style="position: relative; padding: 4px 2px 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text); background: none;">31</div></div>
   <!-- 범례 + 바로가기 -->
   <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:8px;border-top:1px solid var(--border);">
     <div style="display:flex;align-items:center;gap:8px;">
@@ -1324,6 +1224,8 @@ body.hide-mode .link-list {
     </button>
   </div>
 <div class="panel-resize-handle" title="드래그: 크기 조절"><svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+      <path d="M12 1L1 12M12 5L5 12M12 9L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg></div><div class="panel-resize-handle" title="드래그: 크기 조절"><svg width="13" height="13" viewBox="0 0 13 13" fill="none">
       <path d="M12 1L1 12M12 5L5 12M12 9L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
     </svg></div><div class="panel-resize-handle" title="드래그: 크기 조절"><svg width="13" height="13" viewBox="0 0 13 13" fill="none">
       <path d="M12 1L1 12M12 5L5 12M12 9L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
@@ -1382,6 +1284,8 @@ body.hide-mode .link-list {
   </div>
 
 <div class="panel-resize-handle" title="드래그: 크기 조절"><svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+      <path d="M12 1L1 12M12 5L5 12M12 9L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg></div><div class="panel-resize-handle" title="드래그: 크기 조절"><svg width="13" height="13" viewBox="0 0 13 13" fill="none">
       <path d="M12 1L1 12M12 5L5 12M12 9L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
     </svg></div><div class="panel-resize-handle" title="드래그: 크기 조절"><svg width="13" height="13" viewBox="0 0 13 13" fill="none">
       <path d="M12 1L1 12M12 5L5 12M12 9L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
@@ -5659,7 +5563,7 @@ window._lmGetRestoring=()=>_lmRestoring;
 window._lmGetSyncKeys=()=>LM_SYNC_KEYS;
 
 const LM_SYNC_KEYS=["lmData","lmGroups","lmTodos","lmPomoLog","lmClickLog",
-  "scheduleData","lm_repeatSchedule","pc_areas","pc_repeats","pc_deleted_areas","pc_deleted_habits","lmCatPw","cardSizePx",
+  "scheduleData","lm_repeatSchedule","pc_areas","pc_repeats","pc_deleted_areas","pc_deleted_habits","lmCatPw","cardSizePx","lmUiCustom",
   "pvocab_customs","pvocab_maxstep","pvocab_categories",
   "tre_arts","tre_vc",
   "lmTodosDeleted","lmSchedDeleted",
@@ -5958,6 +5862,7 @@ async function _lmPull(){
     _lmRestoring=false;
     _lmUpdateSyncLabel(newerTs);
     try{loadGroups();loadCatPasswords();load();renderGroups();renderCategories();renderLinks();}catch(e){console.error("[FB lm] 렌더 실패:",e);}
+    try{ if(typeof lmApplyUiCustom==='function') lmApplyUiCustom(); }catch(e){console.error("[FB lm] UI커스텀 적용 실패:",e);}
     _lmBadge("☁️ 클라우드에서 복원됨");
   }catch(e){console.warn("[FB lm] pull 실패:",e.message);}
 }
@@ -6539,4 +6444,400 @@ function bulkSetTheme(isDark) {
 
 <div id="autoSyncBadge" style="position: fixed; top: 92px; left: 50%; transform: translateX(-50%); z-index: 99999; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: rgba(0, 0, 0, 0.65); color: rgb(255, 255, 255); pointer-events: none; opacity: 0; transition: opacity 0.4s; white-space: nowrap;"></div><iframe ng-non-bindable="" frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" tabindex="-1" vspace="0" width="100%" aria-hidden="true" id="I0_1778748405008" name="I0_1778748405008" src="https://studyapp-58a1c.firebaseapp.com/__/auth/iframe?apiKey=AIzaSyA7ots3eKmIasUH4GW7nw797cdvEVP-Dk8&amp;appName=%5BDEFAULT%5D&amp;v=10.12.2&amp;eid=p&amp;usegapi=1&amp;jsh=m%3B%2F_%2Fscs%2Fabc-static%2F_%2Fjs%2Fk%3Dgapi.lb.ko.4XlE21lAHZg.O%2Fd%3D1%2Frs%3DAHpOoo87KNXmV5OeSd-Dt__Wtv736527Nw%2Fm%3D__features__#id=I0_1778748405008&amp;_gfid=I0_1778748405008&amp;parent=file%3A%2F%2F&amp;pfname=&amp;rpctoken=16529424" style="position: absolute; top: -100px; width: 1px; height: 1px;"></iframe>
 <div id="autoSyncBadge" style="position: fixed; top: 92px; left: 50%; transform: translateX(-50%); z-index: 99999; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: rgba(0, 0, 0, 0.65); color: rgb(255, 255, 255); pointer-events: none; opacity: 0; transition: opacity 0.4s; white-space: nowrap;"></div><iframe ng-non-bindable="" frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" tabindex="-1" vspace="0" width="100%" aria-hidden="true" id="I0_1779090438313" name="I0_1779090438313" src="https://studyapp-58a1c.firebaseapp.com/__/auth/iframe?apiKey=AIzaSyA7ots3eKmIasUH4GW7nw797cdvEVP-Dk8&amp;appName=%5BDEFAULT%5D&amp;v=10.12.2&amp;eid=p&amp;usegapi=1&amp;jsh=m%3B%2F_%2Fscs%2Fabc-static%2F_%2Fjs%2Fk%3Dgapi.lb.ko.Mrvmj7G-jDg.O%2Fd%3D1%2Frs%3DAHpOoo-OIiCBSoDYGTfHuGb2acpp8-6YBg%2Fm%3D__features__#id=I0_1779090438313&amp;_gfid=I0_1779090438313&amp;parent=file%3A%2F%2F&amp;pfname=&amp;rpctoken=13298777" style="position: absolute; top: -100px; width: 1px; height: 1px;"></iframe>
-<div id="autoSyncBadge" style="position: fixed; top: 92px; left: 50%; transform: translateX(-50%); z-index: 99999; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: rgba(0, 0, 0, 0.65); color: rgb(255, 255, 255); pointer-events: none; opacity: 0; transition: opacity 0.4s; white-space: nowrap;"></div><iframe ng-non-bindable="" frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" tabindex="-1" vspace="0" width="100%" aria-hidden="true" id="I0_1780995552604" name="I0_1780995552604" src="https://studyapp-58a1c.firebaseapp.com/__/auth/iframe?apiKey=AIzaSyA7ots3eKmIasUH4GW7nw797cdvEVP-Dk8&amp;appName=%5BDEFAULT%5D&amp;v=10.12.2&amp;eid=p&amp;usegapi=1&amp;jsh=m%3B%2F_%2Fscs%2Fabc-static%2F_%2Fjs%2Fk%3Dgapi.lb.ko.4XlE21lAHZg.O%2Fd%3D1%2Frs%3DAHpOoo87KNXmV5OeSd-Dt__Wtv736527Nw%2Fm%3D__features__#id=I0_1780995552604&amp;_gfid=I0_1780995552604&amp;parent=file%3A%2F%2F&amp;pfname=&amp;rpctoken=39452028" style="position: absolute; top: -100px; width: 1px; height: 1px;"></iframe></body></html>
+<div id="autoSyncBadge" style="position: fixed; top: 92px; left: 50%; transform: translateX(-50%); z-index: 99999; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: rgba(0, 0, 0, 0.65); color: rgb(255, 255, 255); pointer-events: none; opacity: 0; transition: opacity 0.4s; white-space: nowrap;"></div><iframe ng-non-bindable="" frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" tabindex="-1" vspace="0" width="100%" aria-hidden="true" id="I0_1780995552604" name="I0_1780995552604" src="https://studyapp-58a1c.firebaseapp.com/__/auth/iframe?apiKey=AIzaSyA7ots3eKmIasUH4GW7nw797cdvEVP-Dk8&amp;appName=%5BDEFAULT%5D&amp;v=10.12.2&amp;eid=p&amp;usegapi=1&amp;jsh=m%3B%2F_%2Fscs%2Fabc-static%2F_%2Fjs%2Fk%3Dgapi.lb.ko.4XlE21lAHZg.O%2Fd%3D1%2Frs%3DAHpOoo87KNXmV5OeSd-Dt__Wtv736527Nw%2Fm%3D__features__#id=I0_1780995552604&amp;_gfid=I0_1780995552604&amp;parent=file%3A%2F%2F&amp;pfname=&amp;rpctoken=39452028" style="position: absolute; top: -100px; width: 1px; height: 1px;"></iframe>
+<!-- ══════════════════════════════════════════════════════════
+     화면 커스터마이징 (색상 / 상단 버튼 / 사이드바)
+     - lmUiCustom 키에 저장 → LM_SYNC_KEYS 에 포함되어 있어
+       로그인한 사용자 계정(uid) 기준으로 클라우드에 자동 저장/동기화됨
+       (로그아웃 시 로컬 값은 자동 초기화되어 다음 사용자에게 노출되지 않음)
+════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+'use strict';
+
+/* ── 기본값 (현재 디자인 그대로) ── */
+const LM_UI_DEFAULT = {
+  colors:{
+    light:{ accent:'#52A869', accent2:'#3A8A50', bg:'#F0F7EE', card:'#F7FAF5', text:'#2C2418', border:'#C8E0C0' },
+    dark:{  accent:'#5EC87A', accent2:'#7AD894', bg:'#0E1A10', card:'#1A2A1A', text:'#EDE8DE', border:'#2A4030' }
+  },
+  buttons:[
+    { id:'addGroup',    label:'+ 분류',    action:'addGroup',    style:'accent',  bg:'', color:'', visible:true },
+    { id:'addCategory', label:'+ 카테고리', action:'addCategory', style:'primary', bg:'', color:'', visible:true },
+    { id:'toggleManage',label:'⚙ 관리',    action:'toggleManage',style:'default', bg:'', color:'', visible:true },
+    { id:'toggleHide',  label:'숨김',      action:'toggleHide',  style:'custom',  bg:'#ff9d00', color:'#ffffff', visible:true }
+  ],
+  sidebar:[
+    { id:'weekcheck',     icon:'📅', label:'링크체크', action:'openWeekcheck',       tag:'button', style:'custom', bg:'#FFC107', color:'#ffffff', visible:true },
+    { id:'practicecheck', icon:'📋', label:'카드체크', action:'openPracticecheck',   tag:'button', style:'custom', bg:'#FFC107', color:'#ffffff', visible:true },
+    { id:'memorycard',    icon:'🔡', label:'학습카드', action:'openMemorycard',      tag:'button', style:'custom', bg:'#4CAF50', color:'#ffffff', visible:true },
+    { id:'routine',       icon:'🔄', label:'루틴',    action:'goToRoutineGroup',    tag:'button', style:'custom', bg:'#4CAF50', color:'#ffffff', visible:true },
+    { id:'imagevoca',     icon:'🎨', label:'그림단어', action:'openImageVoca',       tag:'button', style:'custom', bg:'#4CAF50', color:'#ffffff', visible:true },
+    { id:'scrapreader',   icon:'📖', label:'영어리더', action:'openScrapReader',     tag:'button', style:'custom', bg:'#4CAF50', color:'#ffffff', visible:true },
+    { id:'prontrainer',   icon:'🎧', label:'S발음',   action:'openPronTrainer',     tag:'button', style:'custom', bg:'#4CAF50', color:'#ffffff', visible:true },
+    { id:'schedule',      icon:'📅', label:'스케줄',  action:'openSchedule',        tag:'button', style:'custom', bg:'#FFC107', color:'#ffffff', visible:true },
+    { id:'calendar',      icon:'📆', label:'달력',    action:'toggleCalPanel',      tag:'div',    style:'custom', bg:'#FFC107', color:'#ffffff', visible:true, elId:'calBadge' },
+    { id:'todo',          icon:'✅', label:'할일',    action:'toggleTodoPanel',     tag:'div',    style:'custom', bg:'#FFC107', color:'#ffffff', visible:true, elId:'todoBadgeBtn' },
+    { id:'pomo',          icon:'⏱', label:'0🍅',     action:'togglePomoPanel',     tag:'div',    style:'custom', bg:'#9E9E9E', color:'#ffffff', visible:true, elId:'pomoBadge', dynamicText:'pomoText' },
+    { id:'clickstat',     icon:'📊', label:'오늘 0회', action:'openClickStat',      tag:'div',    style:'custom', bg:'#9E9E9E', color:'#ffffff', visible:true, elId:'clickStatBadge', dynamicText:'clickStatText' },
+    { id:'gridplus',      icon:'+',  label:'',        action:'gridPlus',           tag:'button', style:'custom', bg:'#9E9E9E', color:'#ffffff', visible:true, iconOnly:true },
+    { id:'gridminus',     icon:'−',  label:'',        action:'gridMinus',          tag:'button', style:'custom', bg:'#9E9E9E', color:'#ffffff', visible:true, iconOnly:true },
+    { id:'bulkmgr',       icon:'🌐', label:'앱관리',   action:'toggleBulkPanel',    tag:'button', style:'custom', bg:'#6366f1', color:'#ffffff', visible:true, elId:'bulkCtrlBtn', wrapId:'bulkCtrlWrap' },
+    { id:'fullscreen',    icon:'⛶', label:'전체',    action:'toggleBrowserFullscreen', tag:'button', style:'custom', bg:'#ff9d00', color:'#ffffff', visible:true, elId:'browserFsBtn' }
+  ]
+};
+
+/* ── 버튼에 연결 가능한 기존 기능 목록 ── */
+const LM_UI_ACTIONS = {
+  addGroup:        { label:'+ 분류 추가',      run:()=>{ if(typeof addGroup==='function') addGroup(); } },
+  addCategory:      { label:'+ 카테고리 추가',  run:()=>{ if(typeof addCategory==='function') addCategory(); } },
+  toggleManage:     { label:'⚙ 관리 모드',      run:()=>{ if(typeof toggleManage==='function') toggleManage(); } },
+  toggleHide:       { label:'숨김 항목 토글',    run:()=>{ if(typeof toggleHide==='function') toggleHide(); } },
+  toggleDark:       { label:'🌙 다크모드 전환',  run:()=>{ if(typeof toggleDark==='function') toggleDark(); } },
+  toggleTodoPanel:  { label:'✅ 할일 패널',     run:()=>{ if(typeof toggleTodoPanel==='function') toggleTodoPanel(); } },
+  toggleCalPanel:   { label:'📅 일정 패널',     run:()=>{ if(typeof toggleCalPanel==='function') toggleCalPanel(); } },
+  togglePomoPanel:  { label:'🍅 뽀모도로',      run:()=>{ if(typeof togglePomoPanel==='function') togglePomoPanel(); } },
+  openClickStat:    { label:'📊 클릭 통계',     run:()=>{ if(typeof openClickStat==='function') openClickStat(); } },
+  openMemo:         { label:'📝 메모',          run:()=>{ if(typeof openMemo==='function') openMemo(); } },
+  toggleBulkPanel:  { label:'🧰 일괄설정',      run:()=>{ if(typeof toggleBulkPanel==='function') toggleBulkPanel(); } },
+  toggleSidebar:    { label:'📌 사이드바 토글', run:()=>{ if(typeof toggleSidebar==='function') toggleSidebar(); } },
+  openWeekcheck:    { label:'📅 링크체크',      run:()=>{ if(typeof openWeekcheck==='function') openWeekcheck(); } },
+  openPracticecheck:{ label:'📋 카드체크',      run:()=>{ if(typeof openPracticecheck==='function') openPracticecheck(); } },
+  openMemorycard:   { label:'🔡 학습카드',      run:()=>{ if(typeof openMemorycard==='function') openMemorycard(); } },
+  goToRoutineGroup: { label:'🔄 루틴',          run:()=>{ if(typeof goToRoutineGroup==='function') goToRoutineGroup(); } },
+  openImageVoca:    { label:'🎨 그림단어',      run:()=>{ if(typeof openImageVoca==='function') openImageVoca(); } },
+  openScrapReader:  { label:'📖 영어리더',      run:()=>{ if(typeof openScrapReader==='function') openScrapReader(); } },
+  openPronTrainer:  { label:'🎧 발음 훈련',     run:()=>{ if(typeof openPronTrainer==='function') openPronTrainer(); } },
+  openSchedule:     { label:'📅 스케줄',        run:()=>{ if(typeof openSchedule==='function') openSchedule(); } },
+  gridPlus:         { label:'➕ 열 늘리기',     run:()=>{ if(typeof changeGrid==='function') changeGrid(-1); } },
+  gridMinus:        { label:'➖ 열 줄이기',     run:()=>{ if(typeof changeGrid==='function') changeGrid(1); } },
+  toggleBrowserFullscreen:{ label:'⛶ 전체화면', run:()=>{ if(typeof toggleBrowserFullscreen==='function') toggleBrowserFullscreen(); } }
+};
+
+function lmCloneDefault(){ return JSON.parse(JSON.stringify(LM_UI_DEFAULT)); }
+
+function lmLoadUiCustom(){
+  try{
+    const raw = localStorage.getItem('lmUiCustom');
+    if(!raw) return lmCloneDefault();
+    const parsed = JSON.parse(raw);
+    if(!parsed || !Array.isArray(parsed.buttons) || !parsed.colors) return lmCloneDefault();
+    if(!Array.isArray(parsed.sidebar)) parsed.sidebar = lmCloneDefault().sidebar; // 이전 버전 설정 호환
+    return parsed;
+  }catch(e){ return lmCloneDefault(); }
+}
+function lmSaveUiCustom(cfg){
+  localStorage.setItem('lmUiCustom', JSON.stringify(cfg));
+}
+
+/* ── 색상 적용 ── */
+function lmApplyUiColors(cfg){
+  let styleEl = document.getElementById('lmUiColorStyle');
+  if(!styleEl){ styleEl = document.createElement('style'); styleEl.id = 'lmUiColorStyle'; document.head.appendChild(styleEl); }
+  const L = cfg.colors.light, D = cfg.colors.dark;
+  styleEl.textContent =
+    ':root{ --accent:'+L.accent+'; --accent2:'+L.accent2+'; --bg:'+L.bg+'; --card:'+L.card+'; --text:'+L.text+'; --border:'+L.border+'; }\n' +
+    '.dark{ --accent:'+D.accent+'; --accent2:'+D.accent2+'; --bg:'+D.bg+'; --card:'+D.card+'; --text:'+D.text+'; --border:'+D.border+'; }';
+}
+
+/* ── 버튼 렌더 ── */
+function lmRunAction(b){
+  if(b.action === '__link'){ if(b.url) window.open(b.url, '_blank', 'noopener'); return; }
+  const a = LM_UI_ACTIONS[b.action];
+  if(a){ try{ a.run(); }catch(e){ console.error('[UI커스텀] 버튼 실행 실패:', e); } }
+}
+function lmRenderCustomButtons(cfg){
+  const bar = document.getElementById('lmCustomBtnBar');
+  if(!bar) return;
+  bar.innerHTML = '';
+  (cfg.buttons||[]).filter(b=>b.visible!==false).forEach(b=>{
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.textContent = b.label;
+    if(b.style === 'accent'){ btn.style.cssText = 'background:var(--accent);color:#fff;border:none;font-weight:600;'; }
+    else if(b.style === 'primary'){ btn.className = 'primary'; }
+    else if(b.style === 'custom'){ btn.style.cssText = 'background:'+(b.bg||'var(--card2)')+';color:'+(b.color||'inherit')+';border:none;'; }
+    btn.addEventListener('click', ()=>lmRunAction(b));
+    bar.appendChild(btn);
+  });
+}
+
+/* ── 사이드바 버튼 렌더 ── */
+function lmRenderSidebarButtons(cfg){
+  const bar = document.getElementById('lmSbCustomBar');
+  if(!bar) return;
+  bar.innerHTML = '';
+  (cfg.sidebar||[]).filter(b=>b.visible!==false).forEach(b=>{
+    const el = document.createElement(b.tag === 'div' ? 'div' : 'button');
+    if(b.tag === 'div') el.className = 'badge-item';
+    if(b.elId) el.id = b.elId;
+    el.title = b.label || b.id;
+    if(b.style === 'hl-yellow') el.className += ' sb-hl sb-hl-yellow';
+    else if(b.style === 'hl-green') el.className += ' sb-hl sb-hl-green';
+    else if(b.style === 'custom'){
+      if(b.bg) el.style.setProperty('background', b.bg, 'important');
+      if(b.color) el.style.setProperty('color', b.color, 'important');
+    }
+    const iconSpan = document.createElement('span');
+    if(b.tag !== 'div') iconSpan.className = 'sb-icon';
+    iconSpan.textContent = b.icon || '';
+    el.appendChild(iconSpan);
+    if(!b.iconOnly){
+      const labelSpan = document.createElement('span');
+      if(b.tag !== 'div') labelSpan.className = 'sb-label';
+      if(b.dynamicText) labelSpan.id = b.dynamicText;
+      labelSpan.textContent = b.label || '';
+      el.appendChild(labelSpan);
+    }
+    el.addEventListener('click', ()=>lmRunAction(b));
+    if(b.wrapId){
+      const wrap = document.createElement('div');
+      wrap.id = b.wrapId;
+      wrap.style.position = 'relative';
+      wrap.appendChild(el);
+      bar.appendChild(wrap);
+    }else{
+      bar.appendChild(el);
+    }
+  });
+  // 동적 뱃지(뽀모도로/클릭통계) 최신 값 즉시 반영
+  try{ if(typeof updateClickStatBadge==='function') updateClickStatBadge(); }catch(e){}
+  try{ if(typeof updatePomoBadge==='function') updatePomoBadge(); }catch(e){}
+}
+
+window.lmApplyUiCustom = function(){
+  const cfg = lmLoadUiCustom();
+  lmApplyUiColors(cfg);
+  lmRenderCustomButtons(cfg);
+  lmRenderSidebarButtons(cfg);
+};
+
+/* ══════════════ 커스터마이징 모달 ══════════════ */
+let _lmUiWorkingCfg = null;
+let _lmUiSortable = null;
+let _lmUiSbSortable = null;
+
+window.lmOpenCustomizer = function(){
+  _lmUiWorkingCfg = JSON.parse(JSON.stringify(lmLoadUiCustom()));
+  let modal = document.getElementById('lmUiCustomModal');
+  if(!modal){
+    modal = document.createElement('div');
+    modal.id = 'lmUiCustomModal';
+    modal.style.cssText = 'display:flex;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);justify-content:center;align-items:center;z-index:999995;backdrop-filter:blur(4px);';
+    modal.addEventListener('click', (e)=>{ if(e.target===modal) modal.style.display='none'; });
+    modal.innerHTML =
+      '<div style="background:var(--card);color:var(--text);border-radius:16px;padding:20px 22px;width:95%;max-width:640px;max-height:88vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,0.35);">'+
+        '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">'+
+          '<h3 style="margin:0;font-size:16px;">🎨 화면 커스터마이징</h3>'+
+          '<button onclick="document.getElementById(\'lmUiCustomModal\').style.display=\'none\'" style="min-height:30px;">✕</button>'+
+        '</div>'+
+        '<div style="display:flex;gap:6px;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:8px;">'+
+          '<button id="lmUiTabColorsBtn" onclick="lmUiSwitchTab(\'colors\')" class="primary">색상</button>'+
+          '<button id="lmUiTabButtonsBtn" onclick="lmUiSwitchTab(\'buttons\')">상단버튼</button>'+
+          '<button id="lmUiTabSidebarBtn" onclick="lmUiSwitchTab(\'sidebar\')">사이드바</button>'+
+        '</div>'+
+        '<div id="lmUiTabColors"></div>'+
+        '<div id="lmUiTabButtons" style="display:none;"></div>'+
+        '<div id="lmUiTabSidebar" style="display:none;"></div>'+
+        '<div style="display:flex;gap:8px;justify-content:flex-end;margin-top:18px;border-top:1px solid var(--border);padding-top:14px;">'+
+          '<button onclick="lmUiResetDefault()" style="background:var(--no);color:#fff;border:none;">초기화 (기본 디자인)</button>'+
+          '<button class="primary" onclick="lmUiSaveCustom()">저장</button>'+
+        '</div>'+
+      '</div>';
+    document.body.appendChild(modal);
+  }
+  lmUiRenderColorsTab();
+  lmUiRenderButtonsTab();
+  lmUiRenderSidebarTab();
+  lmUiSwitchTab('colors');
+  modal.style.display = 'flex';
+};
+
+window.lmUiSwitchTab = function(tab){
+  document.getElementById('lmUiTabColors').style.display = tab==='colors' ? 'block' : 'none';
+  document.getElementById('lmUiTabButtons').style.display = tab==='buttons' ? 'block' : 'none';
+  document.getElementById('lmUiTabSidebar').style.display = tab==='sidebar' ? 'block' : 'none';
+  document.getElementById('lmUiTabColorsBtn').className = tab==='colors' ? 'primary' : '';
+  document.getElementById('lmUiTabButtonsBtn').className = tab==='buttons' ? 'primary' : '';
+  document.getElementById('lmUiTabSidebarBtn').className = tab==='sidebar' ? 'primary' : '';
+};
+
+/* ── 색상 탭 ── */
+function lmUiColorField(labelText, mode, key){
+  const val = _lmUiWorkingCfg.colors[mode][key];
+  return '<label style="display:flex;flex-direction:column;gap:4px;font-size:11px;color:var(--sub);">'+labelText+
+    '<input type="color" value="'+val+'" oninput="lmUiSetColor(\''+mode+'\',\''+key+'\',this.value)" style="width:100%;height:32px;padding:2px;">'+
+    '</label>';
+}
+window.lmUiSetColor = function(mode, key, val){ _lmUiWorkingCfg.colors[mode][key] = val; };
+function lmUiRenderColorsTab(){
+  const el = document.getElementById('lmUiTabColors');
+  el.innerHTML =
+    '<p style="font-size:12px;color:var(--sub);margin:0 0 12px;">라이트 / 다크 모드 색상을 각각 지정하세요. 저장 즉시 전체 화면에 적용됩니다.</p>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">'+
+      '<div><p style="font-weight:700;font-size:13px;margin:0 0 8px;">☀️ 라이트 모드</p>'+
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">'+
+          lmUiColorField('강조색1','light','accent')+lmUiColorField('강조색2','light','accent2')+
+          lmUiColorField('배경','light','bg')+lmUiColorField('카드','light','card')+
+          lmUiColorField('글자','light','text')+lmUiColorField('테두리','light','border')+
+        '</div></div>'+
+      '<div><p style="font-weight:700;font-size:13px;margin:0 0 8px;">🌙 다크 모드</p>'+
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">'+
+          lmUiColorField('강조색1','dark','accent')+lmUiColorField('강조색2','dark','accent2')+
+          lmUiColorField('배경','dark','bg')+lmUiColorField('카드','dark','card')+
+          lmUiColorField('글자','dark','text')+lmUiColorField('테두리','dark','border')+
+        '</div></div>'+
+    '</div>';
+}
+
+/* ── 버튼 탭 ── */
+function lmUiRenderButtonsTab(){
+  const el = document.getElementById('lmUiTabButtons');
+  const usedActions = new Set(_lmUiWorkingCfg.buttons.map(b=>b.action));
+  const availableOptions = Object.entries(LM_UI_ACTIONS)
+    .filter(([id])=>!usedActions.has(id))
+    .map(([id,a])=>'<option value="'+id+'">'+a.label+'</option>').join('');
+  el.innerHTML =
+    '<p style="font-size:12px;color:var(--sub);margin:0 0 10px;">상단 버튼을 드래그로 순서 변경 · 이름/색상 수정 · 삭제할 수 있습니다.</p>'+
+    '<div id="lmUiBtnRows" style="display:flex;flex-direction:column;gap:6px;"></div>'+
+    '<div style="display:flex;gap:6px;align-items:center;margin-top:12px;padding-top:12px;border-top:1px dashed var(--border);flex-wrap:wrap;">'+
+      '<select id="lmUiNewBtnAction" style="min-width:150px;">'+availableOptions+'<option value="__link">🔗 커스텀 링크 버튼</option></select>'+
+      '<button onclick="lmUiAddButton()">+ 버튼 추가</button>'+
+    '</div>';
+  lmUiRenderBtnRows();
+}
+function esc(s){ return (s||'').replace(/"/g,'&quot;'); }
+function lmUiRenderBtnRows(){
+  const rows = document.getElementById('lmUiBtnRows');
+  rows.innerHTML = _lmUiWorkingCfg.buttons.map((b,i)=>
+    '<div class="lm-ui-btn-row" style="display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 8px;">'+
+      '<span class="lm-ui-drag" style="cursor:grab;color:var(--sub);" title="드래그하여 순서 변경">⋮⋮</span>'+
+      '<input type="checkbox" '+(b.visible!==false?'checked':'')+' onchange="lmUiSetBtnField('+i+',\'visible\',this.checked)" title="표시 여부">'+
+      '<input type="text" value="'+esc(b.label)+'" oninput="lmUiSetBtnField('+i+',\'label\',this.value)" style="flex:1;min-width:80px;" placeholder="버튼 이름">'+
+      '<input type="color" value="'+(b.style==='custom'&&b.bg?b.bg:'#0092a8')+'" oninput="lmUiSetBtnColor('+i+',\'bg\',this.value)" title="배경색" style="width:30px;height:28px;padding:1px;">'+
+      '<input type="color" value="'+(b.style==='custom'&&b.color?b.color:'#ffffff')+'" oninput="lmUiSetBtnColor('+i+',\'color\',this.value)" title="글자색" style="width:30px;height:28px;padding:1px;">'+
+      '<button onclick="lmUiResetBtnStyle('+i+')" title="기본 스타일로" style="font-size:11px;padding:4px 6px;">기본색</button>'+
+      (b.action==='__link' ? '<input type="text" value="'+esc(b.url)+'" placeholder="https://..." oninput="lmUiSetBtnField('+i+',\'url\',this.value)" style="flex:1.4;min-width:130px;">' : '')+
+      '<button onclick="lmUiDeleteButton('+i+')" style="background:var(--no);color:#fff;border:none;font-size:11px;">삭제</button>'+
+    '</div>').join('');
+  if(_lmUiSortable){ _lmUiSortable.destroy(); _lmUiSortable=null; }
+  if(window.Sortable){
+    _lmUiSortable = Sortable.create(rows, { handle:'.lm-ui-drag', animation:150, onEnd:function(evt){
+      const moved = _lmUiWorkingCfg.buttons.splice(evt.oldIndex,1)[0];
+      _lmUiWorkingCfg.buttons.splice(evt.newIndex,0,moved);
+      lmUiRenderBtnRows();
+    }});
+  }
+}
+window.lmUiSetBtnField = function(i, field, val){ _lmUiWorkingCfg.buttons[i][field] = val; };
+window.lmUiSetBtnColor = function(i, field, val){ _lmUiWorkingCfg.buttons[i][field] = val; _lmUiWorkingCfg.buttons[i].style = 'custom'; };
+window.lmUiResetBtnStyle = function(i){
+  _lmUiWorkingCfg.buttons[i].style = 'default';
+  _lmUiWorkingCfg.buttons[i].bg = '';
+  _lmUiWorkingCfg.buttons[i].color = '';
+  lmUiRenderBtnRows();
+};
+window.lmUiDeleteButton = function(i){ _lmUiWorkingCfg.buttons.splice(i,1); lmUiRenderButtonsTab(); };
+window.lmUiAddButton = function(){
+  const sel = document.getElementById('lmUiNewBtnAction');
+  const action = sel.value;
+  if(!action) return;
+  if(action === '__link'){
+    _lmUiWorkingCfg.buttons.push({ id:'link_'+Date.now(), label:'새 링크', action:'__link', url:'', style:'default', bg:'', color:'', visible:true });
+  }else{
+    const a = LM_UI_ACTIONS[action];
+    _lmUiWorkingCfg.buttons.push({ id:action+'_'+Date.now(), label:a?a.label:action, action:action, style:'default', bg:'', color:'', visible:true });
+  }
+  lmUiRenderButtonsTab();
+};
+
+/* ── 사이드바 탭 ── */
+function lmUiRenderSidebarTab(){
+  const el = document.getElementById('lmUiTabSidebar');
+  const usedActions = new Set(_lmUiWorkingCfg.sidebar.map(b=>b.action));
+  const availableOptions = Object.entries(LM_UI_ACTIONS)
+    .filter(([id])=>!usedActions.has(id))
+    .map(([id,a])=>'<option value="'+id+'">'+a.label+'</option>').join('');
+  el.innerHTML =
+    '<p style="font-size:12px;color:var(--sub);margin:0 0 10px;">좌측 사이드바 아이콘을 드래그로 순서 변경 · 이름/아이콘/색상 수정 · 삭제할 수 있습니다. (실시간 숫자가 표시되는 항목은 이름이 자동 갱신됩니다)</p>'+
+    '<div id="lmUiSbRows" style="display:flex;flex-direction:column;gap:6px;"></div>'+
+    '<div style="display:flex;gap:6px;align-items:center;margin-top:12px;padding-top:12px;border-top:1px dashed var(--border);flex-wrap:wrap;">'+
+      '<select id="lmUiNewSbAction" style="min-width:150px;">'+availableOptions+'<option value="__link">🔗 커스텀 링크 버튼</option></select>'+
+      '<button onclick="lmUiAddSidebarBtn()">+ 아이콘 추가</button>'+
+    '</div>';
+  lmUiRenderSbRows();
+}
+function lmUiRenderSbRows(){
+  const rows = document.getElementById('lmUiSbRows');
+  rows.innerHTML = _lmUiWorkingCfg.sidebar.map((b,i)=>
+    '<div class="lm-ui-sb-row" style="display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 8px;">'+
+      '<span class="lm-ui-sb-drag" style="cursor:grab;color:var(--sub);" title="드래그하여 순서 변경">⋮⋮</span>'+
+      '<input type="checkbox" '+(b.visible!==false?'checked':'')+' onchange="lmUiSetSbField('+i+',\'visible\',this.checked)" title="표시 여부">'+
+      '<input type="text" value="'+esc(b.icon)+'" oninput="lmUiSetSbField('+i+',\'icon\',this.value)" style="width:36px;text-align:center;" title="아이콘" placeholder="🔗">'+
+      (b.dynamicText
+        ? '<input type="text" value="(자동 갱신됨)" disabled style="flex:1;min-width:80px;opacity:0.6;">'
+        : '<input type="text" value="'+esc(b.label)+'" oninput="lmUiSetSbField('+i+',\'label\',this.value)" style="flex:1;min-width:80px;" placeholder="이름">')+
+      '<input type="color" value="'+(b.style==='custom'&&b.bg?b.bg:'#0092a8')+'" oninput="lmUiSetSbColor('+i+',\'bg\',this.value)" title="배경색" style="width:30px;height:28px;padding:1px;">'+
+      '<input type="color" value="'+(b.style==='custom'&&b.color?b.color:'#ffffff')+'" oninput="lmUiSetSbColor('+i+',\'color\',this.value)" title="글자색" style="width:30px;height:28px;padding:1px;">'+
+      '<button onclick="lmUiResetSbStyle('+i+')" title="기본 스타일로" style="font-size:11px;padding:4px 6px;">기본색</button>'+
+      (b.action==='__link' ? '<input type="text" value="'+esc(b.url)+'" placeholder="https://..." oninput="lmUiSetSbField('+i+',\'url\',this.value)" style="flex:1.4;min-width:110px;">' : '')+
+      '<button onclick="lmUiDeleteSbBtn('+i+')" style="background:var(--no);color:#fff;border:none;font-size:11px;">삭제</button>'+
+    '</div>').join('');
+  if(_lmUiSbSortable){ _lmUiSbSortable.destroy(); _lmUiSbSortable=null; }
+  if(window.Sortable){
+    _lmUiSbSortable = Sortable.create(rows, { handle:'.lm-ui-sb-drag', animation:150, onEnd:function(evt){
+      const moved = _lmUiWorkingCfg.sidebar.splice(evt.oldIndex,1)[0];
+      _lmUiWorkingCfg.sidebar.splice(evt.newIndex,0,moved);
+      lmUiRenderSbRows();
+    }});
+  }
+}
+window.lmUiSetSbField = function(i, field, val){ _lmUiWorkingCfg.sidebar[i][field] = val; };
+window.lmUiSetSbColor = function(i, field, val){ _lmUiWorkingCfg.sidebar[i][field] = val; _lmUiWorkingCfg.sidebar[i].style = 'custom'; };
+window.lmUiResetSbStyle = function(i){
+  _lmUiWorkingCfg.sidebar[i].style = 'default';
+  _lmUiWorkingCfg.sidebar[i].bg = '';
+  _lmUiWorkingCfg.sidebar[i].color = '';
+  lmUiRenderSbRows();
+};
+window.lmUiDeleteSbBtn = function(i){ _lmUiWorkingCfg.sidebar.splice(i,1); lmUiRenderSidebarTab(); };
+window.lmUiAddSidebarBtn = function(){
+  const sel = document.getElementById('lmUiNewSbAction');
+  const action = sel.value;
+  if(!action) return;
+  if(action === '__link'){
+    _lmUiWorkingCfg.sidebar.push({ id:'sblink_'+Date.now(), icon:'🔗', label:'새 링크', action:'__link', url:'', tag:'button', style:'default', bg:'', color:'', visible:true });
+  }else{
+    const a = LM_UI_ACTIONS[action];
+    _lmUiWorkingCfg.sidebar.push({ id:action+'_'+Date.now(), icon:'⭐', label:a?a.label.replace(/^\S+\s/,''):action, action:action, tag:'button', style:'default', bg:'', color:'', visible:true });
+  }
+  lmUiRenderSidebarTab();
+};
+
+/* ── 저장 / 초기화 ── */
+window.lmUiSaveCustom = function(){
+  lmSaveUiCustom(_lmUiWorkingCfg);
+  window.lmApplyUiCustom();
+  const modal = document.getElementById('lmUiCustomModal');
+  if(modal) modal.style.display = 'none';
+  try{ _lmBadge('🎨 커스터마이징이 저장되었습니다'); }catch(e){}
+};
+window.lmUiResetDefault = function(){
+  if(!confirm('모든 커스터마이징을 초기화하고 기본 디자인으로 되돌릴까요?')) return;
+  const def = lmCloneDefault();
+  lmSaveUiCustom(def);
+  window.lmApplyUiCustom();
+  _lmUiWorkingCfg = JSON.parse(JSON.stringify(def));
+  lmUiRenderColorsTab();
+  lmUiRenderButtonsTab();
+  lmUiRenderSidebarTab();
+  try{ _lmBadge('↩️ 기본 디자인으로 초기화되었습니다'); }catch(e){}
+};
+
+/* ── 초기 적용 ── */
+window.lmApplyUiCustom();
+
+})();
+</script>
+
+<div id="autoSyncBadge" style="position: fixed; top: 92px; left: 50%; transform: translateX(-50%); z-index: 99999; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: rgba(0, 0, 0, 0.65); color: rgb(255, 255, 255); pointer-events: none; opacity: 0; transition: opacity 0.4s; white-space: nowrap;"></div><button id="restoreBtn" style="position: fixed; top: 40px; right: 0px; z-index: 9999; background: rgb(255, 157, 0); color: rgb(255, 255, 255); border: medium; padding: 6px 13px; border-radius: 8px; font-weight: 500; cursor: pointer;">기능</button><iframe ng-non-bindable="" frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" tabindex="-1" vspace="0" width="100%" aria-hidden="true" id="I0_1783311375543" name="I0_1783311375543" src="https://studyapp-58a1c.firebaseapp.com/__/auth/iframe?apiKey=AIzaSyA7ots3eKmIasUH4GW7nw797cdvEVP-Dk8&amp;appName=%5BDEFAULT%5D&amp;v=10.12.2&amp;eid=p&amp;usegapi=1&amp;jsh=m%3B%2F_%2Fscs%2Fabc-static%2F_%2Fjs%2Fk%3Dgapi.lb.ko.4XlE21lAHZg.O%2Fd%3D1%2Frs%3DAHpOoo87KNXmV5OeSd-Dt__Wtv736527Nw%2Fm%3D__features__#id=I0_1783311375543&amp;_gfid=I0_1783311375543&amp;parent=file%3A%2F%2F&amp;pfname=&amp;rpctoken=50489882" style="position: absolute; top: -100px; width: 1px; height: 1px;"></iframe></body></html>
