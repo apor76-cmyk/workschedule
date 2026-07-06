@@ -21,6 +21,7 @@ html.dark-pending body { background: #161412 !important; color: #EDE8DE !importa
 <script src="https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&amp;family=Jua&amp;family=Do+Hyeon&amp;family=Hi+Melody&amp;family=Poor+Story&amp;family=Gamja+Flower&amp;family=Nanum+Pen+Script&amp;family=Single+Day&amp;family=Dongle:wght@300;400;700&amp;display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#F0F7EE;
@@ -1011,7 +1012,7 @@ body.hide-mode .link-list {
 </style>
 <script src="https://apis.google.com/js/api.js?onload=__iframefcb443968" type="text/javascript" charset="UTF-8" gapi_processed="true"></script><style id="lmUiColorStyle">:root{ --accent:#52A869; --accent2:#3A8A50; --bg:#F0F7EE; --card:#F7FAF5; --text:#2C2418; --border:#C8E0C0; }
 .dark{ --accent:#5EC87A; --accent2:#7AD894; --bg:#0E1A10; --card:#1A2A1A; --text:#EDE8DE; --border:#2A4030; }</style></head>
-<body class="dark sb-hidden">
+<body class="dark sb-hidden hide-mode">
 
 <!-- ══════════════════════════════════════
      ① 최상단 고정 메뉴바 (항상 표시)
@@ -1067,7 +1068,7 @@ body.hide-mode .link-list {
 ══════════════════════════════════════ -->
 <div id="lmPanel">
 
-<header id="topbar" style="display: flex;">
+<header id="topbar" style="display: none;">
   <span style="font-size:14px;font-weight:700;color:var(--accent);margin-right:4px;letter-spacing:-0.3px;">StudyLink</span>
   <div id="lmCustomBtnBar" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;"><button type="button" style="background: var(--accent); color: rgb(255, 255, 255); border: medium; font-weight: 600;">+ 분류</button><button type="button" class="primary">+ 카테고리</button><button type="button">⚙ 관리</button><button type="button" style="background: rgb(255, 157, 0); color: rgb(255, 255, 255); border: medium;">숨김</button></div>
   <button onclick="lmOpenCustomizer()" title="화면 커스터마이징 (색상/버튼)" style="margin-left:2px;">🎨</button>
@@ -1076,7 +1077,38 @@ body.hide-mode .link-list {
 </header>
 
   <!-- 입력 폼 -->
-  <div class="card" id="inputBox" style="padding: 14px 18px; display: block;">
+  <style id="lmRteStyle">
+    .lm-rte-editable{ min-height:80px; max-height:260px; overflow:auto; border:1px solid var(--border); border-radius:8px; padding:8px 10px; background:var(--surface); color:var(--text); font-size:14px; line-height:1.5; white-space:pre-wrap; word-wrap:break-word; }
+    .lm-rte-editable:empty:before{ content:attr(data-placeholder); color:var(--sub); }
+    .lm-rte-toolbar{ display:flex; gap:6px; align-items:center; flex-wrap:wrap; margin-top:8px; margin-bottom:6px; }
+    .lm-rte-toolbar select, .lm-rte-toolbar input[type="color"]{ font-family:inherit; font-size:12px; border-radius:6px; border:1px solid var(--border); background:var(--surface); color:var(--text); padding:3px 4px; }
+    .lm-rte-toolbar button{ padding:4px 9px; font-size:12px; }
+    .lm-rte-toolbar .lm-rte-hint{ font-size:11px; color:var(--sub); margin-left:2px; }
+    .lm-rte-editable ul, .lm-rte-editable ol{ margin:4px 0; padding-left:22px; }
+    .lm-rte-editable blockquote{ margin:6px 0; padding:4px 10px; border-left:3px solid var(--accent); color:var(--sub); font-style:italic; }
+    .lm-note-charcount{ font-size:11px; color:var(--sub); text-align:right; margin-top:2px; }
+
+    /* ── 노트 모양(배경 패턴) ── */
+    .lm-note-lined{ background-image: repeating-linear-gradient(to bottom, transparent, transparent 26px, var(--border) 27px); background-position:0 30px; }
+    .lm-note-grid{ background-image: repeating-linear-gradient(to right, var(--border) 0 1px, transparent 1px 22px), repeating-linear-gradient(to bottom, var(--border) 0 1px, transparent 1px 22px); }
+    .lm-note-diary{ background-image: repeating-linear-gradient(to bottom, transparent, transparent 26px, var(--border) 27px); background-position:0 46px; }
+    .lm-note-checklist .lm-check-row{ display:flex; align-items:flex-start; gap:7px; padding:3px 0; }
+    .lm-note-checklist .lm-check-row input[type="checkbox"]{ margin-top:3px; width:15px; height:15px; flex-shrink:0; }
+    .lm-note-checklist .lm-check-row.done .lm-check-text{ text-decoration:line-through; color:var(--sub); opacity:0.75; }
+    .lm-note-checklist .lm-check-text{ flex:1; min-width:0; outline:none; }
+
+    /* ── 코넬식 필기 ── */
+    .lm-cornell-topic{ font-weight:700; padding:6px 4px 8px; border-bottom:2px solid var(--border); margin-bottom:6px; }
+    .lm-cornell-body{ display:grid; grid-template-columns:32% 68%; gap:0; min-height:110px; }
+    .lm-cornell-cue{ border-right:2px dashed var(--border); padding:4px 8px 4px 4px; color:var(--sub); font-size:12.5px; }
+    .lm-cornell-notes{ padding:4px 4px 4px 10px; }
+    .lm-cornell-summary{ margin-top:8px; padding-top:6px; border-top:2px solid var(--border); font-size:12.5px; color:var(--sub); }
+
+    /* ── 일기장 헤더 ── */
+    .lm-diary-header{ display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--sub); border-bottom:1px dashed var(--border); padding-bottom:6px; margin-bottom:8px; }
+    .lm-diary-header .lm-diary-date{ font-weight:700; }
+  </style>
+  <div class="card" id="inputBox" style="padding: 14px 18px; display: none;">
     <p class="section-title" style="margin-bottom:10px;">새 항목 추가</p>
     <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start;">
       <select id="type" style="min-width:100px;" onchange="onTypeChange()">
@@ -1091,7 +1123,74 @@ body.hide-mode .link-list {
       <input type="file" id="file" accept="image/*" multiple="" style="flex:1;min-width:140px;padding:6px 8px;">
       <button class="primary" onclick="addLink()" style="white-space:nowrap;">저장</button>
     </div>
-    <textarea id="text" rows="3" placeholder="텍스트 내용 입력..." style="margin-top:8px;min-height:80px;"></textarea>
+    <div id="textToolbar" class="lm-rte-toolbar">
+      <select onchange="if(this.value){lmRteFormat('text','fontSize',this.value);this.value=''}" title="글씨 크기">
+        <option value="">크기</option>
+        <option value="12px">12</option>
+        <option value="14px">14</option>
+        <option value="16px">16</option>
+        <option value="18px">18</option>
+        <option value="20px">20</option>
+        <option value="24px">24</option>
+        <option value="28px">28</option>
+        <option value="32px">32</option>
+      </select>
+      <select onchange="if(this.value){lmRteFormat('text','fontFamily',this.value);this.value=''}" title="글씨 모양">
+        <option value="">글꼴</option>
+        <option value="'DM Sans', sans-serif">DM Sans</option>
+        <option value="'DM Mono', monospace">DM Mono</option>
+        <option value="'Malgun Gothic', sans-serif">맑은고딕</option>
+        <option value="Georgia, serif">Georgia</option>
+        <option value="'Times New Roman', serif">Times</option>
+        <option value="'Courier New', monospace">Courier</option>
+        <option value="cursive">필기체</option>
+        <optgroup label="🧸 몽글몽글 아기자기">
+          <option value="'Gaegu', cursive">개구 (몽글몽글)</option>
+          <option value="'Jua', sans-serif">주아 (동글동글)</option>
+          <option value="'Do Hyeon', sans-serif">도현 (귀여운 고딕)</option>
+          <option value="'Hi Melody', cursive">하이멜로디 (아기자기 손글씨)</option>
+          <option value="'Poor Story', cursive">푸어스토리 (동화체)</option>
+          <option value="'Gamja Flower', cursive">감자꽃 (몽글몽글 손글씨)</option>
+          <option value="'Nanum Pen Script', cursive">나눔손글씨 펜</option>
+          <option value="'Single Day', cursive">싱글데이 (귀여운 손글씨)</option>
+          <option value="'Dongle', sans-serif">동글 (동글동글)</option>
+        </optgroup>
+      </select>
+      <input type="color" title="글씨 색깔" oninput="lmRteFormat('text','color',this.value)">
+      <button type="button" onclick="lmRteFormat('text','bold','')" style="font-weight:700;">B</button>
+      <button type="button" onclick="lmRteFormat('text','italic','')" style="font-style:italic;">I</button>
+      <button type="button" onclick="lmRteFormat('text','underline','')" style="text-decoration:underline;">U</button>
+      <button type="button" onclick="lmRteFormat('text','strike','')" style="text-decoration:line-through;">S</button>
+      <input type="color" title="형광펜(하이라이트)" value="#fff59d" oninput="lmRteFormat('text','highlight',this.value)">
+      <button type="button" onclick="lmRteClearFormat('text')">서식지우기</button>
+      <span class="lm-rte-hint">※ 블록 지정 후 적용하면 선택 부분만, 커서만 두면 전체에 적용</span>
+    </div>
+    <div class="lm-rte-toolbar">
+      <button type="button" onclick="lmRteFormat('text','align','left')" title="왼쪽 정렬">⟸</button>
+      <button type="button" onclick="lmRteFormat('text','align','center')" title="가운데 정렬">⟺</button>
+      <button type="button" onclick="lmRteFormat('text','align','right')" title="오른쪽 정렬">⟹</button>
+      <button type="button" onclick="lmRteExec('text','insertUnorderedList')" title="글머리 목록">• 목록</button>
+      <button type="button" onclick="lmRteExec('text','insertOrderedList')" title="번호 목록">1. 목록</button>
+      <button type="button" onclick="lmRteExec('text','formatBlock','blockquote')" title="인용구">❝인용❞</button>
+      <button type="button" onclick="lmInsertNow('text')" title="현재 날짜/시간 삽입">🕒 시각삽입</button>
+    </div>
+    <div class="lm-rte-toolbar">
+      <label style="font-size:12px;color:var(--sub);">📝 노트 모양</label>
+      <select id="textNoteStyle" onchange="lmApplyNoteStyle('text', this.value)">
+        <option value="plain">기본(빈 종이)</option>
+        <option value="lined">줄노트</option>
+        <option value="grid">모눈종이</option>
+        <option value="cornell">코넬식 필기</option>
+        <option value="diary">일기장</option>
+        <option value="checklist">체크리스트</option>
+      </select>
+      <label style="font-size:12px;color:var(--sub);">배경색</label>
+      <input type="color" id="textNoteBgPicker" oninput="lmSetNoteBg('text', this.value)">
+      <button type="button" onclick="lmSetNoteBg('text','')">배경 초기화</button>
+      <button type="button" id="textAddCheckBtn" onclick="lmAddChecklistRow('text')" style="display:none;">+ 체크항목 추가</button>
+    </div>
+    <div id="text" class="lm-rte-editable" contenteditable="true" data-placeholder="텍스트 내용 입력..." oninput="lmUpdateCharCount('text','textCharCount')"></div>
+    <div class="lm-note-charcount" id="textCharCount">0자</div>
   </div>
 
 <hr style="border: none; border-top: 1px solid #ccc; margin: 10px 0;">
@@ -2356,7 +2455,8 @@ async function addLink(){
   const type  = document.getElementById("type").value
   const title = document.getElementById("title").value
   const url   = document.getElementById("url").value
-  const text  = document.getElementById("text").value
+  const textElForRead = document.getElementById("text")
+  const text  = (textElForRead.innerText||"").trim()==="" ? "" : textElForRead.innerHTML
   const files = document.getElementById("file").files   // FileList (다중 가능)
   if(!title) return alert("제목 입력")
 
@@ -2422,11 +2522,13 @@ async function addLink(){
   } else if(type === "text"){
     const id = Date.now()
     let encrypted=false, storedText=text
+    const noteStyle = textElForRead.dataset.noteStyle || "plain"
+    const noteBg = textElForRead.dataset.noteBg || ""
     if(confirm("텍스트를 암호화하시겠습니까?")){
       const pw=await _ghAsk({ title:'🔒 텍스트 암호 설정', hint:'텍스트를 암호화할 비밀번호를 입력하세요\n※ 자동교정·자동대문자가 비활성화되어 있습니다', placeholder:'암호 입력' })
       if(pw){ storedText=await encryptText(text,pw); encrypted=true }
     }
-    data[currentCategory].push({id, title, text:storedText, type, encrypted, favorite:false})
+    data[currentCategory].push({id, title, text:storedText, type, encrypted, favorite:false, noteStyle, noteBg})
   } else if(type === "file"){
     if(files.length === 0) return alert("파일을 선택해주세요")
     // 파일 크기 사전 체크 (10MB 초과 경고)
@@ -2478,7 +2580,18 @@ async function addLink(){
   save(); renderLinks()
   document.getElementById("title").value=""
   document.getElementById("url").value=""
-  document.getElementById("text").value=""
+  ;(function(){
+    const t=document.getElementById("text")
+    t.innerHTML=""
+    t.style.fontSize=""; t.style.fontFamily=""; t.style.color=""; t.style.fontWeight=""; t.style.fontStyle=""
+    t.style.textDecoration=""; t.style.backgroundColor=""; t.style.textAlign=""
+    ;["lm-note-plain","lm-note-lined","lm-note-grid","lm-note-cornell","lm-note-diary","lm-note-checklist"].forEach(c=>t.classList.remove(c))
+    delete t.dataset.noteStyle; delete t.dataset.noteBg
+    const styleSel=document.getElementById("textNoteStyle"); if(styleSel) styleSel.value="plain"
+    const bgPicker=document.getElementById("textNoteBgPicker"); if(bgPicker) bgPicker.value="#ffffff"
+    const addBtn=document.getElementById("textAddCheckBtn"); if(addBtn) addBtn.style.display="none"
+    lmUpdateCharCount("text","textCharCount")
+  })()
   document.getElementById("file").value=""
 }
 
@@ -2821,9 +2934,12 @@ function renderLinks(){
         thumb=`<div class="thumb"><img loading="lazy" src="${src}"></div>`
       }
     } else if(item.type==="text"){
+      const hasHtml = !!(item.text && /<[a-z][\s\S]*>/i.test(item.text))
       const preview=item.encrypted ? "🔒 암호화된 메모"
-        : (item.text ? (item.text.length>150 ? item.text.slice(0,150)+"..." : item.text) : "")
-      thumb=`<div class="thumb" style="align-items:flex-start;padding:8px;background:var(--card);font-size:12px;color:var(--text);overflow:hidden;white-space:pre-wrap;word-wrap:break-word;">${preview}</div>`
+        : (item.text ? (hasHtml ? item.text : (item.text.length>150 ? item.text.slice(0,150)+"..." : item.text)) : "")
+      const noteStyleCls = item.noteStyle ? ("lm-note-"+item.noteStyle) : ""
+      const noteBgStyle = item.noteBg ? `background-color:${item.noteBg};` : ""
+      thumb=`<div class="thumb ${noteStyleCls}" style="align-items:flex-start;padding:8px;background-color:var(--card);${noteBgStyle}font-size:12px;color:var(--text);overflow:hidden;white-space:pre-wrap;word-wrap:break-word;">${preview}</div>`
     } else if(item.type==="file"){
       const ext=(item.ext||"").toLowerCase()
       const iconMap={pdf:"📄",hwp:"📝",hwpx:"📝",doc:"📋",docx:"📋",xls:"📊",xlsx:"📊",ppt:"📑",pptx:"📑"}
@@ -2884,7 +3000,7 @@ function renderLinks(){
       } else if(item.type==="link"||item.type==="youtube"){
         openInDock(item.url, item.title, item.type)
       } else if(item.type==="text"){
-        // 텍스트 카드 클릭 → 바로 편집 모드로 열기
+        // 텍스트 카드 클릭 → 읽기 전용 보기 모드로 열기 (편집은 보기 모드 안의 '편집' 버튼으로)
         let textValue=item.text
         if(item.encrypted){
           const pw=await _ghAsk({ title:'🔒 텍스트 잠금 해제', hint:'암호화된 텍스트의 비밀번호를 입력하세요', placeholder:'암호 입력' }); if(!pw) return
@@ -2892,7 +3008,7 @@ function renderLinks(){
           if(!dec){ alert("비밀번호 틀림"); return }
           textValue=dec
         }
-        openTextEditor(item, textValue)
+        openTextViewer(item, textValue)
       } else if(item.type==="file"){
         let stored = imageCache.get(item.fileData)||""
         // IndexedDB 캐시에서도 확인
@@ -3162,26 +3278,335 @@ function closeMoveModal(){
   document.getElementById("moveCatModal").style.display="none"
 }
 
-function openTextEditor(item, initVal){
+function openTextViewer(item, textValue){
   const modal=document.createElement("div")
   modal.style.cssText="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;justify-content:center;align-items:center;z-index:9999;"
   const dark=document.body.classList.contains("dark")
   const box=document.createElement("div")
-  box.style.cssText=`background:${dark?"#1e293b":"#fff"};color:${dark?"#f1f5f9":"#111"};padding:20px;border-radius:16px;width:80%;max-width:600px;display:flex;flex-direction:column;`
-  const ta=document.createElement("textarea")
-  ta.style.cssText="width:100%;height:200px;resize:vertical;background:inherit;color:inherit;"
-  ta.value=initVal||""
+  box.style.cssText=`background:${dark?"#1e293b":"#fff"};color:${dark?"#f1f5f9":"#111"};padding:20px;border-radius:16px;width:80%;max-width:600px;max-height:90vh;overflow:auto;display:flex;flex-direction:column;`
+
+  const titleRow=document.createElement("div")
+  titleRow.style.cssText="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;"
+  const titleSpan=document.createElement("span")
+  titleSpan.style.cssText="font-weight:700;font-size:14px;"
+  titleSpan.textContent=(item.encrypted?"🔒 ":"")+item.title
+  titleRow.appendChild(titleSpan)
+
+  const view=document.createElement("div")
+  view.className="lm-rte-editable"+(item.noteStyle?" lm-note-"+item.noteStyle:"")
+  view.style.cssText="width:100%;min-height:200px;max-height:60vh;cursor:default;"
+  if(item.noteBg) view.style.backgroundColor=item.noteBg
+  view.innerHTML=textValue||"<span style=\"color:var(--sub);\">(빈 노트)</span>"
+  // 보기 전용: 체크박스만 상태 표시용으로 남기고 편집 불가 처리
+  view.querySelectorAll("[contenteditable]").forEach(el=>el.removeAttribute("contenteditable"))
+  view.querySelectorAll("input[type=checkbox]").forEach(cb=>{ cb.disabled=true })
+
+  const editBtn=document.createElement("button")
+  editBtn.textContent="✏ 편집"; editBtn.className="primary"
+  editBtn.onclick=()=>{
+    document.body.removeChild(modal)
+    openTextEditor(item, textValue, ()=>openTextViewer(item, textValue))
+  }
+  const closeBtn=document.createElement("button")
+  closeBtn.textContent="닫기"
+  closeBtn.onclick=()=>document.body.removeChild(modal)
+
+  const btnRow=document.createElement("div")
+  btnRow.style.cssText="display:flex;gap:8px;margin-top:10px;"
+  btnRow.appendChild(editBtn); btnRow.appendChild(closeBtn)
+
+  box.appendChild(titleRow); box.appendChild(view); box.appendChild(btnRow)
+  modal.appendChild(box); document.body.appendChild(modal)
+}
+
+function openTextEditor(item, initVal, onCancel){
+  const modal=document.createElement("div")
+  modal.style.cssText="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;justify-content:center;align-items:center;z-index:9999;"
+  const dark=document.body.classList.contains("dark")
+  const box=document.createElement("div")
+  box.style.cssText=`background:${dark?"#1e293b":"#fff"};color:${dark?"#f1f5f9":"#111"};padding:20px;border-radius:16px;width:80%;max-width:600px;max-height:90vh;overflow:auto;display:flex;flex-direction:column;`
+
+  const toolbar=document.createElement("div")
+  toolbar.className="lm-rte-toolbar"
+  toolbar.innerHTML=`
+      <select onchange="if(this.value){lmRteFormat('lmTextEditorArea','fontSize',this.value);this.value=''}" title="글씨 크기">
+        <option value="">크기</option>
+        <option value="12px">12</option>
+        <option value="14px">14</option>
+        <option value="16px">16</option>
+        <option value="18px">18</option>
+        <option value="20px">20</option>
+        <option value="24px">24</option>
+        <option value="28px">28</option>
+        <option value="32px">32</option>
+      </select>
+      <select onchange="if(this.value){lmRteFormat('lmTextEditorArea','fontFamily',this.value);this.value=''}" title="글씨 모양">
+        <option value="">글꼴</option>
+        <option value="'DM Sans', sans-serif">DM Sans</option>
+        <option value="'DM Mono', monospace">DM Mono</option>
+        <option value="'Malgun Gothic', sans-serif">맑은고딕</option>
+        <option value="Georgia, serif">Georgia</option>
+        <option value="'Times New Roman', serif">Times</option>
+        <option value="'Courier New', monospace">Courier</option>
+        <option value="cursive">필기체</option>
+        <optgroup label="🧸 몽글몽글 아기자기">
+          <option value="'Gaegu', cursive">개구 (몽글몽글)</option>
+          <option value="'Jua', sans-serif">주아 (동글동글)</option>
+          <option value="'Do Hyeon', sans-serif">도현 (귀여운 고딕)</option>
+          <option value="'Hi Melody', cursive">하이멜로디 (아기자기 손글씨)</option>
+          <option value="'Poor Story', cursive">푸어스토리 (동화체)</option>
+          <option value="'Gamja Flower', cursive">감자꽃 (몽글몽글 손글씨)</option>
+          <option value="'Nanum Pen Script', cursive">나눔손글씨 펜</option>
+          <option value="'Single Day', cursive">싱글데이 (귀여운 손글씨)</option>
+          <option value="'Dongle', sans-serif">동글 (동글동글)</option>
+        </optgroup>
+      </select>
+      <input type="color" title="글씨 색깔" oninput="lmRteFormat('lmTextEditorArea','color',this.value)">
+      <button type="button" onclick="lmRteFormat('lmTextEditorArea','bold','')" style="font-weight:700;">B</button>
+      <button type="button" onclick="lmRteFormat('lmTextEditorArea','italic','')" style="font-style:italic;">I</button>
+      <button type="button" onclick="lmRteFormat('lmTextEditorArea','underline','')" style="text-decoration:underline;">U</button>
+      <button type="button" onclick="lmRteFormat('lmTextEditorArea','strike','')" style="text-decoration:line-through;">S</button>
+      <input type="color" title="형광펜(하이라이트)" value="#fff59d" oninput="lmRteFormat('lmTextEditorArea','highlight',this.value)">
+      <button type="button" onclick="lmRteClearFormat('lmTextEditorArea')">서식지우기</button>
+      <span class="lm-rte-hint">※ 블록 지정 후 적용하면 선택 부분만, 커서만 두면 전체에 적용</span>`
+
+  const toolbar2=document.createElement("div")
+  toolbar2.className="lm-rte-toolbar"
+  toolbar2.innerHTML=`
+      <button type="button" onclick="lmRteFormat('lmTextEditorArea','align','left')" title="왼쪽 정렬">⟸</button>
+      <button type="button" onclick="lmRteFormat('lmTextEditorArea','align','center')" title="가운데 정렬">⟺</button>
+      <button type="button" onclick="lmRteFormat('lmTextEditorArea','align','right')" title="오른쪽 정렬">⟹</button>
+      <button type="button" onclick="lmRteExec('lmTextEditorArea','insertUnorderedList')" title="글머리 목록">• 목록</button>
+      <button type="button" onclick="lmRteExec('lmTextEditorArea','insertOrderedList')" title="번호 목록">1. 목록</button>
+      <button type="button" onclick="lmRteExec('lmTextEditorArea','formatBlock','blockquote')" title="인용구">❝인용❞</button>
+      <button type="button" onclick="lmInsertNow('lmTextEditorArea')" title="현재 날짜/시간 삽입">🕒 시각삽입</button>`
+
+  const toolbar3=document.createElement("div")
+  toolbar3.className="lm-rte-toolbar"
+  toolbar3.innerHTML=`
+      <label style="font-size:12px;color:var(--sub);">📝 노트 모양</label>
+      <select id="lmTextEditorNoteStyle" onchange="lmApplyNoteStyle('lmTextEditorArea', this.value)">
+        <option value="plain">기본(빈 종이)</option>
+        <option value="lined">줄노트</option>
+        <option value="grid">모눈종이</option>
+        <option value="cornell">코넬식 필기</option>
+        <option value="diary">일기장</option>
+        <option value="checklist">체크리스트</option>
+      </select>
+      <label style="font-size:12px;color:var(--sub);">배경색</label>
+      <input type="color" id="lmTextEditorBgPicker" oninput="lmSetNoteBg('lmTextEditorArea', this.value)">
+      <button type="button" onclick="lmSetNoteBg('lmTextEditorArea','')">배경 초기화</button>
+      <button type="button" id="lmTextEditorAddCheckBtn" onclick="lmAddChecklistRow('lmTextEditorArea')" style="display:none;">+ 체크항목 추가</button>`
+
+  const ta=document.createElement("div")
+  ta.id="lmTextEditorArea"
+  ta.className="lm-rte-editable"
+  ta.contentEditable="true"
+  ta.setAttribute("data-placeholder","텍스트 내용 입력...")
+  ta.style.cssText="width:100%;min-height:200px;max-height:50vh;"
+  ta.innerHTML=initVal||""
+  ta.oninput=()=>lmUpdateCharCount('lmTextEditorArea','lmTextEditorCharCount')
+
+  const charCount=document.createElement("div")
+  charCount.className="lm-note-charcount"; charCount.id="lmTextEditorCharCount"; charCount.textContent="0자"
+
   const saveBtn=document.createElement("button")
-  saveBtn.textContent="저장"; saveBtn.className="primary"; saveBtn.style.marginTop="10px"
+  saveBtn.textContent="저장"; saveBtn.className="primary"
   saveBtn.onclick=async()=>{
-    let newText=ta.value
+    let newText=ta.innerHTML
     if(item.encrypted){
       const pw=await _ghAsk({ title:'🔒 암호 확인 후 저장', hint:'텍스트를 암호화하여 저장합니다\n기존과 동일한 암호를 입력하세요', placeholder:'암호 입력' }); if(!pw) return
       newText=await encryptText(newText,pw)
     }
-    item.text=newText; save(); renderLinks(); document.body.removeChild(modal)
+    item.text=newText
+    item.noteStyle=ta.dataset.noteStyle||"plain"
+    item.noteBg=ta.dataset.noteBg||""
+    save(); renderLinks(); document.body.removeChild(modal)
   }
-  box.appendChild(ta); box.appendChild(saveBtn); modal.appendChild(box); document.body.appendChild(modal)
+  const cancelBtn=document.createElement("button")
+  cancelBtn.textContent="취소"
+  cancelBtn.onclick=()=>{
+    document.body.removeChild(modal)
+    if(typeof onCancel==="function") onCancel()
+  }
+  const btnRow=document.createElement("div")
+  btnRow.style.cssText="display:flex;gap:8px;margin-top:10px;"
+  btnRow.appendChild(saveBtn); btnRow.appendChild(cancelBtn)
+  box.appendChild(toolbar); box.appendChild(toolbar2); box.appendChild(toolbar3)
+  box.appendChild(ta); box.appendChild(charCount); box.appendChild(btnRow)
+  modal.appendChild(box); document.body.appendChild(modal)
+
+  // 기존 노트 모양/배경색 복원
+  const initStyle=item.noteStyle||"plain"
+  document.getElementById("lmTextEditorNoteStyle").value=initStyle
+  ta.classList.add("lm-note-"+initStyle)
+  ta.dataset.noteStyle=initStyle
+  if(item.noteBg){
+    ta.style.backgroundColor=item.noteBg
+    ta.dataset.noteBg=item.noteBg
+    document.getElementById("lmTextEditorBgPicker").value=item.noteBg
+  }
+  if(initStyle==="checklist") document.getElementById("lmTextEditorAddCheckBtn").style.display=""
+  lmUpdateCharCount('lmTextEditorArea','lmTextEditorCharCount')
+}
+
+/* ══════════════════════════════════════════
+   리치 텍스트 서식 (글씨 크기/모양/색깔/밑줄/취소선/하이라이트/정렬)
+   - 블록(선택 영역)을 지정하면 선택 부분만 적용
+   - 커서만 두거나 선택이 없으면 전체 텍스트에 적용
+══════════════════════════════════════════ */
+function lmToggleDecoLine(el, deco){
+  const cur=(el.style.textDecorationLine||el.style.textDecoration||"").split(" ").filter(x=>x&&x!=="none")
+  let next
+  if(cur.includes(deco)) next=cur.filter(x=>x!==deco)
+  else next=cur.concat([deco])
+  el.style.textDecoration=next.length?next.join(" "):"none"
+}
+function lmRteFormat(editorId, cmd, value){
+  const editor=document.getElementById(editorId)
+  if(!editor) return
+  editor.focus()
+  if(cmd==="align"){
+    // 정렬은 항상 노트 전체(블록 단위)에 적용
+    editor.style.textAlign=value
+    return
+  }
+  const sel=window.getSelection()
+  let range=null
+  if(sel && sel.rangeCount>0){
+    const r=sel.getRangeAt(0)
+    if(editor.contains(r.commonAncestorContainer) && !r.collapsed) range=r
+  }
+  const applyStyle=(el)=>{
+    if(cmd==="fontSize") el.style.fontSize=value
+    else if(cmd==="fontFamily") el.style.fontFamily=value
+    else if(cmd==="color") el.style.color=value
+    else if(cmd==="highlight") el.style.backgroundColor=value
+    else if(cmd==="bold") el.style.fontWeight=(el.style.fontWeight==="bold"||el.style.fontWeight==="700")?"normal":"bold"
+    else if(cmd==="italic") el.style.fontStyle=(el.style.fontStyle==="italic")?"normal":"italic"
+    else if(cmd==="underline") lmToggleDecoLine(el,"underline")
+    else if(cmd==="strike") lmToggleDecoLine(el,"line-through")
+  }
+  if(range){
+    // 선택된 블록에만 서식 적용
+    const span=document.createElement("span")
+    applyStyle(span)
+    try{
+      range.surroundContents(span)
+    }catch(e){
+      const frag=range.extractContents()
+      span.appendChild(frag)
+      range.insertNode(span)
+    }
+    sel.removeAllRanges()
+    const nr=document.createRange()
+    nr.selectNodeContents(span)
+    sel.addRange(nr)
+  } else {
+    // 선택 영역이 없으면 전체 텍스트에 적용
+    applyStyle(editor)
+  }
+}
+function lmRteClearFormat(editorId){
+  const editor=document.getElementById(editorId)
+  if(!editor) return
+  const sel=window.getSelection()
+  let range=null
+  if(sel && sel.rangeCount>0){
+    const r=sel.getRangeAt(0)
+    if(editor.contains(r.commonAncestorContainer) && !r.collapsed) range=r
+  }
+  if(range){
+    const plain=range.toString()
+    range.deleteContents()
+    range.insertNode(document.createTextNode(plain))
+  } else {
+    editor.style.fontSize=""; editor.style.fontFamily=""; editor.style.color=""
+    editor.style.fontWeight=""; editor.style.fontStyle=""; editor.style.textDecoration=""
+    editor.style.backgroundColor=""; editor.style.textAlign=""
+    editor.innerHTML=(editor.innerText||"")
+  }
+}
+function lmRteExec(editorId, command, value){
+  const editor=document.getElementById(editorId)
+  if(!editor) return
+  editor.focus()
+  try{ document.execCommand(command, false, value||null) }catch(e){}
+}
+function lmInsertNow(editorId){
+  const editor=document.getElementById(editorId)
+  if(!editor) return
+  editor.focus()
+  const now=new Date()
+  const str=now.getFullYear()+"."+String(now.getMonth()+1).padStart(2,"0")+"."+String(now.getDate()).padStart(2,"0")+" "+String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0")
+  try{ document.execCommand("insertText", false, "🕒 "+str+" ") }
+  catch(e){ editor.appendChild(document.createTextNode("🕒 "+str+" ")) }
+}
+function lmUpdateCharCount(editorId, countElId){
+  const editor=document.getElementById(editorId)
+  const countEl=document.getElementById(countElId)
+  if(!editor||!countEl) return
+  const len=(editor.innerText||"").replace(/\n/g,"").length
+  countEl.textContent=len+"자"
+}
+
+/* ══════════════════════════════════════════
+   노트 모양 (코넬식 필기 / 일기장 / 체크리스트 / 모눈종이 / 줄노트)
+══════════════════════════════════════════ */
+function lmCornellTemplate(){
+  return '<div class="lm-cornell-topic">📌 주제: </div>'+
+    '<div class="lm-cornell-body">'+
+      '<div class="lm-cornell-cue">🔑 핵심 키워드<br></div>'+
+      '<div class="lm-cornell-notes">📝 노트 필기<br></div>'+
+    '</div>'+
+    '<div class="lm-cornell-summary">🧾 요약: </div>'
+}
+function lmDiaryTemplate(){
+  const now=new Date()
+  const days=["일","월","화","수","목","금","토"]
+  const dateStr=now.getFullYear()+"년 "+(now.getMonth()+1)+"월 "+now.getDate()+"일 ("+days[now.getDay()]+")"
+  return '<div class="lm-diary-header"><span class="lm-diary-date">📅 '+dateStr+'</span><span class="lm-diary-mood">오늘 기분: 😊</span></div>'+
+    '<div class="lm-diary-body">오늘 하루는...<br></div>'
+}
+function lmChecklistRowHtml(){
+  return '<div class="lm-check-row"><input type="checkbox" onclick="lmToggleCheckRow(this)"><span class="lm-check-text">할 일을 입력하세요</span></div>'
+}
+window.lmToggleCheckRow=function(cb){
+  cb.toggleAttribute("checked", cb.checked)
+  const row=cb.closest(".lm-check-row")
+  if(row) row.classList.toggle("done", cb.checked)
+}
+function lmAddChecklistRow(editorId){
+  const editor=document.getElementById(editorId)
+  if(!editor) return
+  editor.insertAdjacentHTML("beforeend", lmChecklistRowHtml())
+  editor.focus()
+}
+function lmApplyNoteStyle(editorId, style){
+  const editor=document.getElementById(editorId)
+  if(!editor) return
+  const addBtnId = editorId==="text" ? "textAddCheckBtn" : "lmTextEditorAddCheckBtn"
+  const addBtn=document.getElementById(addBtnId)
+  ;["lm-note-plain","lm-note-lined","lm-note-grid","lm-note-cornell","lm-note-diary","lm-note-checklist"].forEach(c=>editor.classList.remove(c))
+  editor.classList.add("lm-note-"+style)
+  editor.dataset.noteStyle=style
+  if(addBtn) addBtn.style.display = style==="checklist" ? "" : "none"
+
+  const isEmpty=(editor.innerText||"").trim()===""
+  if(style==="cornell" && (isEmpty || confirm("코넬식 필기 틀을 새로 넣을까요? (기존 내용은 지워집니다)"))){
+    editor.innerHTML=lmCornellTemplate()
+  } else if(style==="diary" && (isEmpty || confirm("일기장 틀을 새로 넣을까요? (기존 내용은 지워집니다)"))){
+    editor.innerHTML=lmDiaryTemplate()
+  } else if(style==="checklist" && isEmpty){
+    editor.innerHTML=lmChecklistRowHtml()
+  }
+  editor.focus()
+}
+function lmSetNoteBg(editorId, color){
+  const editor=document.getElementById(editorId)
+  if(!editor) return
+  editor.style.backgroundColor=color||""
+  editor.dataset.noteBg=color||""
 }
 
 function showPhotoModal(src){
@@ -3212,6 +3637,11 @@ function onTypeChange(){
   const fileInput=document.getElementById("file")
   const urlInput=document.getElementById("url")
   const textArea=document.getElementById("text")
+  const textToolbars=document.querySelectorAll("#inputBox .lm-rte-toolbar")
+  const charCount=document.getElementById("textCharCount")
+  const showText = (type!=="file" && type!=="photo")
+  textToolbars.forEach(tb=>tb.style.display = showText ? "" : "none")
+  if(charCount) charCount.style.display = showText ? "" : "none"
   if(type==="file"){
     fileInput.accept=".pdf,.hwp,.hwpx,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.txt,.csv,.mp4,.mov,.avi,application/*"
     fileInput.multiple=true
@@ -6839,4 +7269,4 @@ window.lmApplyUiCustom();
 })();
 </script>
 
-<div id="autoSyncBadge" style="position: fixed; top: 92px; left: 50%; transform: translateX(-50%); z-index: 99999; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: rgba(0, 0, 0, 0.65); color: rgb(255, 255, 255); pointer-events: none; opacity: 0; transition: opacity 0.4s; white-space: nowrap;"></div><iframe ng-non-bindable="" frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" tabindex="-1" vspace="0" width="100%" aria-hidden="true" id="I0_1783313053416" name="I0_1783313053416" src="https://studyapp-58a1c.firebaseapp.com/__/auth/iframe?apiKey=AIzaSyA7ots3eKmIasUH4GW7nw797cdvEVP-Dk8&amp;appName=%5BDEFAULT%5D&amp;v=10.12.2&amp;eid=p&amp;usegapi=1&amp;jsh=m%3B%2F_%2Fscs%2Fabc-static%2F_%2Fjs%2Fk%3Dgapi.lb.ko.4XlE21lAHZg.O%2Fd%3D1%2Frs%3DAHpOoo87KNXmV5OeSd-Dt__Wtv736527Nw%2Fm%3D__features__#id=I0_1783313053416&amp;_gfid=I0_1783313053416&amp;parent=file%3A%2F%2F&amp;pfname=&amp;rpctoken=16885831" style="position: absolute; top: -100px; width: 1px; height: 1px;"></iframe></body></html>
+<div id="autoSyncBadge" style="position: fixed; top: 92px; left: 50%; transform: translateX(-50%); z-index: 99999; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: rgba(0, 0, 0, 0.65); color: rgb(255, 255, 255); pointer-events: none; opacity: 0; transition: opacity 0.4s; white-space: nowrap;"></div><iframe ng-non-bindable="" frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" tabindex="-1" vspace="0" width="100%" aria-hidden="true" id="I0_1783323747207" name="I0_1783323747207" src="https://studyapp-58a1c.firebaseapp.com/__/auth/iframe?apiKey=AIzaSyA7ots3eKmIasUH4GW7nw797cdvEVP-Dk8&amp;appName=%5BDEFAULT%5D&amp;v=10.12.2&amp;eid=p&amp;usegapi=1&amp;jsh=m%3B%2F_%2Fscs%2Fabc-static%2F_%2Fjs%2Fk%3Dgapi.lb.ko.4XlE21lAHZg.O%2Fd%3D1%2Frs%3DAHpOoo87KNXmV5OeSd-Dt__Wtv736527Nw%2Fm%3D__features__#id=I0_1783323747207&amp;_gfid=I0_1783323747207&amp;parent=file%3A%2F%2F&amp;pfname=&amp;rpctoken=29573107" style="position: absolute; top: -100px; width: 1px; height: 1px;"></iframe><button id="restoreBtn" style="position: fixed; top: 40px; right: 0px; z-index: 9999; background: rgb(255, 157, 0); color: rgb(255, 255, 255); border: medium; padding: 6px 13px; border-radius: 8px; font-weight: 500; cursor: pointer;">기능</button></body></html>
