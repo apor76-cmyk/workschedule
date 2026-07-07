@@ -3140,7 +3140,7 @@ function renderLinks(){
         if(item.type==="file"){
           if(confirm("파일을 다른 파일로 교체하시겠습니까?")){
             const inp=document.createElement("input"); inp.type="file"
-            inp.accept=".pdf,.hwp,.hwpx,.doc,.docx,.xls,.xlsx,.ppt,.pptx,application/*"
+            inp.accept="*/*"
             inp.style.cssText="position:fixed;top:-9999px;left:-9999px;opacity:0;pointer-events:none;"
             inp.onchange=async ev=>{
               const f=ev.target.files[0]; if(!f) return
@@ -3769,7 +3769,7 @@ function onTypeChange(){
   textToolbars.forEach(tb=>tb.style.display = showText ? "" : "none")
   if(charCount) charCount.style.display = showText ? "" : "none"
   if(type==="file"){
-    fileInput.accept=".pdf,.hwp,.hwpx,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.txt,.csv,.mp4,.mov,.avi,application/*"
+    fileInput.accept="*/*"
     fileInput.multiple=true
     urlInput.style.display="none"
     textArea.style.display="none"
@@ -7543,3 +7543,4 @@ window.lmApplyUiCustom();
 </script>
 
 </body></html>
+
